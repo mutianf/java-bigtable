@@ -531,6 +531,7 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
       setTransportChannelProvider(defaultTransportChannelProvider());
       setStreamWatchdogCheckInterval(baseDefaults.getStreamWatchdogCheckInterval());
       setStreamWatchdogProvider(baseDefaults.getStreamWatchdogProvider());
+      setExecutorProvider(BigtableExecutorProvider.create());
 
       // Inject the UserAgent in addition to api-client header
       Map<String, String> headers =

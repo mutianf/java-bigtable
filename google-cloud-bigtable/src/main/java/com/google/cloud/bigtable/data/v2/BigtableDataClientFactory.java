@@ -19,10 +19,13 @@ import com.google.api.core.BetaApi;
 import com.google.api.gax.core.BackgroundResource;
 import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.api.gax.core.FixedExecutorProvider;
+import com.google.api.gax.grpc.InstantiatingGrpcChannelProvider;
 import com.google.api.gax.rpc.ClientContext;
 import com.google.api.gax.rpc.FixedHeaderProvider;
 import com.google.api.gax.rpc.FixedTransportChannelProvider;
 import com.google.api.gax.rpc.FixedWatchdogProvider;
+import com.google.api.gax.rpc.StubSettings;
+import com.google.cloud.bigtable.data.v2.stub.BigtableExecutorProvider;
 import com.google.cloud.bigtable.data.v2.stub.EnhancedBigtableStubSettings;
 import java.io.IOException;
 import javax.annotation.Nonnull;
@@ -78,7 +81,27 @@ public final class BigtableDataClientFactory implements AutoCloseable {
    */
   public static BigtableDataClientFactory create(BigtableDataSettings defaultSettings)
       throws IOException {
-    ClientContext sharedClientContext = ClientContext.create(defaultSettings.getStubSettings());
+    // TODO move this to a helper function?
+    StubSettings.Builder builder = defaultSettings.getStubSettings().toBuilder();
+    if (defaultSettings.getStubSettings().getExecutorProvider()
+        instanceof BigtableExecutorProvider) {
+      BigtableExecutorProvider bigtableExecutorProvider =
+          (BigtableExecutorProvider) defaultSettings.getStubSettings().getExecutorProvider();
+      builder.setExecutorProvider(bigtableExecutorProvider.getWorkerExecutorProvider());
+      if (builder.getTransportChannelProvider() instanceof InstantiatingGrpcChannelProvider) {
+        InstantiatingGrpcChannelProvider channelProvider =
+            (InstantiatingGrpcChannelProvider) builder.getTransportChannelProvider();
+        if (channelProvider.needsExecutor()) {
+          builder.setTransportChannelProvider(
+              channelProvider
+                  .toBuilder()
+                  .setExecutor(bigtableExecutorProvider.getChannelExecutor())
+                  .build());
+        }
+      }
+    }
+
+    ClientContext sharedClientContext = ClientContext.create(builder.build());
     return new BigtableDataClientFactory(sharedClientContext, defaultSettings);
   }
 

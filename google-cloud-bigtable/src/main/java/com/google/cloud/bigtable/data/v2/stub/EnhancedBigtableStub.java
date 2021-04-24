@@ -170,6 +170,30 @@ public class EnhancedBigtableStub implements AutoCloseable {
               .build());
     }
 
+    // Caller could set channelProvider's executor in 2 ways: 1. set with stubSettings#setExecutor
+    // if transportChannelProvider doesn't have a executor, or 2. set with transportChannelProvider#
+    // setExecutor.
+    // If stubSettings#executor is not overridden, check if transportChannelProvider has an
+    // executor.
+    // If not, set transportChannelProvider to use default grpc executor. We'll also need to reset
+    // stubSEttings#executor to default gax executor for retrying, batching etc.
+    if (settings.getExecutorProvider() instanceof BigtableExecutorProvider) {
+      BigtableExecutorProvider bigtableExecutorProvider =
+          (BigtableExecutorProvider) builder.getExecutorProvider();
+      builder.setExecutorProvider(bigtableExecutorProvider.getWorkerExecutorProvider());
+      if (settings.getTransportChannelProvider() instanceof InstantiatingGrpcChannelProvider) {
+        InstantiatingGrpcChannelProvider channelProvider =
+            (InstantiatingGrpcChannelProvider) settings.getTransportChannelProvider();
+        if (channelProvider.needsExecutor()) {
+          builder.setTransportChannelProvider(
+              channelProvider
+                  .toBuilder()
+                  .setExecutor(bigtableExecutorProvider.getChannelExecutor())
+                  .build());
+        }
+      }
+    }
+
     ImmutableMap<TagKey, TagValue> attributes =
         ImmutableMap.<TagKey, TagValue>builder()
             .put(RpcMeasureConstants.BIGTABLE_PROJECT_ID, TagValue.create(settings.getProjectId()))
