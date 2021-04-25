@@ -28,6 +28,9 @@ import com.google.api.gax.rpc.StubSettings;
 import com.google.cloud.bigtable.data.v2.stub.BigtableExecutorProvider;
 import com.google.cloud.bigtable.data.v2.stub.EnhancedBigtableStubSettings;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
 import javax.annotation.Nonnull;
 
 /**
@@ -82,6 +85,7 @@ public final class BigtableDataClientFactory implements AutoCloseable {
   public static BigtableDataClientFactory create(BigtableDataSettings defaultSettings)
       throws IOException {
     // TODO move this to a helper function?
+    ExecutorService channelExecutor = null;
     StubSettings.Builder builder = defaultSettings.getStubSettings().toBuilder();
     if (defaultSettings.getStubSettings().getExecutorProvider()
         instanceof BigtableExecutorProvider) {
@@ -92,16 +96,20 @@ public final class BigtableDataClientFactory implements AutoCloseable {
         InstantiatingGrpcChannelProvider channelProvider =
             (InstantiatingGrpcChannelProvider) builder.getTransportChannelProvider();
         if (channelProvider.needsExecutor()) {
+          channelExecutor = bigtableExecutorProvider.getChannelExecutor();
           builder.setTransportChannelProvider(
-              channelProvider
-                  .toBuilder()
-                  .setExecutor(bigtableExecutorProvider.getChannelExecutor())
-                  .build());
+              channelProvider.toBuilder().setExecutor(channelExecutor).build());
         }
       }
     }
-
     ClientContext sharedClientContext = ClientContext.create(builder.build());
+    if (channelExecutor != null) {
+      ClientContext.Builder contextBuilder = sharedClientContext.toBuilder();
+      List<BackgroundResource> resources =
+          new ArrayList<BackgroundResource>(sharedClientContext.getBackgroundResources());
+      contextBuilder.setBackgroundResources(resources);
+      sharedClientContext = contextBuilder.build();
+    }
     return new BigtableDataClientFactory(sharedClientContext, defaultSettings);
   }
 

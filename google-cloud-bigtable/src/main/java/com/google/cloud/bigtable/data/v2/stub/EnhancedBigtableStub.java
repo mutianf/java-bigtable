@@ -21,6 +21,7 @@ import com.google.api.gax.batching.Batcher;
 import com.google.api.gax.batching.BatcherImpl;
 import com.google.api.gax.batching.FlowController;
 import com.google.api.gax.core.BackgroundResource;
+import com.google.api.gax.core.ExecutorAsBackgroundResource;
 import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.api.gax.grpc.GaxGrpcProperties;
 import com.google.api.gax.grpc.GrpcCallSettings;
@@ -93,8 +94,10 @@ import io.opencensus.tags.TagValue;
 import io.opencensus.tags.Tagger;
 import io.opencensus.tags.Tags;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
 
@@ -133,7 +136,41 @@ public class EnhancedBigtableStub implements AutoCloseable {
       throws IOException {
     settings = finalizeSettings(settings, Tags.getTagger(), Stats.getStatsRecorder());
 
-    return new EnhancedBigtableStub(settings, ClientContext.create(settings));
+    // TODO move this to a helper function
+    // Caller could set channelProvider's executor in 2 ways: 1. set with stubSettings#setExecutor
+    // if transportChannelProvider doesn't have a executor, or 2. set with transportChannelProvider#
+    // setExecutor.
+    // If stubSettings#executor is not overridden, check if transportChannelProvider has an
+    // executor.
+    // If not, set transportChannelProvider to use default grpc executor. We'll also need to reset
+    // stubSEttings#executor to default gax executor for retrying, batching etc.
+    ExecutorService channelExecutor = null;
+    if (settings.getExecutorProvider() instanceof BigtableExecutorProvider) {
+      EnhancedBigtableStubSettings.Builder builder = settings.toBuilder();
+      BigtableExecutorProvider bigtableExecutorProvider =
+          (BigtableExecutorProvider) builder.getExecutorProvider();
+      builder.setExecutorProvider(bigtableExecutorProvider.getWorkerExecutorProvider());
+      if (settings.getTransportChannelProvider() instanceof InstantiatingGrpcChannelProvider) {
+        InstantiatingGrpcChannelProvider channelProvider =
+            (InstantiatingGrpcChannelProvider) settings.getTransportChannelProvider();
+        if (channelProvider.needsExecutor()) {
+          channelExecutor = bigtableExecutorProvider.getChannelExecutor();
+          builder.setTransportChannelProvider(
+              channelProvider.toBuilder().setExecutor(channelExecutor).build());
+        }
+      }
+      settings = builder.build();
+    }
+    ClientContext clientContext = ClientContext.create(settings);
+    if (channelExecutor != null) {
+      ClientContext.Builder contextBuilder = clientContext.toBuilder();
+      List<BackgroundResource> resources =
+          new ArrayList<BackgroundResource>(clientContext.getBackgroundResources());
+      resources.add(new ExecutorAsBackgroundResource(channelExecutor));
+      contextBuilder.setBackgroundResources(resources);
+      clientContext = contextBuilder.build();
+    }
+    return new EnhancedBigtableStub(settings, clientContext);
   }
 
   public static EnhancedBigtableStubSettings finalizeSettings(
@@ -168,30 +205,6 @@ public class EnhancedBigtableStub implements AutoCloseable {
                       settings.getAppProfileId(),
                       settings.getPrimedTableIds()))
               .build());
-    }
-
-    // Caller could set channelProvider's executor in 2 ways: 1. set with stubSettings#setExecutor
-    // if transportChannelProvider doesn't have a executor, or 2. set with transportChannelProvider#
-    // setExecutor.
-    // If stubSettings#executor is not overridden, check if transportChannelProvider has an
-    // executor.
-    // If not, set transportChannelProvider to use default grpc executor. We'll also need to reset
-    // stubSEttings#executor to default gax executor for retrying, batching etc.
-    if (settings.getExecutorProvider() instanceof BigtableExecutorProvider) {
-      BigtableExecutorProvider bigtableExecutorProvider =
-          (BigtableExecutorProvider) builder.getExecutorProvider();
-      builder.setExecutorProvider(bigtableExecutorProvider.getWorkerExecutorProvider());
-      if (settings.getTransportChannelProvider() instanceof InstantiatingGrpcChannelProvider) {
-        InstantiatingGrpcChannelProvider channelProvider =
-            (InstantiatingGrpcChannelProvider) settings.getTransportChannelProvider();
-        if (channelProvider.needsExecutor()) {
-          builder.setTransportChannelProvider(
-              channelProvider
-                  .toBuilder()
-                  .setExecutor(bigtableExecutorProvider.getChannelExecutor())
-                  .build());
-        }
-      }
     }
 
     ImmutableMap<TagKey, TagValue> attributes =

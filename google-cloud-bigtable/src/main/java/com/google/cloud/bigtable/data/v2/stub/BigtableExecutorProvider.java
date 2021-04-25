@@ -19,7 +19,8 @@ package com.google.cloud.bigtable.data.v2.stub;
 import com.google.api.core.InternalApi;
 import com.google.api.gax.core.ExecutorProvider;
 import com.google.api.gax.core.InstantiatingExecutorProvider;
-import java.util.concurrent.Executor;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -27,6 +28,7 @@ import java.util.concurrent.ScheduledExecutorService;
 public class BigtableExecutorProvider implements ExecutorProvider {
 
   private ExecutorProvider workerExecutorProvider;
+  private ExecutorService channelExecutor;
 
   public static BigtableExecutorProvider create() {
     return new BigtableExecutorProvider();
@@ -50,7 +52,15 @@ public class BigtableExecutorProvider implements ExecutorProvider {
     return workerExecutorProvider;
   }
 
-  public Executor getChannelExecutor() {
-    return Executors.newCachedThreadPool();
+  public ExecutorService getChannelExecutor() {
+    if (channelExecutor == null) {
+      channelExecutor =
+          Executors.newCachedThreadPool(
+              new ThreadFactoryBuilder()
+                  .setDaemon(true)
+                  .setNameFormat("bigtable-default-executor")
+                  .build());
+    }
+    return channelExecutor;
   }
 }
