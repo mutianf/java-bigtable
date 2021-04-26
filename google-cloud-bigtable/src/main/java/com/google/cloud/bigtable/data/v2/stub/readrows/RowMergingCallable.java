@@ -23,6 +23,7 @@ import com.google.bigtable.v2.ReadRowsRequest;
 import com.google.bigtable.v2.ReadRowsResponse;
 import com.google.cloud.bigtable.data.v2.models.RowAdapter;
 import com.google.cloud.bigtable.data.v2.models.RowAdapter.RowBuilder;
+import com.google.cloud.bigtable.gaxx.reframing.PrefetchingResponseObserver;
 import com.google.cloud.bigtable.gaxx.reframing.ReframingResponseObserver;
 
 /**
@@ -50,8 +51,10 @@ public class RowMergingCallable<RowT> extends ServerStreamingCallable<ReadRowsRe
       ReadRowsRequest request, ResponseObserver<RowT> responseObserver, ApiCallContext context) {
     RowBuilder<RowT> rowBuilder = rowAdapter.createRowBuilder();
     RowMerger<RowT> merger = new RowMerger<>(rowBuilder);
+    PrefetchingResponseObserver<RowT> prefetchObserver =
+        new PrefetchingResponseObserver<>(responseObserver);
     ReframingResponseObserver<ReadRowsResponse, RowT> innerObserver =
-        new ReframingResponseObserver<>(responseObserver, merger);
+        new ReframingResponseObserver<>(prefetchObserver, merger);
     inner.call(request, innerObserver, context);
   }
 }
