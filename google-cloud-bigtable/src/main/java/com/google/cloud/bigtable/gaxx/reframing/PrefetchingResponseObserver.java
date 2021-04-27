@@ -26,8 +26,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class PrefetchingResponseObserver<T>
-    extends StateCheckingResponseObserver<T> {
+public class PrefetchingResponseObserver<T> extends StateCheckingResponseObserver<T> {
 
   private final AtomicInteger lock = new AtomicInteger(0);
 
@@ -35,12 +34,17 @@ public class PrefetchingResponseObserver<T>
   private StreamController innerController;
 
   // Buffer the response
+  // TODO buffer will be at most 2
   private ConcurrentLinkedQueue<T> buffer;
   // Keep track if the caller is waiting for a response
   private AtomicInteger counter;
 
   private final AtomicReference<Throwable> cancellation = new AtomicReference<>();
 
+  private volatile boolean started;
+
+  // Written by a GRPC thread, and read by any thread after acquiring a lock
+  // Care must be to taken to read the volatile done before accessing error.
   private Throwable error;
   private volatile boolean done;
 
@@ -76,13 +80,16 @@ public class PrefetchingResponseObserver<T>
         });
 
     Preconditions.checkState(disableCalled.get(), "disabled should be called");
+    started = true;
     deliver();
   }
 
   private void onRequest(int count) {
     Preconditions.checkArgument(count == 1, "should only request 1");
-    counter.addAndGet(count);
-    deliver();
+    Preconditions.checkState(counter.getAndAdd(count) == 0, "counter should be <= 1");
+    if (started) {
+      deliver();
+    }
   }
 
   @Override
@@ -118,17 +125,17 @@ public class PrefetchingResponseObserver<T>
     }
 
     do {
+      // Exist early will leave the lock closed to ensure no new notification is given to the caller
       if (maybeFinish()) {
         return;
       }
 
-      // TODO do we need to consider demand that's been requested
       if (buffer.size() <= counter.get()) {
-        // prefetch
+        // Prefetch
         innerController.request(1);
       }
       // If the caller asked for a response, return 1 from the buffer
-      if (counter.get() > 0) {
+      if (counter.get() > 0 && !buffer.isEmpty()) {
         counter.decrementAndGet();
         outerResponseObserver.onResponse(buffer.poll());
       }
@@ -144,7 +151,7 @@ public class PrefetchingResponseObserver<T>
     }
 
     // Check for upstream termination and exhaustion of local buffers
-    // TODO: do we need to check counter here?
+    // We still want to return all the elements in the buffer before returning onError / onComplete
     if (done && buffer.isEmpty()) {
       if (error != null) {
         outerResponseObserver.onError(error);
