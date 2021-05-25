@@ -24,6 +24,9 @@ import com.google.bigtable.v2.ReadRowsResponse;
 import com.google.cloud.bigtable.data.v2.models.RowAdapter;
 import com.google.cloud.bigtable.data.v2.models.RowAdapter.RowBuilder;
 import com.google.cloud.bigtable.gaxx.reframing.ReframingResponseObserver;
+import io.perfmark.Link;
+import io.perfmark.PerfMark;
+import io.perfmark.Tag;
 
 /**
  * A ServerStreamingCallable that will merge {@link
@@ -50,8 +53,12 @@ public class RowMergingCallable<RowT> extends ServerStreamingCallable<ReadRowsRe
       ReadRowsRequest request, ResponseObserver<RowT> responseObserver, ApiCallContext context) {
     RowBuilder<RowT> rowBuilder = rowAdapter.createRowBuilder();
     RowMerger<RowT> merger = new RowMerger<>(rowBuilder);
+    Tag tag = PerfMark.createTag(request.hashCode());
+    PerfMark.startTask("RowMergingCallable#call", tag);
+    Link link = PerfMark.linkOut();
     ReframingResponseObserver<ReadRowsResponse, RowT> innerObserver =
-        new ReframingResponseObserver<>(responseObserver, merger);
+        new ReframingResponseObserver<>(responseObserver, merger, tag, link);
     inner.call(request, innerObserver, context);
+    PerfMark.stopTask("RowMergingCallable#call", tag);
   }
 }

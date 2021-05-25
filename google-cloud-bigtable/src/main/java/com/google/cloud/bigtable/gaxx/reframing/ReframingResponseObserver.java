@@ -21,6 +21,9 @@ import com.google.api.gax.rpc.StateCheckingResponseObserver;
 import com.google.api.gax.rpc.StreamController;
 import com.google.common.base.Preconditions;
 import com.google.common.math.IntMath;
+import io.perfmark.Link;
+import io.perfmark.PerfMark;
+import io.perfmark.Tag;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -95,12 +98,24 @@ public class ReframingResponseObserver<InnerT, OuterT>
   // It's checked by error handling in delivery() to avoid double notifying the outer observer.
   private boolean finished;
 
+  private Tag tag;
+  final private Link link;
+
   public ReframingResponseObserver(
       ResponseObserver<OuterT> observer, Reframer<OuterT, InnerT> reframer) {
     this.outerResponseObserver = observer;
     this.reframer = reframer;
+    this.tag = PerfMark.createTag(System.identityHashCode(this));
+    this.link = PerfMark.linkOut();
   }
 
+  public ReframingResponseObserver(ResponseObserver<OuterT> observer, Reframer<OuterT, InnerT> reframer, Tag tag, Link link) {
+    this.outerResponseObserver = observer;
+    this.reframer = reframer;
+    this.tag = tag;
+    this.link = link;
+
+  }
   /**
    * Callback that will be notified when the inner/upstream callable starts. This will in turn
    * notify the outer/downstreamObserver of stream start. Regardless of the
@@ -112,6 +127,9 @@ public class ReframingResponseObserver<InnerT, OuterT>
   protected void onStartImpl(StreamController controller) {
     innerController = controller;
     innerController.disableAutoInboundFlowControl();
+
+    PerfMark.startTask("ReframingObserver#onStartImpl", tag);
+    PerfMark.linkIn(link);
 
     outerResponseObserver.onStart(
         new StreamController() {
@@ -141,6 +159,7 @@ public class ReframingResponseObserver<InnerT, OuterT>
       numRequested.set(Integer.MAX_VALUE);
       deliver();
     }
+    PerfMark.stopTask("ReframingObserver#onStartImpl", tag);
   }
 
   /**
@@ -155,6 +174,9 @@ public class ReframingResponseObserver<InnerT, OuterT>
     Preconditions.checkState(!autoFlowControl, "Auto flow control enabled");
     Preconditions.checkArgument(count > 0, "Count must be > 0");
 
+    PerfMark.startTask("ReframingObserver#onRequest", tag);
+    PerfMark.linkIn(link);
+
     while (true) {
       int current = numRequested.get();
       if (current == Integer.MAX_VALUE) {
@@ -166,8 +188,8 @@ public class ReframingResponseObserver<InnerT, OuterT>
         break;
       }
     }
-
     deliver();
+    PerfMark.stopTask("ReframingObserver#onRequest", tag);
   }
 
   /**
@@ -176,11 +198,15 @@ public class ReframingResponseObserver<InnerT, OuterT>
    * that there is a race condition between cancellation and the stream completing normally.
    */
   private void onCancel() {
+    PerfMark.startTask("ReframingObserver#onCancel", tag);
+    PerfMark.linkIn(link);
+
     if (cancellation.compareAndSet(null, new CancellationException("User cancelled stream"))) {
       innerController.cancel();
     }
 
     deliver();
+    PerfMark.stopTask("ReframingObserver#onCancel", tag);
   }
 
   /**
@@ -194,6 +220,9 @@ public class ReframingResponseObserver<InnerT, OuterT>
   protected void onResponseImpl(InnerT response) {
     IllegalStateException error = null;
 
+    PerfMark.startTask("ReframingObserver#onResponseImpl", tag);
+    PerfMark.linkIn(link);
+
     // Guard against unsolicited notifications
     if (!awaitingInner || !newItem.compareAndSet(null, response)) {
       // Notify downstream if it's still open
@@ -202,8 +231,11 @@ public class ReframingResponseObserver<InnerT, OuterT>
     }
     deliver();
 
+    PerfMark.stopTask("ReframingObserver#onResponseImpl", tag);
+
     // Notify upstream by throwing an exception
     if (error != null) {
+      PerfMark.event("ReframingObserver#onResponse#throwError", tag);
       throw error;
     }
   }
@@ -216,10 +248,14 @@ public class ReframingResponseObserver<InnerT, OuterT>
    */
   @Override
   protected void onErrorImpl(Throwable t) {
+    PerfMark.startTask("ReframingObserver#onErrorImpl", tag);
+    PerfMark.linkIn(link);
+
     // order of assignment matters
     error = t;
     done = true;
     deliver();
+    PerfMark.stopTask("ReframingObserver#onErrorImpl", tag);
   }
 
   /**
@@ -230,8 +266,12 @@ public class ReframingResponseObserver<InnerT, OuterT>
    */
   @Override
   protected void onCompleteImpl() {
+    PerfMark.startTask("ReframingObserver#onCompleteImpl", tag);
+    PerfMark.linkIn(link);
+
     done = true;
     deliver();
+    PerfMark.stopTask("ReframingObserver#onCompleteImpl", tag);
   }
 
   /** Tries to kick off the delivery loop, wrapping it in error handling. */
@@ -245,6 +285,7 @@ public class ReframingResponseObserver<InnerT, OuterT>
       // error. Care must be taken to avoid calling close twice in case the first invocation threw
       // an error.
       try {
+        PerfMark.event("ReframingObserver#deliver#innerControllerCancel", tag);
         innerController.cancel();
       } catch (Throwable cancelError) {
         t.addSuppressed(
@@ -273,6 +314,8 @@ public class ReframingResponseObserver<InnerT, OuterT>
       return;
     }
 
+    PerfMark.startTask("ReframingObserver#deliverUnsafe", tag);
+
     do {
       // Optimization: the inner loop will eager process any accumulated state, so reset the lock
       // for just this iteration. (If another event occurs during processing, it can increment the
@@ -285,6 +328,8 @@ public class ReframingResponseObserver<InnerT, OuterT>
       // Eagerly notify of onComplete/onError disregarding demand.
       // NOTE: this will purposely leave wip set to avoid further deliveries.
       if (maybeFinish()) {
+        PerfMark.event("ReframingObserver#maybeFinish", tag);
+        PerfMark.stopTask("ReframingObserver#deliverUnsafe", tag);
         return;
       }
 
@@ -307,6 +352,8 @@ public class ReframingResponseObserver<InnerT, OuterT>
         }
 
         if (maybeFinish()) {
+          PerfMark.event("ReframingObserver#maybeFinish", tag);
+          PerfMark.stopTask("ReframingObserver#deliverUnsafe", tag);
           return;
         }
       }
@@ -316,6 +363,7 @@ public class ReframingResponseObserver<InnerT, OuterT>
         numRequested.addAndGet(-delivered);
       }
     } while (lock.decrementAndGet() != 0);
+    PerfMark.stopTask("ReframingObserver#deliverUnsafe", tag);
   }
 
   /**
@@ -328,6 +376,7 @@ public class ReframingResponseObserver<InnerT, OuterT>
       return;
     }
 
+    PerfMark.startTask("ReframingObserver#pollUpstream", tag);
     boolean localDone = this.done;
 
     // Try to move the new item into the reframer
@@ -339,6 +388,7 @@ public class ReframingResponseObserver<InnerT, OuterT>
     } else if (localDone) {
       awaitingInner = false;
     }
+    PerfMark.stopTask("ReframingObserver#pollUpstream", tag);
   }
 
   /**

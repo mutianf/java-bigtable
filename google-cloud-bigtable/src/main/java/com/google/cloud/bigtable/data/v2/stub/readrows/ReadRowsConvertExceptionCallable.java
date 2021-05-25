@@ -22,6 +22,8 @@ import com.google.api.gax.rpc.InternalException;
 import com.google.api.gax.rpc.ResponseObserver;
 import com.google.api.gax.rpc.ServerStreamingCallable;
 import com.google.api.gax.rpc.StreamController;
+import io.perfmark.PerfMark;
+import io.perfmark.Tag;
 
 /**
  * This callable converts the "Received rst stream" exception into a retryable {@link ApiException}.
@@ -42,7 +44,10 @@ public final class ReadRowsConvertExceptionCallable<ReadRowsRequest, RowT>
       ReadRowsRequest request, ResponseObserver<RowT> responseObserver, ApiCallContext context) {
     ReadRowsConvertExceptionResponseObserver<RowT> observer =
         new ReadRowsConvertExceptionResponseObserver<>(responseObserver);
+    Tag tag = PerfMark.createTag(request.hashCode());
+    PerfMark.startTask("ConvertException#call", tag);
     innerCallable.call(request, observer, context);
+    PerfMark.stopTask("ConvertException#call", tag);
   }
 
   private class ReadRowsConvertExceptionResponseObserver<RowT> implements ResponseObserver<RowT> {
