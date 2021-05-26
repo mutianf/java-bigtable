@@ -174,7 +174,9 @@ public class ReframingResponseObserver<InnerT, OuterT>
     Preconditions.checkState(!autoFlowControl, "Auto flow control enabled");
     Preconditions.checkArgument(count > 0, "Count must be > 0");
 
+    Tag countTag = PerfMark.createTag("count", count);
     PerfMark.startTask("ReframingObserver#onRequest", tag);
+    PerfMark.attachTag(countTag);
     PerfMark.linkIn(link);
 
     while (true) {
@@ -276,6 +278,7 @@ public class ReframingResponseObserver<InnerT, OuterT>
 
   /** Tries to kick off the delivery loop, wrapping it in error handling. */
   private void deliver() {
+    PerfMark.startTask("ReframingObserver#deliver", tag);
     try {
       deliverUnsafe();
     } catch (Throwable t) {
@@ -297,6 +300,7 @@ public class ReframingResponseObserver<InnerT, OuterT>
         outerResponseObserver.onError(t);
       }
     }
+    PerfMark.stopTask("ReframingObserver#deliver", tag);
   }
 
   /**
@@ -309,12 +313,15 @@ public class ReframingResponseObserver<InnerT, OuterT>
    * Reframer) using CAS mutex.
    */
   private void deliverUnsafe() {
+    PerfMark.startTask("ReframingObserver#deliverUnsafe", tag);
     // Try to acquire the lock
     if (lock.getAndIncrement() != 0) {
+      Tag lockTag = PerfMark.createTag("lock", lock.get());
+      PerfMark.attachTag(lockTag);
+      PerfMark.stopTask("ReframingObserver#deliverUnsafe", tag);
       return;
     }
 
-    PerfMark.startTask("ReframingObserver#deliverUnsafe", tag);
 
     do {
       // Optimization: the inner loop will eager process any accumulated state, so reset the lock
