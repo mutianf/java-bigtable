@@ -379,11 +379,13 @@ public class ReframingResponseObserver<InnerT, OuterT>
    * then done is guaranteed to reflect the current status of the upstream.
    */
   private void pollUpstream() {
+    PerfMark.startTask("ReframingObserver#pollUpstream", tag);
     if (!awaitingInner) {
+      PerfMark.event("ReframingObserver#pollUpstream#NotAwaitingInner");
+      PerfMark.stopTask("ReframingObserver#pollUpstream", tag);
       return;
     }
 
-    PerfMark.startTask("ReframingObserver#pollUpstream", tag);
     boolean localDone = this.done;
 
     // Try to move the new item into the reframer
