@@ -19,6 +19,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.TruthJUnit.assume;
 
 import com.google.api.client.util.Lists;
+import com.google.api.gax.batching.Batcher;
 import com.google.cloud.bigtable.data.v2.BigtableDataSettings;
 import com.google.cloud.bigtable.data.v2.models.Query;
 import com.google.cloud.bigtable.data.v2.models.Row;
@@ -30,6 +31,7 @@ import com.google.monitoring.v3.ListTimeSeriesRequest;
 import com.google.monitoring.v3.ListTimeSeriesResponse;
 import com.google.monitoring.v3.ProjectName;
 import com.google.monitoring.v3.TimeInterval;
+import com.google.protobuf.ByteString;
 import com.google.protobuf.util.Timestamps;
 import java.io.IOException;
 import java.time.Duration;
@@ -78,19 +80,26 @@ public class BuiltinMetricsIT {
 
   @Test
   public void testBuiltinMetrics() throws Exception {
-    // Send a MutateRow and ReadRows request
+    // Send a MutateRow request
     testEnvRule
         .env()
         .getDataClient()
         .mutateRow(
             RowMutation.create(testEnvRule.env().getTableId(), "a-new-key")
                 .setCell(testEnvRule.env().getFamilyId(), "q", "abc"));
+    // Send a ReadRows request
     ArrayList<Row> rows =
         Lists.newArrayList(
             testEnvRule
                 .env()
                 .getDataClient()
                 .readRows(Query.create(testEnvRule.env().getTableId()).limit(10)));
+
+    // Create a batcher and send a ReadRows request
+    Batcher batcher =
+        testEnvRule.env().getDataClient().newBulkReadRowsBatcher(testEnvRule.env().getTableId());
+    batcher.add(ByteString.copyFromUtf8("row1"));
+    batcher.flush();
 
     // Sleep 5 minutes so the metrics could be published and precomputation is done
     Thread.sleep(Duration.ofMinutes(5).toMillis());
@@ -133,5 +142,20 @@ public class BuiltinMetricsIT {
       response = metricClient.listTimeSeriesCallable().call(requestBuilder.build());
       assertThat(response.getTimeSeriesCount()).isGreaterThan(0);
     }
+
+    String metricFilter =
+        String.format(
+            "metric.type=\"bigtable.googleapis.com/client/throttling_latencies\" "
+                + "AND resource.labels.instance=\"%s\" AND metric.labels.method=\"Bigtable.ReadRows\"",
+            testEnvRule.env().getInstanceId());
+    ListTimeSeriesRequest.Builder requestBuilder =
+        ListTimeSeriesRequest.newBuilder()
+            .setName(name.toString())
+            .setFilter(metricFilter)
+            .setInterval(interval)
+            .setView(ListTimeSeriesRequest.TimeSeriesView.FULL);
+    ListTimeSeriesResponse response =
+        metricClient.listTimeSeriesCallable().call(requestBuilder.build());
+    assertThat(response.getTimeSeriesCount()).isGreaterThan(0);
   }
 }
