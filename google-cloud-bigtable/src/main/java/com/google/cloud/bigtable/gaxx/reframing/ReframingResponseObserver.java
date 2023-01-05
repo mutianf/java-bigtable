@@ -110,6 +110,7 @@ public class ReframingResponseObserver<InnerT, OuterT>
    */
   @Override
   protected void onStartImpl(StreamController controller) {
+    System.out.println("Reframing response observer: on start impl is called");
     innerController = controller;
     innerController.disableAutoInboundFlowControl();
 
@@ -136,6 +137,7 @@ public class ReframingResponseObserver<InnerT, OuterT>
         });
 
     hasStarted = true;
+    System.out.println(Thread.currentThread().getId() + " - ReframingResponseObserver: stream has started");
 
     if (autoFlowControl) {
       numRequested.set(Integer.MAX_VALUE);
@@ -177,6 +179,7 @@ public class ReframingResponseObserver<InnerT, OuterT>
    */
   private void onCancel() {
     if (cancellation.compareAndSet(null, new CancellationException("User cancelled stream"))) {
+      System.out.println(Thread.currentThread().getId() + " - ReframingResponseObserver: Cancelling the stream");
       innerController.cancel();
     }
 
@@ -268,6 +271,7 @@ public class ReframingResponseObserver<InnerT, OuterT>
    * Reframer) using CAS mutex.
    */
   private void deliverUnsafe() {
+    System.out.println(Thread.currentThread().getId() + ": ReframingResponseObserver: deliver unsafe is called");
     // Try to acquire the lock
     if (lock.getAndIncrement() != 0) {
       return;
@@ -358,9 +362,11 @@ public class ReframingResponseObserver<InnerT, OuterT>
    */
   private boolean maybeFinish() {
     // Check for cancellations
+    System.out.println(Thread.currentThread().getId() + " - ReframingResponseObserver: maybeFinish is called");
     Throwable localError = this.cancellation.get();
     if (localError != null) {
       finished = true;
+      System.out.println(Thread.currentThread().getId() +  " - ReframingResponseObserver: calling onerror");
 
       outerResponseObserver.onError(localError);
       return true;
