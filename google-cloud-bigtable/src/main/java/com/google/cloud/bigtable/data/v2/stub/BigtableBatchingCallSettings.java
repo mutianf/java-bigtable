@@ -66,6 +66,9 @@ public final class BigtableBatchingCallSettings extends UnaryCallSettings<BulkMu
   private final Long targetRpcLatencyMs;
   private final DynamicFlowControlSettings dynamicFlowControlSettings;
 
+  private final boolean isCpuBasedThrottlingEnabled;
+  private final Integer targetCpuPercent;
+
   private BigtableBatchingCallSettings(Builder builder) {
     super(builder);
     batchingCallSettings =
@@ -77,6 +80,9 @@ public final class BigtableBatchingCallSettings extends UnaryCallSettings<BulkMu
     this.isLatencyBasedThrottlingEnabled = builder.isLatencyBasedThrottlingEnabled;
     this.targetRpcLatencyMs = builder.targetRpcLatencyMs;
     this.dynamicFlowControlSettings = builder.dynamicFlowControlSettings;
+
+    this.isCpuBasedThrottlingEnabled = builder.isCpuBasedThrottlingEnabled;
+    this.targetCpuPercent = builder.targetCpuPercent;
   }
 
   /** Returns batching settings which contains multiple batch threshold levels. */
@@ -94,10 +100,20 @@ public final class BigtableBatchingCallSettings extends UnaryCallSettings<BulkMu
     return isLatencyBasedThrottlingEnabled;
   }
 
+  public boolean isCpuBasedThrottlingEnabled() {
+    return isCpuBasedThrottlingEnabled;
+  }
+
   /** Gets target rpc latency if latency based throttling is enabled. Otherwise returns null. */
   @Nullable
   public Long getTargetRpcLatencyMs() {
     return targetRpcLatencyMs;
+  }
+
+  /** Gets target CPU if CPU based throttling is enabled. Otherwise returns null. */
+  @Nullable
+  public Integer getTargetCpuPercent() {
+    return targetCpuPercent;
   }
 
   /**
@@ -130,6 +146,8 @@ public final class BigtableBatchingCallSettings extends UnaryCallSettings<BulkMu
         .add("isLatencyBasedThrottlingEnabled", isLatencyBasedThrottlingEnabled)
         .add("targetRpcLatency", targetRpcLatencyMs)
         .add("dynamicFlowControlSettings", dynamicFlowControlSettings)
+        .add("isCpuBasedThrottlingEnabled", isCpuBasedThrottlingEnabled)
+        .add("targetCpuPercent", targetCpuPercent)
         .toString();
   }
 
@@ -145,6 +163,9 @@ public final class BigtableBatchingCallSettings extends UnaryCallSettings<BulkMu
     private Long targetRpcLatencyMs;
     private DynamicFlowControlSettings dynamicFlowControlSettings;
 
+    private boolean isCpuBasedThrottlingEnabled;
+    private Integer targetCpuPercent;
+
     private Builder(
         @Nonnull
             BatchingDescriptor<RowMutationEntry, Void, BulkMutation, Void> batchingDescriptor) {
@@ -159,6 +180,9 @@ public final class BigtableBatchingCallSettings extends UnaryCallSettings<BulkMu
       this.isLatencyBasedThrottlingEnabled = settings.isLatencyBasedThrottlingEnabled();
       this.targetRpcLatencyMs = settings.getTargetRpcLatencyMs();
       this.dynamicFlowControlSettings = settings.getDynamicFlowControlSettings();
+
+      this.isCpuBasedThrottlingEnabled = settings.isCpuBasedThrottlingEnabled();
+      this.targetCpuPercent = settings.getTargetCpuPercent();
     }
 
     /** Sets the batching settings with various thresholds. */
@@ -213,6 +237,23 @@ public final class BigtableBatchingCallSettings extends UnaryCallSettings<BulkMu
       return this;
     }
 
+    public Builder enableCpuBasedThrottling(int targetCpuPercent) {
+      Preconditions.checkArgument(
+          targetCpuPercent >= 10, "target CPU must be between 10 and 90");
+      Preconditions.checkArgument(
+          targetCpuPercent <= 90, "target CPU must be between 10 and 90");
+      this.isCpuBasedThrottlingEnabled = true;
+      this.targetCpuPercent = targetCpuPercent;
+      return this;
+    }
+
+    /** Disable CPU based throttling. */
+    public Builder disableCpuBasedThrottling() {
+      this.isCpuBasedThrottlingEnabled = false;
+      this.targetCpuPercent = null;
+      return this;
+    }
+
     /** Gets target rpc latency if latency based throttling is enabled. Otherwise returns null. */
     @Nullable
     public Long getTargetRpcLatencyMs() {
@@ -222,6 +263,16 @@ public final class BigtableBatchingCallSettings extends UnaryCallSettings<BulkMu
     /** Gets if latency based throttling is enabled. */
     public boolean isLatencyBasedThrottlingEnabled() {
       return this.isLatencyBasedThrottlingEnabled;
+    }
+
+    @Nullable
+    public Integer getTargetCpuPercent() {
+      return isCpuBasedThrottlingEnabled ? targetCpuPercent : null;
+    }
+
+    /** Gets if CPU based throttling is enabled. */
+    public boolean isCpuBasedThrottlingEnabled() {
+      return this.isCpuBasedThrottlingEnabled;
     }
 
     /**

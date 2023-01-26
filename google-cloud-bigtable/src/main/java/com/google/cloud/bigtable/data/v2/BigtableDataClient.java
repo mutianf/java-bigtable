@@ -41,10 +41,12 @@ import com.google.cloud.bigtable.data.v2.models.RowAdapter;
 import com.google.cloud.bigtable.data.v2.models.RowMutation;
 import com.google.cloud.bigtable.data.v2.models.RowMutationEntry;
 import com.google.cloud.bigtable.data.v2.stub.EnhancedBigtableStub;
+import com.google.cloud.bigtable.data.v2.stub.RateLimitingStats;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.protobuf.ByteString;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -138,6 +140,8 @@ import javax.annotation.Nullable;
  * }</pre>
  */
 public class BigtableDataClient implements AutoCloseable {
+  private static final Logger LOGGER = Logger.getLogger(BigtableDataClient.class.getName());
+
   private final EnhancedBigtableStub stub;
 
   /**
@@ -151,6 +155,7 @@ public class BigtableDataClient implements AutoCloseable {
   public static BigtableDataClient create(String projectId, String instanceId) throws IOException {
     BigtableDataSettings settings =
         BigtableDataSettings.newBuilder().setProjectId(projectId).setInstanceId(instanceId).build();
+    LOGGER.info("kk89 create(projid, instanceid)");
     return create(settings);
   }
 
@@ -160,11 +165,13 @@ public class BigtableDataClient implements AutoCloseable {
    */
   public static BigtableDataClient create(BigtableDataSettings settings) throws IOException {
     EnhancedBigtableStub stub = EnhancedBigtableStub.create(settings.getStubSettings());
+    LOGGER.info("kk89 create(settings)");
     return new BigtableDataClient(stub);
   }
 
   @InternalApi("Visible for testing")
   BigtableDataClient(EnhancedBigtableStub stub) {
+    LOGGER.info("kk89 ctor");
     this.stub = stub;
   }
 

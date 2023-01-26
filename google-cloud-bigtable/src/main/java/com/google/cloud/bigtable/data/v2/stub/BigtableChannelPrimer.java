@@ -87,6 +87,7 @@ class BigtableChannelPrimer implements ChannelPrimer {
                 FixedTransportChannelProvider.create(GrpcTransportChannel.create(managedChannel)))
             .build();
 
+    System.out.println("kk90 create EnhancedBigtableStub primer");
     try (EnhancedBigtableStub stub = EnhancedBigtableStub.create(primingSettings)) {
       PingAndWarmRequest request =
           PingAndWarmRequest.newBuilder()

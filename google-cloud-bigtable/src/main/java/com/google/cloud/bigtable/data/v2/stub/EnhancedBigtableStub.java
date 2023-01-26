@@ -27,6 +27,7 @@ import com.google.api.gax.grpc.GaxGrpcProperties;
 import com.google.api.gax.grpc.GrpcCallContext;
 import com.google.api.gax.grpc.GrpcCallSettings;
 import com.google.api.gax.grpc.GrpcRawCallableFactory;
+import com.google.api.gax.grpc.GrpcTransportChannel;
 import com.google.api.gax.grpc.InstantiatingGrpcChannelProvider;
 import com.google.api.gax.retrying.ExponentialRetryAlgorithm;
 import com.google.api.gax.retrying.RetryAlgorithm;
@@ -34,6 +35,7 @@ import com.google.api.gax.retrying.RetryingExecutorWithContext;
 import com.google.api.gax.retrying.ScheduledRetryingExecutor;
 import com.google.api.gax.rpc.Callables;
 import com.google.api.gax.rpc.ClientContext;
+import com.google.api.gax.rpc.FixedTransportChannelProvider;
 import com.google.api.gax.rpc.RequestParamsExtractor;
 import com.google.api.gax.rpc.ServerStreamingCallSettings;
 import com.google.api.gax.rpc.ServerStreamingCallable;
@@ -47,6 +49,7 @@ import com.google.auth.oauth2.ServiceAccountJwtAccessCredentials;
 import com.google.bigtable.v2.BigtableGrpc;
 import com.google.bigtable.v2.CheckAndMutateRowRequest;
 import com.google.bigtable.v2.CheckAndMutateRowResponse;
+import com.google.bigtable.v2.FeatureFlags;
 import com.google.bigtable.v2.MutateRowRequest;
 import com.google.bigtable.v2.MutateRowResponse;
 import com.google.bigtable.v2.MutateRowsRequest;
@@ -92,6 +95,8 @@ import com.google.cloud.bigtable.data.v2.stub.readrows.ReadRowsRetryCompletedCal
 import com.google.cloud.bigtable.data.v2.stub.readrows.ReadRowsUserCallable;
 import com.google.cloud.bigtable.data.v2.stub.readrows.RowMergingCallable;
 import com.google.cloud.bigtable.gaxx.retrying.ApiResultRetryAlgorithm;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.cloud.bigtable.data.v2.internal.FeatureFlagChannelConfigurator;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -269,6 +274,7 @@ public class EnhancedBigtableStub implements AutoCloseable {
     settings.setCredentialsProvider(FixedCredentialsProvider.create(patchedCreds));
   }
 
+  @VisibleForTesting
   public EnhancedBigtableStub(EnhancedBigtableStubSettings settings, ClientContext clientContext) {
     this.settings = settings;
     this.clientContext = clientContext;
@@ -278,6 +284,8 @@ public class EnhancedBigtableStub implements AutoCloseable {
     this.bulkMutationFlowController =
         new FlowController(settings.bulkMutateRowsSettings().getDynamicFlowControlSettings());
     this.bulkMutationDynamicFlowControlStats = new DynamicFlowControlStats();
+
+    System.out.println("kk89 EnhancedBigtableStub ctor");
 
     readRowsCallable = createReadRowsCallable(new DefaultRowAdapter());
     readRowCallable = createReadRowCallable(new DefaultRowAdapter());
@@ -594,6 +602,8 @@ public class EnhancedBigtableStub implements AutoCloseable {
    * </ul>
    */
   private UnaryCallable<BulkMutation, Void> createBulkMutateRowsCallable() {
+    System.out.println("kk89 createBulkMutateRowsCallable");
+
     UnaryCallable<MutateRowsRequest, Void> baseCallable = createMutateRowsBaseCallable();
 
     UnaryCallable<MutateRowsRequest, Void> flowControlCallable = null;
@@ -710,12 +720,23 @@ public class EnhancedBigtableStub implements AutoCloseable {
     ServerStreamingCallable<MutateRowsRequest, MutateRowsResponse> withStatsHeaders =
         new StatsHeadersServerStreamingCallable<>(base);
 
+    ServerStreamingCallable<MutateRowsRequest, MutateRowsResponse> rateLimitingStreamingCallable = null;
+
+    if (settings.bulkMutateRowsSettings().isCpuBasedThrottlingEnabled()) {
+      System.out.println("kk89 createMutateRowsBaseCallable with rate limiting");
+       rateLimitingStreamingCallable =
+          new RateLimitingServerStreamingCallable(withStatsHeaders, settings.bulkMutateRowsSettings().getTargetCpuPercent());
+    } else {
+      System.out.println("kk89 createMutateRowsBaseCallable without rate limiting");
+    }
+
     // Sometimes MutateRows connections are disconnected via an RST frame. This error is transient
     // and
     // should be treated similar to UNAVAILABLE. However, this exception has an INTERNAL error code
     // which by default is not retryable. Convert the exception so it can be retried in the client.
     ServerStreamingCallable<MutateRowsRequest, MutateRowsResponse> convertException =
-        new ConvertExceptionCallable<>(withStatsHeaders);
+        new ConvertExceptionCallable<>(rateLimitingStreamingCallable != null ? rateLimitingStreamingCallable : withStatsHeaders);
+
 
     RetryAlgorithm<Void> retryAlgorithm =
         new RetryAlgorithm<>(
