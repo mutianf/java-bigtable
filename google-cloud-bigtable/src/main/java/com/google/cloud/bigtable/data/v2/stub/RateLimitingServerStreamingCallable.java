@@ -25,6 +25,7 @@ import com.google.api.gax.rpc.ServerStreamingCallable;
 import com.google.api.gax.rpc.StreamController;
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.RateLimiter;
+import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
@@ -34,9 +35,7 @@ import org.checkerframework.checker.units.qual.A;
 
 public class RateLimitingServerStreamingCallable
     extends ServerStreamingCallable<MutateRowsRequest, MutateRowsResponse> {
-  private static final Logger logger =
-      Logger.getLogger(RateLimitingServerStreamingCallable.class.getName());
-
+  private static Logger LOG = Logger.getLogger(RateLimitingServerStreamingCallable.class.toString());
 
   private final static long DEFAULT_QPS = 10;
   private final static long minimumTimeMsBetweenUpdates = 60_000;
@@ -62,7 +61,7 @@ public class RateLimitingServerStreamingCallable
     this.innerCallable = Preconditions.checkNotNull(
         innerCallable, "Inner callable must be set");
 
-    System.out.println("RateLimitingServerStreamingCallable ctor id=" + id + " target_cpu=" + targetCpuPercent + " ms_between_updates=" + minimumTimeMsBetweenUpdates);
+    LOG.warning("kk_init RateLimiting Callable id=" + id + " target_cpu=" + targetCpuPercent + " ms_between_updates=" + minimumTimeMsBetweenUpdates);
   }
   @Override
   public void call(
@@ -92,6 +91,9 @@ public class RateLimitingServerStreamingCallable
     @Override
     protected void onResponseImpl(MutateRowsResponse response) {
       responseCount.getAndIncrement();
+
+      // System.out.println("kk_response response size=" + response.getEntriesCount() + " cpu_stats size=" + response.getServerStats().getCpuStatsCount());
+
       long now = System.currentTimeMillis();
 
       double[] cpus = RateLimitingStats.getCpuList(response);
@@ -110,7 +112,7 @@ public class RateLimitingServerStreamingCallable
         }
       }
 
-      // System.out.println("kk_cpu_stats id=" + id + " " + Thread.currentThread().getId() + " size=" + cpus.length + "stats=" + Arrays.toString(cpus));
+      // System.out.println("kk_cpu_stats id=" + id + " size=" + cpus.length + "stats=" + Arrays.toString(cpus));
 
       // Ensure enough time has passed since updates to QPS
       long lastTime = lastQpsChangeTime.get();
@@ -127,7 +129,8 @@ public class RateLimitingServerStreamingCallable
       }
 
       double currentRate = limiter.getRate();
-      double newQps = RateLimitingStats.calculateNewQps(avgCpu, targetCpuPercent, currentRate, id);
+      // double newQps = RateLimitingStats.calculateNewQps(avgCpu, targetCpuPercent, currentRate, id);
+      double newQps = RateLimitingStats.calculateNewQps(stats.getLastMinCpu(), targetCpuPercent, currentRate, id);
       limiter.setRate(newQps);
 
       outerObserver.onResponse(response);
@@ -135,7 +138,7 @@ public class RateLimitingServerStreamingCallable
 
     @Override
     protected void onErrorImpl(Throwable t) {
-      System.out.println("kk89 ratelimiter onErrorImpl");
+      LOG.warning("kk89 ratelimiter onErrorImpl");
 
       // TODO: finish onError case
 

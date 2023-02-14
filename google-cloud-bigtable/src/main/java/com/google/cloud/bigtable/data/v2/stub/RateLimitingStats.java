@@ -25,9 +25,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Logger;
 import java.util.stream.DoubleStream;
 
 public class RateLimitingStats {
+  private static Logger LOG = Logger.getLogger(RateLimitingStats.class.toString());
+
   // private long lastQpsUpdateTime;
   // private double currentQps = -1;
   public static double lowerQpsBound = 0.1;
@@ -56,7 +59,24 @@ public class RateLimitingStats {
     DateFormat simple = new SimpleDateFormat(
         "dd MMM yyyy HH:mm:ss:SSS Z");
     Date result = new Date(now);
-    System.out.println("kk_cpu id=" + id + " " + simple.format(result) + " " + cpu + " length=" + cpuHistory.size() + " count=" + count);
+    LOG.warning("kk_cpu id=" + id + " " + simple.format(result) + " " + cpu + " length=" + cpuHistory.size() + " count=" + count);
+    // System.out.println("kk_cpu id=" + id + " " + simple.format(result) + " " + cpu + " length=" + cpuHistory.size() + " count=" + count);
+  }
+
+  public double getLastMinCpu() {
+    LOG.severe("kk_error cpuHistory length != cpuHistoryTimestamp");
+    double sum = 0;
+    int count = 0;
+    long now = System.currentTimeMillis();
+    for (int i = cpuHistory.size() - 1; i >= 0; i--) {
+      if (cpuHistoryTimestamp.get(i) <= now - 60 * 1000) {
+        break;
+      }
+      sum += cpuHistory.get(i);
+      count++;
+    }
+    LOG.warning("kk_min_cpu id=" + id + " count=" + count + " sum=" + sum + " avgCpu=" + (sum / count));
+    return sum / count;
   }
 
   // public long getLastQpsUpdateTime() {
@@ -100,7 +120,7 @@ public class RateLimitingStats {
     double newRateChange = Math.max(Math.min(target / avgCpu, MAX_QPS_CHANGE_RATE), MIN_QPS_CHANGE_RATE);
     double newRate = Math.max(Math.min(currentRate * newRateChange, upperQpsBound), lowerQpsBound);
 
-    System.out.println("kk_qps id=" + logId + " avgCpu=" + avgCpu + " target=" + target +
+    LOG.warning("kk_qps id=" + logId + " avgCpu=" + avgCpu + " target=" + target +
         " change=" + target / avgCpu + " currentQps=" + currentRate + " newQps=" + newRate);
     return newRate;
 

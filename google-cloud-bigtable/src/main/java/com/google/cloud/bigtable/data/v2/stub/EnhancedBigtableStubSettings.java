@@ -49,7 +49,10 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -275,10 +278,10 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
             Duration.ofSeconds(10)) // wait this long before considering the connection dead
         // Attempts direct access to CBT service over gRPC to improve throughput,
         // whether the attempt is allowed is totally controlled by service owner.
-        .setAttemptDirectPath(true)
-        .setChannelConfigurator(
-            new FeatureFlagChannelConfigurator(
-                null, FEATURE_FLAGS));
+        .setAttemptDirectPath(true);
+        // .setChannelConfigurator(
+        //     new FeatureFlagChannelConfigurator(
+        //         null, FEATURE_FLAGS));
   }
 
   static int getDefaultChannelPoolSize() {
@@ -570,6 +573,16 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
       setStreamWatchdogCheckInterval(baseDefaults.getStreamWatchdogCheckInterval());
       setStreamWatchdogProvider(baseDefaults.getStreamWatchdogProvider());
 
+      // Serialize the web64 encode the bigtable feature flags
+      ByteArrayOutputStream boas = new ByteArrayOutputStream();
+      try {
+        FEATURE_FLAGS.writeTo(boas);
+      } catch (IOException e) {
+        throw new IllegalStateException("Unexpected IOException while serializing feature flags");
+      }
+      byte[] serializedFlags = boas.toByteArray();
+      byte[] encodedFlags = Base64.getEncoder().encode(serializedFlags);
+
       // Inject the UserAgent in addition to api-client header
       Map<String, String> headers =
           ImmutableMap.<String, String>builder()
@@ -577,6 +590,7 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
                   BigtableStubSettings.defaultApiClientHeaderProviderBuilder().build().getHeaders())
               // GrpcHeaderInterceptor treats the `user-agent` as a magic string
               .put("user-agent", "bigtable-java/" + Version.VERSION)
+              .put("bigtable-features", new String(encodedFlags, StandardCharsets.UTF_8))
               .build();
       setInternalHeaderProvider(FixedHeaderProvider.create(headers));
 
