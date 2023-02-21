@@ -38,7 +38,7 @@ public class RateLimitingServerStreamingCallable
   private static Logger LOG = Logger.getLogger(RateLimitingServerStreamingCallable.class.toString());
 
   private final static long DEFAULT_QPS = 10;
-  private final static long minimumTimeMsBetweenUpdates = 60_000;
+  private final static long minimumTimeMsBetweenUpdates = 10_000;
 
   private final int targetCpuPercent;
 
@@ -129,8 +129,8 @@ public class RateLimitingServerStreamingCallable
       }
 
       double currentRate = limiter.getRate();
-      // double newQps = RateLimitingStats.calculateNewQps(avgCpu, targetCpuPercent, currentRate, id);
-      double newQps = RateLimitingStats.calculateNewQps(stats.getLastMinCpu(), targetCpuPercent, currentRate, id);
+      double newQps = RateLimitingStats.calculateNewQps(avgCpu, targetCpuPercent, currentRate, id);
+      // double newQps = RateLimitingStats.calculateNewQps(stats.getLastMinCpu(), targetCpuPercent, currentRate, id);
       limiter.setRate(newQps);
 
       outerObserver.onResponse(response);
