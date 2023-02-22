@@ -24,9 +24,8 @@ public interface ReadModifyWriteRowRequestOrBuilder extends
 
   /**
    * <pre>
-   * Required. The unique name of the table to which the read/modify/write rules should be
-   * applied.
-   * Values are of the form
+   * Required. The unique name of the table to which the read/modify/write rules
+   * should be applied. Values are of the form
    * `projects/&lt;project&gt;/instances/&lt;instance&gt;/tables/&lt;table&gt;`.
    * </pre>
    *
@@ -36,9 +35,8 @@ public interface ReadModifyWriteRowRequestOrBuilder extends
   java.lang.String getTableName();
   /**
    * <pre>
-   * Required. The unique name of the table to which the read/modify/write rules should be
-   * applied.
-   * Values are of the form
+   * Required. The unique name of the table to which the read/modify/write rules
+   * should be applied. Values are of the form
    * `projects/&lt;project&gt;/instances/&lt;instance&gt;/tables/&lt;table&gt;`.
    * </pre>
    *
@@ -72,7 +70,8 @@ public interface ReadModifyWriteRowRequestOrBuilder extends
 
   /**
    * <pre>
-   * Required. The key of the row to which the read/modify/write rules should be applied.
+   * Required. The key of the row to which the read/modify/write rules should be
+   * applied.
    * </pre>
    *
    * <code>bytes row_key = 2 [(.google.api.field_behavior) = REQUIRED];</code>
@@ -82,9 +81,9 @@ public interface ReadModifyWriteRowRequestOrBuilder extends
 
   /**
    * <pre>
-   * Required. Rules specifying how the specified row's contents are to be transformed
-   * into writes. Entries are applied in order, meaning that earlier rules will
-   * affect the results of later ones.
+   * Required. Rules specifying how the specified row's contents are to be
+   * transformed into writes. Entries are applied in order, meaning that earlier
+   * rules will affect the results of later ones.
    * </pre>
    *
    * <code>repeated .google.bigtable.v2.ReadModifyWriteRule rules = 3 [(.google.api.field_behavior) = REQUIRED];</code>
@@ -93,9 +92,9 @@ public interface ReadModifyWriteRowRequestOrBuilder extends
       getRulesList();
   /**
    * <pre>
-   * Required. Rules specifying how the specified row's contents are to be transformed
-   * into writes. Entries are applied in order, meaning that earlier rules will
-   * affect the results of later ones.
+   * Required. Rules specifying how the specified row's contents are to be
+   * transformed into writes. Entries are applied in order, meaning that earlier
+   * rules will affect the results of later ones.
    * </pre>
    *
    * <code>repeated .google.bigtable.v2.ReadModifyWriteRule rules = 3 [(.google.api.field_behavior) = REQUIRED];</code>
@@ -103,9 +102,9 @@ public interface ReadModifyWriteRowRequestOrBuilder extends
   com.google.bigtable.v2.ReadModifyWriteRule getRules(int index);
   /**
    * <pre>
-   * Required. Rules specifying how the specified row's contents are to be transformed
-   * into writes. Entries are applied in order, meaning that earlier rules will
-   * affect the results of later ones.
+   * Required. Rules specifying how the specified row's contents are to be
+   * transformed into writes. Entries are applied in order, meaning that earlier
+   * rules will affect the results of later ones.
    * </pre>
    *
    * <code>repeated .google.bigtable.v2.ReadModifyWriteRule rules = 3 [(.google.api.field_behavior) = REQUIRED];</code>
@@ -113,9 +112,9 @@ public interface ReadModifyWriteRowRequestOrBuilder extends
   int getRulesCount();
   /**
    * <pre>
-   * Required. Rules specifying how the specified row's contents are to be transformed
-   * into writes. Entries are applied in order, meaning that earlier rules will
-   * affect the results of later ones.
+   * Required. Rules specifying how the specified row's contents are to be
+   * transformed into writes. Entries are applied in order, meaning that earlier
+   * rules will affect the results of later ones.
    * </pre>
    *
    * <code>repeated .google.bigtable.v2.ReadModifyWriteRule rules = 3 [(.google.api.field_behavior) = REQUIRED];</code>
@@ -124,9 +123,9 @@ public interface ReadModifyWriteRowRequestOrBuilder extends
       getRulesOrBuilderList();
   /**
    * <pre>
-   * Required. Rules specifying how the specified row's contents are to be transformed
-   * into writes. Entries are applied in order, meaning that earlier rules will
-   * affect the results of later ones.
+   * Required. Rules specifying how the specified row's contents are to be
+   * transformed into writes. Entries are applied in order, meaning that earlier
+   * rules will affect the results of later ones.
    * </pre>
    *
    * <code>repeated .google.bigtable.v2.ReadModifyWriteRule rules = 3 [(.google.api.field_behavior) = REQUIRED];</code>

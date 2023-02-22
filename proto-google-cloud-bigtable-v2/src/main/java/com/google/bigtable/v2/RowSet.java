@@ -65,6 +65,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ROW_KEYS_FIELD_NUMBER = 1;
+
+  @SuppressWarnings("serial")
   private java.util.List<com.google.protobuf.ByteString> rowKeys_;
   /**
    * <pre>
@@ -104,6 +106,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ROW_RANGES_FIELD_NUMBER = 2;
+
+  @SuppressWarnings("serial")
   private java.util.List<com.google.bigtable.v2.RowRange> rowRanges_;
   /**
    * <pre>
@@ -375,8 +379,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       rowKeys_ = java.util.Collections.emptyList();
-      bitField0_ = (bitField0_ & ~0x00000001);
       if (rowRangesBuilder_ == null) {
         rowRanges_ = java.util.Collections.emptyList();
       } else {
@@ -410,7 +414,15 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.bigtable.v2.RowSet buildPartial() {
       com.google.bigtable.v2.RowSet result = new com.google.bigtable.v2.RowSet(this);
-      int from_bitField0_ = bitField0_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) {
+        buildPartial0(result);
+      }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.bigtable.v2.RowSet result) {
       if (((bitField0_ & 0x00000001) != 0)) {
         rowKeys_ = java.util.Collections.unmodifiableList(rowKeys_);
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -425,8 +437,10 @@ private static final long serialVersionUID = 0L;
       } else {
         result.rowRanges_ = rowRangesBuilder_.build();
       }
-      onBuilt();
-      return result;
+    }
+
+    private void buildPartial0(com.google.bigtable.v2.RowSet result) {
+      int from_bitField0_ = bitField0_;
     }
 
     @java.lang.Override

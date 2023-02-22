@@ -19,21 +19,24 @@
 package com.google.bigtable.v2;
 
 /**
+ *
+ *
  * <pre>
  * Request message for Bigtable.ReadRows.
  * </pre>
  *
  * Protobuf type {@code google.bigtable.v2.ReadRowsRequest}
  */
-public final class ReadRowsRequest extends
-    com.google.protobuf.GeneratedMessageV3 implements
+public final class ReadRowsRequest extends com.google.protobuf.GeneratedMessageV3
+    implements
     // @@protoc_insertion_point(message_implements:google.bigtable.v2.ReadRowsRequest)
     ReadRowsRequestOrBuilder {
-private static final long serialVersionUID = 0L;
+  private static final long serialVersionUID = 0L;
   // Use ReadRowsRequest.newBuilder() to construct.
   private ReadRowsRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
+
   private ReadRowsRequest() {
     tableName_ = "";
     appProfileId_ = "";
@@ -42,30 +45,33 @@ private static final long serialVersionUID = 0L;
 
   @java.lang.Override
   @SuppressWarnings({"unused"})
-  protected java.lang.Object newInstance(
-      UnusedPrivateParameter unused) {
+  protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
     return new ReadRowsRequest();
   }
 
   @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
+  public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
     return this.unknownFields;
   }
-  public static final com.google.protobuf.Descriptors.Descriptor
-      getDescriptor() {
-    return com.google.bigtable.v2.BigtableProto.internal_static_google_bigtable_v2_ReadRowsRequest_descriptor;
+
+  public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+    return com.google.bigtable.v2.BigtableProto
+        .internal_static_google_bigtable_v2_ReadRowsRequest_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.google.bigtable.v2.BigtableProto.internal_static_google_bigtable_v2_ReadRowsRequest_fieldAccessorTable
+    return com.google.bigtable.v2.BigtableProto
+        .internal_static_google_bigtable_v2_ReadRowsRequest_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.google.bigtable.v2.ReadRowsRequest.class, com.google.bigtable.v2.ReadRowsRequest.Builder.class);
+            com.google.bigtable.v2.ReadRowsRequest.class,
+            com.google.bigtable.v2.ReadRowsRequest.Builder.class);
   }
 
   /**
+   *
+   *
    * <pre>
    * The desired view into RequestStats that should be returned in the response.
    * See also: RequestStats message.
@@ -73,9 +79,10 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf enum {@code google.bigtable.v2.ReadRowsRequest.RequestStatsView}
    */
-  public enum RequestStatsView
-      implements com.google.protobuf.ProtocolMessageEnum {
+  public enum RequestStatsView implements com.google.protobuf.ProtocolMessageEnum {
     /**
+     *
+     *
      * <pre>
      * The default / unset value. The API will default to the NONE option below.
      * </pre>
@@ -84,6 +91,8 @@ private static final long serialVersionUID = 0L;
      */
     REQUEST_STATS_VIEW_UNSPECIFIED(0),
     /**
+     *
+     *
      * <pre>
      * Do not include any RequestStats in the response. This will leave the
      * RequestStats embedded message unset in the response.
@@ -93,6 +102,8 @@ private static final long serialVersionUID = 0L;
      */
     REQUEST_STATS_NONE(1),
     /**
+     *
+     *
      * <pre>
      * Include the full set of available RequestStats in the response,
      * applicable to this read.
@@ -105,6 +116,8 @@ private static final long serialVersionUID = 0L;
     ;
 
     /**
+     *
+     *
      * <pre>
      * The default / unset value. The API will default to the NONE option below.
      * </pre>
@@ -113,6 +126,8 @@ private static final long serialVersionUID = 0L;
      */
     public static final int REQUEST_STATS_VIEW_UNSPECIFIED_VALUE = 0;
     /**
+     *
+     *
      * <pre>
      * Do not include any RequestStats in the response. This will leave the
      * RequestStats embedded message unset in the response.
@@ -122,6 +137,8 @@ private static final long serialVersionUID = 0L;
      */
     public static final int REQUEST_STATS_NONE_VALUE = 1;
     /**
+     *
+     *
      * <pre>
      * Include the full set of available RequestStats in the response,
      * applicable to this read.
@@ -130,7 +147,6 @@ private static final long serialVersionUID = 0L;
      * <code>REQUEST_STATS_FULL = 2;</code>
      */
     public static final int REQUEST_STATS_FULL_VALUE = 2;
-
 
     public final int getNumber() {
       if (this == UNRECOGNIZED) {
@@ -156,39 +172,42 @@ private static final long serialVersionUID = 0L;
      */
     public static RequestStatsView forNumber(int value) {
       switch (value) {
-        case 0: return REQUEST_STATS_VIEW_UNSPECIFIED;
-        case 1: return REQUEST_STATS_NONE;
-        case 2: return REQUEST_STATS_FULL;
-        default: return null;
+        case 0:
+          return REQUEST_STATS_VIEW_UNSPECIFIED;
+        case 1:
+          return REQUEST_STATS_NONE;
+        case 2:
+          return REQUEST_STATS_FULL;
+        default:
+          return null;
       }
     }
 
-    public static com.google.protobuf.Internal.EnumLiteMap<RequestStatsView>
-        internalGetValueMap() {
+    public static com.google.protobuf.Internal.EnumLiteMap<RequestStatsView> internalGetValueMap() {
       return internalValueMap;
     }
-    private static final com.google.protobuf.Internal.EnumLiteMap<
-        RequestStatsView> internalValueMap =
-          new com.google.protobuf.Internal.EnumLiteMap<RequestStatsView>() {
-            public RequestStatsView findValueByNumber(int number) {
-              return RequestStatsView.forNumber(number);
-            }
-          };
 
-    public final com.google.protobuf.Descriptors.EnumValueDescriptor
-        getValueDescriptor() {
+    private static final com.google.protobuf.Internal.EnumLiteMap<RequestStatsView>
+        internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<RequestStatsView>() {
+              public RequestStatsView findValueByNumber(int number) {
+                return RequestStatsView.forNumber(number);
+              }
+            };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor getValueDescriptor() {
       if (this == UNRECOGNIZED) {
         throw new java.lang.IllegalStateException(
             "Can't get the descriptor of an unrecognized enum value.");
       }
       return getDescriptor().getValues().get(ordinal());
     }
-    public final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptorForType() {
+
+    public final com.google.protobuf.Descriptors.EnumDescriptor getDescriptorForType() {
       return getDescriptor();
     }
-    public static final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptor() {
+
+    public static final com.google.protobuf.Descriptors.EnumDescriptor getDescriptor() {
       return com.google.bigtable.v2.ReadRowsRequest.getDescriptor().getEnumTypes().get(0);
     }
 
@@ -197,8 +216,7 @@ private static final long serialVersionUID = 0L;
     public static RequestStatsView valueOf(
         com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
       if (desc.getType() != getDescriptor()) {
-        throw new java.lang.IllegalArgumentException(
-          "EnumValueDescriptor is not for this type.");
+        throw new java.lang.IllegalArgumentException("EnumValueDescriptor is not for this type.");
       }
       if (desc.getIndex() == -1) {
         return UNRECOGNIZED;
@@ -216,15 +234,22 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TABLE_NAME_FIELD_NUMBER = 1;
-  private volatile java.lang.Object tableName_;
+
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object tableName_ = "";
   /**
+   *
+   *
    * <pre>
    * Required. The unique name of the table from which to read.
    * Values are of the form
    * `projects/&lt;project&gt;/instances/&lt;instance&gt;/tables/&lt;table&gt;`.
    * </pre>
    *
-   * <code>string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>
+   * <code>
+   * string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+   * </code>
+   *
    * @return The tableName.
    */
   @java.lang.Override
@@ -233,31 +258,33 @@ private static final long serialVersionUID = 0L;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
+      com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
       tableName_ = s;
       return s;
     }
   }
   /**
+   *
+   *
    * <pre>
    * Required. The unique name of the table from which to read.
    * Values are of the form
    * `projects/&lt;project&gt;/instances/&lt;instance&gt;/tables/&lt;table&gt;`.
    * </pre>
    *
-   * <code>string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>
+   * <code>
+   * string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+   * </code>
+   *
    * @return The bytes for tableName.
    */
   @java.lang.Override
-  public com.google.protobuf.ByteString
-      getTableNameBytes() {
+  public com.google.protobuf.ByteString getTableNameBytes() {
     java.lang.Object ref = tableName_;
     if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
+      com.google.protobuf.ByteString b =
+          com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
       tableName_ = b;
       return b;
     } else {
@@ -266,14 +293,19 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int APP_PROFILE_ID_FIELD_NUMBER = 5;
-  private volatile java.lang.Object appProfileId_;
+
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object appProfileId_ = "";
   /**
+   *
+   *
    * <pre>
    * This value specifies routing for replication. This API only accepts the
    * empty value of app_profile_id.
    * </pre>
    *
    * <code>string app_profile_id = 5;</code>
+   *
    * @return The appProfileId.
    */
   @java.lang.Override
@@ -282,30 +314,30 @@ private static final long serialVersionUID = 0L;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
+      com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
       appProfileId_ = s;
       return s;
     }
   }
   /**
+   *
+   *
    * <pre>
    * This value specifies routing for replication. This API only accepts the
    * empty value of app_profile_id.
    * </pre>
    *
    * <code>string app_profile_id = 5;</code>
+   *
    * @return The bytes for appProfileId.
    */
   @java.lang.Override
-  public com.google.protobuf.ByteString
-      getAppProfileIdBytes() {
+  public com.google.protobuf.ByteString getAppProfileIdBytes() {
     java.lang.Object ref = appProfileId_;
     if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
+      com.google.protobuf.ByteString b =
+          com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
       appProfileId_ = b;
       return b;
     } else {
@@ -316,12 +348,15 @@ private static final long serialVersionUID = 0L;
   public static final int ROWS_FIELD_NUMBER = 2;
   private com.google.bigtable.v2.RowSet rows_;
   /**
+   *
+   *
    * <pre>
    * The row keys and/or ranges to read sequentially. If not specified, reads
    * from all rows.
    * </pre>
    *
    * <code>.google.bigtable.v2.RowSet rows = 2;</code>
+   *
    * @return Whether the rows field is set.
    */
   @java.lang.Override
@@ -329,12 +364,15 @@ private static final long serialVersionUID = 0L;
     return rows_ != null;
   }
   /**
+   *
+   *
    * <pre>
    * The row keys and/or ranges to read sequentially. If not specified, reads
    * from all rows.
    * </pre>
    *
    * <code>.google.bigtable.v2.RowSet rows = 2;</code>
+   *
    * @return The rows.
    */
   @java.lang.Override
@@ -342,6 +380,8 @@ private static final long serialVersionUID = 0L;
     return rows_ == null ? com.google.bigtable.v2.RowSet.getDefaultInstance() : rows_;
   }
   /**
+   *
+   *
    * <pre>
    * The row keys and/or ranges to read sequentially. If not specified, reads
    * from all rows.
@@ -351,18 +391,21 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public com.google.bigtable.v2.RowSetOrBuilder getRowsOrBuilder() {
-    return getRows();
+    return rows_ == null ? com.google.bigtable.v2.RowSet.getDefaultInstance() : rows_;
   }
 
   public static final int FILTER_FIELD_NUMBER = 3;
   private com.google.bigtable.v2.RowFilter filter_;
   /**
+   *
+   *
    * <pre>
    * The filter to apply to the contents of the specified row(s). If unset,
    * reads the entirety of each row.
    * </pre>
    *
    * <code>.google.bigtable.v2.RowFilter filter = 3;</code>
+   *
    * @return Whether the filter field is set.
    */
   @java.lang.Override
@@ -370,12 +413,15 @@ private static final long serialVersionUID = 0L;
     return filter_ != null;
   }
   /**
+   *
+   *
    * <pre>
    * The filter to apply to the contents of the specified row(s). If unset,
    * reads the entirety of each row.
    * </pre>
    *
    * <code>.google.bigtable.v2.RowFilter filter = 3;</code>
+   *
    * @return The filter.
    */
   @java.lang.Override
@@ -383,6 +429,8 @@ private static final long serialVersionUID = 0L;
     return filter_ == null ? com.google.bigtable.v2.RowFilter.getDefaultInstance() : filter_;
   }
   /**
+   *
+   *
    * <pre>
    * The filter to apply to the contents of the specified row(s). If unset,
    * reads the entirety of each row.
@@ -392,18 +440,21 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public com.google.bigtable.v2.RowFilterOrBuilder getFilterOrBuilder() {
-    return getFilter();
+    return filter_ == null ? com.google.bigtable.v2.RowFilter.getDefaultInstance() : filter_;
   }
 
   public static final int ROWS_LIMIT_FIELD_NUMBER = 4;
-  private long rowsLimit_;
+  private long rowsLimit_ = 0L;
   /**
+   *
+   *
    * <pre>
    * The read will stop after committing to N rows' worth of results. The
    * default (zero) is to return all results.
    * </pre>
    *
    * <code>int64 rows_limit = 4;</code>
+   *
    * @return The rowsLimit.
    */
   @java.lang.Override
@@ -412,33 +463,44 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REQUEST_STATS_VIEW_FIELD_NUMBER = 6;
-  private int requestStatsView_;
+  private int requestStatsView_ = 0;
   /**
+   *
+   *
    * <pre>
    * The view into RequestStats, as described above.
    * </pre>
    *
    * <code>.google.bigtable.v2.ReadRowsRequest.RequestStatsView request_stats_view = 6;</code>
+   *
    * @return The enum numeric value on the wire for requestStatsView.
    */
-  @java.lang.Override public int getRequestStatsViewValue() {
+  @java.lang.Override
+  public int getRequestStatsViewValue() {
     return requestStatsView_;
   }
   /**
+   *
+   *
    * <pre>
    * The view into RequestStats, as described above.
    * </pre>
    *
    * <code>.google.bigtable.v2.ReadRowsRequest.RequestStatsView request_stats_view = 6;</code>
+   *
    * @return The requestStatsView.
    */
-  @java.lang.Override public com.google.bigtable.v2.ReadRowsRequest.RequestStatsView getRequestStatsView() {
-    @SuppressWarnings("deprecation")
-    com.google.bigtable.v2.ReadRowsRequest.RequestStatsView result = com.google.bigtable.v2.ReadRowsRequest.RequestStatsView.valueOf(requestStatsView_);
-    return result == null ? com.google.bigtable.v2.ReadRowsRequest.RequestStatsView.UNRECOGNIZED : result;
+  @java.lang.Override
+  public com.google.bigtable.v2.ReadRowsRequest.RequestStatsView getRequestStatsView() {
+    com.google.bigtable.v2.ReadRowsRequest.RequestStatsView result =
+        com.google.bigtable.v2.ReadRowsRequest.RequestStatsView.forNumber(requestStatsView_);
+    return result == null
+        ? com.google.bigtable.v2.ReadRowsRequest.RequestStatsView.UNRECOGNIZED
+        : result;
   }
 
   private byte memoizedIsInitialized = -1;
+
   @java.lang.Override
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
@@ -450,8 +512,7 @@ private static final long serialVersionUID = 0L;
   }
 
   @java.lang.Override
-  public void writeTo(com.google.protobuf.CodedOutputStream output)
-                      throws java.io.IOException {
+  public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(tableName_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, tableName_);
     }
@@ -467,7 +528,9 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(appProfileId_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 5, appProfileId_);
     }
-    if (requestStatsView_ != com.google.bigtable.v2.ReadRowsRequest.RequestStatsView.REQUEST_STATS_VIEW_UNSPECIFIED.getNumber()) {
+    if (requestStatsView_
+        != com.google.bigtable.v2.ReadRowsRequest.RequestStatsView.REQUEST_STATS_VIEW_UNSPECIFIED
+            .getNumber()) {
       output.writeEnum(6, requestStatsView_);
     }
     getUnknownFields().writeTo(output);
@@ -483,23 +546,21 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, tableName_);
     }
     if (rows_ != null) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(2, getRows());
+      size += com.google.protobuf.CodedOutputStream.computeMessageSize(2, getRows());
     }
     if (filter_ != null) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(3, getFilter());
+      size += com.google.protobuf.CodedOutputStream.computeMessageSize(3, getFilter());
     }
     if (rowsLimit_ != 0L) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt64Size(4, rowsLimit_);
+      size += com.google.protobuf.CodedOutputStream.computeInt64Size(4, rowsLimit_);
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(appProfileId_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, appProfileId_);
     }
-    if (requestStatsView_ != com.google.bigtable.v2.ReadRowsRequest.RequestStatsView.REQUEST_STATS_VIEW_UNSPECIFIED.getNumber()) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeEnumSize(6, requestStatsView_);
+    if (requestStatsView_
+        != com.google.bigtable.v2.ReadRowsRequest.RequestStatsView.REQUEST_STATS_VIEW_UNSPECIFIED
+            .getNumber()) {
+      size += com.google.protobuf.CodedOutputStream.computeEnumSize(6, requestStatsView_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -509,29 +570,24 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public boolean equals(final java.lang.Object obj) {
     if (obj == this) {
-     return true;
+      return true;
     }
     if (!(obj instanceof com.google.bigtable.v2.ReadRowsRequest)) {
       return super.equals(obj);
     }
     com.google.bigtable.v2.ReadRowsRequest other = (com.google.bigtable.v2.ReadRowsRequest) obj;
 
-    if (!getTableName()
-        .equals(other.getTableName())) return false;
-    if (!getAppProfileId()
-        .equals(other.getAppProfileId())) return false;
+    if (!getTableName().equals(other.getTableName())) return false;
+    if (!getAppProfileId().equals(other.getAppProfileId())) return false;
     if (hasRows() != other.hasRows()) return false;
     if (hasRows()) {
-      if (!getRows()
-          .equals(other.getRows())) return false;
+      if (!getRows().equals(other.getRows())) return false;
     }
     if (hasFilter() != other.hasFilter()) return false;
     if (hasFilter()) {
-      if (!getFilter()
-          .equals(other.getFilter())) return false;
+      if (!getFilter().equals(other.getFilter())) return false;
     }
-    if (getRowsLimit()
-        != other.getRowsLimit()) return false;
+    if (getRowsLimit() != other.getRowsLimit()) return false;
     if (requestStatsView_ != other.requestStatsView_) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
@@ -557,8 +613,7 @@ private static final long serialVersionUID = 0L;
       hash = (53 * hash) + getFilter().hashCode();
     }
     hash = (37 * hash) + ROWS_LIMIT_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-        getRowsLimit());
+    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getRowsLimit());
     hash = (37 * hash) + REQUEST_STATS_VIEW_FIELD_NUMBER;
     hash = (53 * hash) + requestStatsView_;
     hash = (29 * hash) + getUnknownFields().hashCode();
@@ -566,160 +621,161 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static com.google.bigtable.v2.ReadRowsRequest parseFrom(
-      java.nio.ByteBuffer data)
+  public static com.google.bigtable.v2.ReadRowsRequest parseFrom(java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
+
   public static com.google.bigtable.v2.ReadRowsRequest parseFrom(
-      java.nio.ByteBuffer data,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+      java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
+
   public static com.google.bigtable.v2.ReadRowsRequest parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
+
   public static com.google.bigtable.v2.ReadRowsRequest parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
+
   public static com.google.bigtable.v2.ReadRowsRequest parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
+
   public static com.google.bigtable.v2.ReadRowsRequest parseFrom(
-      byte[] data,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+      byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
+
   public static com.google.bigtable.v2.ReadRowsRequest parseFrom(java.io.InputStream input)
       throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input);
+    return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
   }
+
   public static com.google.bigtable.v2.ReadRowsRequest parseFrom(
-      java.io.InputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+      java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input, extensionRegistry);
+    return com.google.protobuf.GeneratedMessageV3.parseWithIOException(
+        PARSER, input, extensionRegistry);
   }
+
   public static com.google.bigtable.v2.ReadRowsRequest parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseDelimitedWithIOException(PARSER, input);
+    return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
   }
+
   public static com.google.bigtable.v2.ReadRowsRequest parseDelimitedFrom(
-      java.io.InputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+      java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(
+        PARSER, input, extensionRegistry);
   }
+
   public static com.google.bigtable.v2.ReadRowsRequest parseFrom(
-      com.google.protobuf.CodedInputStream input)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input);
+      com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+    return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
   }
+
   public static com.google.bigtable.v2.ReadRowsRequest parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input, extensionRegistry);
+    return com.google.protobuf.GeneratedMessageV3.parseWithIOException(
+        PARSER, input, extensionRegistry);
   }
 
   @java.lang.Override
-  public Builder newBuilderForType() { return newBuilder(); }
+  public Builder newBuilderForType() {
+    return newBuilder();
+  }
+
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
+
   public static Builder newBuilder(com.google.bigtable.v2.ReadRowsRequest prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
+
   @java.lang.Override
   public Builder toBuilder() {
-    return this == DEFAULT_INSTANCE
-        ? new Builder() : new Builder().mergeFrom(this);
+    return this == DEFAULT_INSTANCE ? new Builder() : new Builder().mergeFrom(this);
   }
 
   @java.lang.Override
-  protected Builder newBuilderForType(
-      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+  protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
     Builder builder = new Builder(parent);
     return builder;
   }
   /**
+   *
+   *
    * <pre>
    * Request message for Bigtable.ReadRows.
    * </pre>
    *
    * Protobuf type {@code google.bigtable.v2.ReadRowsRequest}
    */
-  public static final class Builder extends
-      com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+  public static final class Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder>
+      implements
       // @@protoc_insertion_point(builder_implements:google.bigtable.v2.ReadRowsRequest)
       com.google.bigtable.v2.ReadRowsRequestOrBuilder {
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.google.bigtable.v2.BigtableProto.internal_static_google_bigtable_v2_ReadRowsRequest_descriptor;
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+      return com.google.bigtable.v2.BigtableProto
+          .internal_static_google_bigtable_v2_ReadRowsRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.google.bigtable.v2.BigtableProto.internal_static_google_bigtable_v2_ReadRowsRequest_fieldAccessorTable
+      return com.google.bigtable.v2.BigtableProto
+          .internal_static_google_bigtable_v2_ReadRowsRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.google.bigtable.v2.ReadRowsRequest.class, com.google.bigtable.v2.ReadRowsRequest.Builder.class);
+              com.google.bigtable.v2.ReadRowsRequest.class,
+              com.google.bigtable.v2.ReadRowsRequest.Builder.class);
     }
 
     // Construct using com.google.bigtable.v2.ReadRowsRequest.newBuilder()
-    private Builder() {
+    private Builder() {}
 
-    }
-
-    private Builder(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+    private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-
     }
+
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       tableName_ = "";
-
       appProfileId_ = "";
-
-      if (rowsBuilder_ == null) {
-        rows_ = null;
-      } else {
-        rows_ = null;
+      rows_ = null;
+      if (rowsBuilder_ != null) {
+        rowsBuilder_.dispose();
         rowsBuilder_ = null;
       }
-      if (filterBuilder_ == null) {
-        filter_ = null;
-      } else {
-        filter_ = null;
+      filter_ = null;
+      if (filterBuilder_ != null) {
+        filterBuilder_.dispose();
         filterBuilder_ = null;
       }
       rowsLimit_ = 0L;
-
       requestStatsView_ = 0;
-
       return this;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Descriptors.Descriptor
-        getDescriptorForType() {
-      return com.google.bigtable.v2.BigtableProto.internal_static_google_bigtable_v2_ReadRowsRequest_descriptor;
+    public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+      return com.google.bigtable.v2.BigtableProto
+          .internal_static_google_bigtable_v2_ReadRowsRequest_descriptor;
     }
 
     @java.lang.Override
@@ -738,61 +794,74 @@ private static final long serialVersionUID = 0L;
 
     @java.lang.Override
     public com.google.bigtable.v2.ReadRowsRequest buildPartial() {
-      com.google.bigtable.v2.ReadRowsRequest result = new com.google.bigtable.v2.ReadRowsRequest(this);
-      result.tableName_ = tableName_;
-      result.appProfileId_ = appProfileId_;
-      if (rowsBuilder_ == null) {
-        result.rows_ = rows_;
-      } else {
-        result.rows_ = rowsBuilder_.build();
+      com.google.bigtable.v2.ReadRowsRequest result =
+          new com.google.bigtable.v2.ReadRowsRequest(this);
+      if (bitField0_ != 0) {
+        buildPartial0(result);
       }
-      if (filterBuilder_ == null) {
-        result.filter_ = filter_;
-      } else {
-        result.filter_ = filterBuilder_.build();
-      }
-      result.rowsLimit_ = rowsLimit_;
-      result.requestStatsView_ = requestStatsView_;
       onBuilt();
       return result;
+    }
+
+    private void buildPartial0(com.google.bigtable.v2.ReadRowsRequest result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.tableName_ = tableName_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.appProfileId_ = appProfileId_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.rows_ = rowsBuilder_ == null ? rows_ : rowsBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.filter_ = filterBuilder_ == null ? filter_ : filterBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.rowsLimit_ = rowsLimit_;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.requestStatsView_ = requestStatsView_;
+      }
     }
 
     @java.lang.Override
     public Builder clone() {
       return super.clone();
     }
+
     @java.lang.Override
     public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
+        com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
       return super.setField(field, value);
     }
+
     @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
+    public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
       return super.clearField(field);
     }
+
     @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+    public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
       return super.clearOneof(oneof);
     }
+
     @java.lang.Override
     public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
+        com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
       return super.setRepeatedField(field, index, value);
     }
+
     @java.lang.Override
     public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
+        com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
       return super.addRepeatedField(field, value);
     }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.bigtable.v2.ReadRowsRequest) {
-        return mergeFrom((com.google.bigtable.v2.ReadRowsRequest)other);
+        return mergeFrom((com.google.bigtable.v2.ReadRowsRequest) other);
       } else {
         super.mergeFrom(other);
         return this;
@@ -803,10 +872,12 @@ private static final long serialVersionUID = 0L;
       if (other == com.google.bigtable.v2.ReadRowsRequest.getDefaultInstance()) return this;
       if (!other.getTableName().isEmpty()) {
         tableName_ = other.tableName_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (!other.getAppProfileId().isEmpty()) {
         appProfileId_ = other.appProfileId_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasRows()) {
@@ -847,46 +918,49 @@ private static final long serialVersionUID = 0L;
             case 0:
               done = true;
               break;
-            case 10: {
-              tableName_ = input.readStringRequireUtf8();
-
-              break;
-            } // case 10
-            case 18: {
-              input.readMessage(
-                  getRowsFieldBuilder().getBuilder(),
-                  extensionRegistry);
-
-              break;
-            } // case 18
-            case 26: {
-              input.readMessage(
-                  getFilterFieldBuilder().getBuilder(),
-                  extensionRegistry);
-
-              break;
-            } // case 26
-            case 32: {
-              rowsLimit_ = input.readInt64();
-
-              break;
-            } // case 32
-            case 42: {
-              appProfileId_ = input.readStringRequireUtf8();
-
-              break;
-            } // case 42
-            case 48: {
-              requestStatsView_ = input.readEnum();
-
-              break;
-            } // case 48
-            default: {
-              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
-                done = true; // was an endgroup tag
-              }
-              break;
-            } // default:
+            case 10:
+              {
+                tableName_ = input.readStringRequireUtf8();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 10
+            case 18:
+              {
+                input.readMessage(getRowsFieldBuilder().getBuilder(), extensionRegistry);
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 18
+            case 26:
+              {
+                input.readMessage(getFilterFieldBuilder().getBuilder(), extensionRegistry);
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 26
+            case 32:
+              {
+                rowsLimit_ = input.readInt64();
+                bitField0_ |= 0x00000010;
+                break;
+              } // case 32
+            case 42:
+              {
+                appProfileId_ = input.readStringRequireUtf8();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 42
+            case 48:
+              {
+                requestStatsView_ = input.readEnum();
+                bitField0_ |= 0x00000020;
+                break;
+              } // case 48
+            default:
+              {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
           } // switch (tag)
         } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -897,22 +971,28 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private int bitField0_;
+
     private java.lang.Object tableName_ = "";
     /**
+     *
+     *
      * <pre>
      * Required. The unique name of the table from which to read.
      * Values are of the form
      * `projects/&lt;project&gt;/instances/&lt;instance&gt;/tables/&lt;table&gt;`.
      * </pre>
      *
-     * <code>string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>
+     * <code>
+     * string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
      * @return The tableName.
      */
     public java.lang.String getTableName() {
       java.lang.Object ref = tableName_;
       if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         tableName_ = s;
         return s;
@@ -921,22 +1001,25 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     *
+     *
      * <pre>
      * Required. The unique name of the table from which to read.
      * Values are of the form
      * `projects/&lt;project&gt;/instances/&lt;instance&gt;/tables/&lt;table&gt;`.
      * </pre>
      *
-     * <code>string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>
+     * <code>
+     * string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
      * @return The bytes for tableName.
      */
-    public com.google.protobuf.ByteString
-        getTableNameBytes() {
+    public com.google.protobuf.ByteString getTableNameBytes() {
       java.lang.Object ref = tableName_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+            com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
         tableName_ = b;
         return b;
       } else {
@@ -944,80 +1027,95 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     *
+     *
      * <pre>
      * Required. The unique name of the table from which to read.
      * Values are of the form
      * `projects/&lt;project&gt;/instances/&lt;instance&gt;/tables/&lt;table&gt;`.
      * </pre>
      *
-     * <code>string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>
+     * <code>
+     * string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
      * @param value The tableName to set.
      * @return This builder for chaining.
      */
-    public Builder setTableName(
-        java.lang.String value) {
+    public Builder setTableName(java.lang.String value) {
       if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        throw new NullPointerException();
+      }
       tableName_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * Required. The unique name of the table from which to read.
      * Values are of the form
      * `projects/&lt;project&gt;/instances/&lt;instance&gt;/tables/&lt;table&gt;`.
      * </pre>
      *
-     * <code>string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>
+     * <code>
+     * string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
      * @return This builder for chaining.
      */
     public Builder clearTableName() {
-      
       tableName_ = getDefaultInstance().getTableName();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * Required. The unique name of the table from which to read.
      * Values are of the form
      * `projects/&lt;project&gt;/instances/&lt;instance&gt;/tables/&lt;table&gt;`.
      * </pre>
      *
-     * <code>string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>
+     * <code>
+     * string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
      * @param value The bytes for tableName to set.
      * @return This builder for chaining.
      */
-    public Builder setTableNameBytes(
-        com.google.protobuf.ByteString value) {
+    public Builder setTableNameBytes(com.google.protobuf.ByteString value) {
       if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+        throw new NullPointerException();
+      }
+      checkByteStringIsUtf8(value);
       tableName_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
 
     private java.lang.Object appProfileId_ = "";
     /**
+     *
+     *
      * <pre>
      * This value specifies routing for replication. This API only accepts the
      * empty value of app_profile_id.
      * </pre>
      *
      * <code>string app_profile_id = 5;</code>
+     *
      * @return The appProfileId.
      */
     public java.lang.String getAppProfileId() {
       java.lang.Object ref = appProfileId_;
       if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         appProfileId_ = s;
         return s;
@@ -1026,21 +1124,22 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     *
+     *
      * <pre>
      * This value specifies routing for replication. This API only accepts the
      * empty value of app_profile_id.
      * </pre>
      *
      * <code>string app_profile_id = 5;</code>
+     *
      * @return The bytes for appProfileId.
      */
-    public com.google.protobuf.ByteString
-        getAppProfileIdBytes() {
+    public com.google.protobuf.ByteString getAppProfileIdBytes() {
       java.lang.Object ref = appProfileId_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+            com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
         appProfileId_ = b;
         return b;
       } else {
@@ -1048,84 +1147,100 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     *
+     *
      * <pre>
      * This value specifies routing for replication. This API only accepts the
      * empty value of app_profile_id.
      * </pre>
      *
      * <code>string app_profile_id = 5;</code>
+     *
      * @param value The appProfileId to set.
      * @return This builder for chaining.
      */
-    public Builder setAppProfileId(
-        java.lang.String value) {
+    public Builder setAppProfileId(java.lang.String value) {
       if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        throw new NullPointerException();
+      }
       appProfileId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * This value specifies routing for replication. This API only accepts the
      * empty value of app_profile_id.
      * </pre>
      *
      * <code>string app_profile_id = 5;</code>
+     *
      * @return This builder for chaining.
      */
     public Builder clearAppProfileId() {
-      
       appProfileId_ = getDefaultInstance().getAppProfileId();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * This value specifies routing for replication. This API only accepts the
      * empty value of app_profile_id.
      * </pre>
      *
      * <code>string app_profile_id = 5;</code>
+     *
      * @param value The bytes for appProfileId to set.
      * @return This builder for chaining.
      */
-    public Builder setAppProfileIdBytes(
-        com.google.protobuf.ByteString value) {
+    public Builder setAppProfileIdBytes(com.google.protobuf.ByteString value) {
       if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+        throw new NullPointerException();
+      }
+      checkByteStringIsUtf8(value);
       appProfileId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
 
     private com.google.bigtable.v2.RowSet rows_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.bigtable.v2.RowSet, com.google.bigtable.v2.RowSet.Builder, com.google.bigtable.v2.RowSetOrBuilder> rowsBuilder_;
+            com.google.bigtable.v2.RowSet,
+            com.google.bigtable.v2.RowSet.Builder,
+            com.google.bigtable.v2.RowSetOrBuilder>
+        rowsBuilder_;
     /**
+     *
+     *
      * <pre>
      * The row keys and/or ranges to read sequentially. If not specified, reads
      * from all rows.
      * </pre>
      *
      * <code>.google.bigtable.v2.RowSet rows = 2;</code>
+     *
      * @return Whether the rows field is set.
      */
     public boolean hasRows() {
-      return rowsBuilder_ != null || rows_ != null;
+      return ((bitField0_ & 0x00000004) != 0);
     }
     /**
+     *
+     *
      * <pre>
      * The row keys and/or ranges to read sequentially. If not specified, reads
      * from all rows.
      * </pre>
      *
      * <code>.google.bigtable.v2.RowSet rows = 2;</code>
+     *
      * @return The rows.
      */
     public com.google.bigtable.v2.RowSet getRows() {
@@ -1136,6 +1251,8 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     *
+     *
      * <pre>
      * The row keys and/or ranges to read sequentially. If not specified, reads
      * from all rows.
@@ -1149,14 +1266,16 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         rows_ = value;
-        onChanged();
       } else {
         rowsBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * The row keys and/or ranges to read sequentially. If not specified, reads
      * from all rows.
@@ -1164,18 +1283,19 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.google.bigtable.v2.RowSet rows = 2;</code>
      */
-    public Builder setRows(
-        com.google.bigtable.v2.RowSet.Builder builderForValue) {
+    public Builder setRows(com.google.bigtable.v2.RowSet.Builder builderForValue) {
       if (rowsBuilder_ == null) {
         rows_ = builderForValue.build();
-        onChanged();
       } else {
         rowsBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * The row keys and/or ranges to read sequentially. If not specified, reads
      * from all rows.
@@ -1185,20 +1305,23 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeRows(com.google.bigtable.v2.RowSet value) {
       if (rowsBuilder_ == null) {
-        if (rows_ != null) {
-          rows_ =
-            com.google.bigtable.v2.RowSet.newBuilder(rows_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000004) != 0)
+            && rows_ != null
+            && rows_ != com.google.bigtable.v2.RowSet.getDefaultInstance()) {
+          getRowsBuilder().mergeFrom(value);
         } else {
           rows_ = value;
         }
-        onChanged();
       } else {
         rowsBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * The row keys and/or ranges to read sequentially. If not specified, reads
      * from all rows.
@@ -1207,17 +1330,18 @@ private static final long serialVersionUID = 0L;
      * <code>.google.bigtable.v2.RowSet rows = 2;</code>
      */
     public Builder clearRows() {
-      if (rowsBuilder_ == null) {
-        rows_ = null;
-        onChanged();
-      } else {
-        rows_ = null;
+      bitField0_ = (bitField0_ & ~0x00000004);
+      rows_ = null;
+      if (rowsBuilder_ != null) {
+        rowsBuilder_.dispose();
         rowsBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * The row keys and/or ranges to read sequentially. If not specified, reads
      * from all rows.
@@ -1226,11 +1350,13 @@ private static final long serialVersionUID = 0L;
      * <code>.google.bigtable.v2.RowSet rows = 2;</code>
      */
     public com.google.bigtable.v2.RowSet.Builder getRowsBuilder() {
-      
+      bitField0_ |= 0x00000004;
       onChanged();
       return getRowsFieldBuilder().getBuilder();
     }
     /**
+     *
+     *
      * <pre>
      * The row keys and/or ranges to read sequentially. If not specified, reads
      * from all rows.
@@ -1242,11 +1368,12 @@ private static final long serialVersionUID = 0L;
       if (rowsBuilder_ != null) {
         return rowsBuilder_.getMessageOrBuilder();
       } else {
-        return rows_ == null ?
-            com.google.bigtable.v2.RowSet.getDefaultInstance() : rows_;
+        return rows_ == null ? com.google.bigtable.v2.RowSet.getDefaultInstance() : rows_;
       }
     }
     /**
+     *
+     *
      * <pre>
      * The row keys and/or ranges to read sequentially. If not specified, reads
      * from all rows.
@@ -1255,14 +1382,17 @@ private static final long serialVersionUID = 0L;
      * <code>.google.bigtable.v2.RowSet rows = 2;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.bigtable.v2.RowSet, com.google.bigtable.v2.RowSet.Builder, com.google.bigtable.v2.RowSetOrBuilder> 
+            com.google.bigtable.v2.RowSet,
+            com.google.bigtable.v2.RowSet.Builder,
+            com.google.bigtable.v2.RowSetOrBuilder>
         getRowsFieldBuilder() {
       if (rowsBuilder_ == null) {
-        rowsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.google.bigtable.v2.RowSet, com.google.bigtable.v2.RowSet.Builder, com.google.bigtable.v2.RowSetOrBuilder>(
-                getRows(),
-                getParentForChildren(),
-                isClean());
+        rowsBuilder_ =
+            new com.google.protobuf.SingleFieldBuilderV3<
+                com.google.bigtable.v2.RowSet,
+                com.google.bigtable.v2.RowSet.Builder,
+                com.google.bigtable.v2.RowSetOrBuilder>(
+                getRows(), getParentForChildren(), isClean());
         rows_ = null;
       }
       return rowsBuilder_;
@@ -1270,26 +1400,35 @@ private static final long serialVersionUID = 0L;
 
     private com.google.bigtable.v2.RowFilter filter_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.bigtable.v2.RowFilter, com.google.bigtable.v2.RowFilter.Builder, com.google.bigtable.v2.RowFilterOrBuilder> filterBuilder_;
+            com.google.bigtable.v2.RowFilter,
+            com.google.bigtable.v2.RowFilter.Builder,
+            com.google.bigtable.v2.RowFilterOrBuilder>
+        filterBuilder_;
     /**
+     *
+     *
      * <pre>
      * The filter to apply to the contents of the specified row(s). If unset,
      * reads the entirety of each row.
      * </pre>
      *
      * <code>.google.bigtable.v2.RowFilter filter = 3;</code>
+     *
      * @return Whether the filter field is set.
      */
     public boolean hasFilter() {
-      return filterBuilder_ != null || filter_ != null;
+      return ((bitField0_ & 0x00000008) != 0);
     }
     /**
+     *
+     *
      * <pre>
      * The filter to apply to the contents of the specified row(s). If unset,
      * reads the entirety of each row.
      * </pre>
      *
      * <code>.google.bigtable.v2.RowFilter filter = 3;</code>
+     *
      * @return The filter.
      */
     public com.google.bigtable.v2.RowFilter getFilter() {
@@ -1300,6 +1439,8 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     *
+     *
      * <pre>
      * The filter to apply to the contents of the specified row(s). If unset,
      * reads the entirety of each row.
@@ -1313,14 +1454,16 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         filter_ = value;
-        onChanged();
       } else {
         filterBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * The filter to apply to the contents of the specified row(s). If unset,
      * reads the entirety of each row.
@@ -1328,18 +1471,19 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.google.bigtable.v2.RowFilter filter = 3;</code>
      */
-    public Builder setFilter(
-        com.google.bigtable.v2.RowFilter.Builder builderForValue) {
+    public Builder setFilter(com.google.bigtable.v2.RowFilter.Builder builderForValue) {
       if (filterBuilder_ == null) {
         filter_ = builderForValue.build();
-        onChanged();
       } else {
         filterBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * The filter to apply to the contents of the specified row(s). If unset,
      * reads the entirety of each row.
@@ -1349,20 +1493,23 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeFilter(com.google.bigtable.v2.RowFilter value) {
       if (filterBuilder_ == null) {
-        if (filter_ != null) {
-          filter_ =
-            com.google.bigtable.v2.RowFilter.newBuilder(filter_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000008) != 0)
+            && filter_ != null
+            && filter_ != com.google.bigtable.v2.RowFilter.getDefaultInstance()) {
+          getFilterBuilder().mergeFrom(value);
         } else {
           filter_ = value;
         }
-        onChanged();
       } else {
         filterBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * The filter to apply to the contents of the specified row(s). If unset,
      * reads the entirety of each row.
@@ -1371,17 +1518,18 @@ private static final long serialVersionUID = 0L;
      * <code>.google.bigtable.v2.RowFilter filter = 3;</code>
      */
     public Builder clearFilter() {
-      if (filterBuilder_ == null) {
-        filter_ = null;
-        onChanged();
-      } else {
-        filter_ = null;
+      bitField0_ = (bitField0_ & ~0x00000008);
+      filter_ = null;
+      if (filterBuilder_ != null) {
+        filterBuilder_.dispose();
         filterBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * The filter to apply to the contents of the specified row(s). If unset,
      * reads the entirety of each row.
@@ -1390,11 +1538,13 @@ private static final long serialVersionUID = 0L;
      * <code>.google.bigtable.v2.RowFilter filter = 3;</code>
      */
     public com.google.bigtable.v2.RowFilter.Builder getFilterBuilder() {
-      
+      bitField0_ |= 0x00000008;
       onChanged();
       return getFilterFieldBuilder().getBuilder();
     }
     /**
+     *
+     *
      * <pre>
      * The filter to apply to the contents of the specified row(s). If unset,
      * reads the entirety of each row.
@@ -1406,11 +1556,12 @@ private static final long serialVersionUID = 0L;
       if (filterBuilder_ != null) {
         return filterBuilder_.getMessageOrBuilder();
       } else {
-        return filter_ == null ?
-            com.google.bigtable.v2.RowFilter.getDefaultInstance() : filter_;
+        return filter_ == null ? com.google.bigtable.v2.RowFilter.getDefaultInstance() : filter_;
       }
     }
     /**
+     *
+     *
      * <pre>
      * The filter to apply to the contents of the specified row(s). If unset,
      * reads the entirety of each row.
@@ -1419,27 +1570,33 @@ private static final long serialVersionUID = 0L;
      * <code>.google.bigtable.v2.RowFilter filter = 3;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.bigtable.v2.RowFilter, com.google.bigtable.v2.RowFilter.Builder, com.google.bigtable.v2.RowFilterOrBuilder> 
+            com.google.bigtable.v2.RowFilter,
+            com.google.bigtable.v2.RowFilter.Builder,
+            com.google.bigtable.v2.RowFilterOrBuilder>
         getFilterFieldBuilder() {
       if (filterBuilder_ == null) {
-        filterBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.google.bigtable.v2.RowFilter, com.google.bigtable.v2.RowFilter.Builder, com.google.bigtable.v2.RowFilterOrBuilder>(
-                getFilter(),
-                getParentForChildren(),
-                isClean());
+        filterBuilder_ =
+            new com.google.protobuf.SingleFieldBuilderV3<
+                com.google.bigtable.v2.RowFilter,
+                com.google.bigtable.v2.RowFilter.Builder,
+                com.google.bigtable.v2.RowFilterOrBuilder>(
+                getFilter(), getParentForChildren(), isClean());
         filter_ = null;
       }
       return filterBuilder_;
     }
 
-    private long rowsLimit_ ;
+    private long rowsLimit_;
     /**
+     *
+     *
      * <pre>
      * The read will stop after committing to N rows' worth of results. The
      * default (zero) is to return all results.
      * </pre>
      *
      * <code>int64 rows_limit = 4;</code>
+     *
      * @return The rowsLimit.
      */
     @java.lang.Override
@@ -1447,32 +1604,39 @@ private static final long serialVersionUID = 0L;
       return rowsLimit_;
     }
     /**
+     *
+     *
      * <pre>
      * The read will stop after committing to N rows' worth of results. The
      * default (zero) is to return all results.
      * </pre>
      *
      * <code>int64 rows_limit = 4;</code>
+     *
      * @param value The rowsLimit to set.
      * @return This builder for chaining.
      */
     public Builder setRowsLimit(long value) {
-      
+
       rowsLimit_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * The read will stop after committing to N rows' worth of results. The
      * default (zero) is to return all results.
      * </pre>
      *
      * <code>int64 rows_limit = 4;</code>
+     *
      * @return This builder for chaining.
      */
     public Builder clearRowsLimit() {
-      
+      bitField0_ = (bitField0_ & ~0x00000010);
       rowsLimit_ = 0L;
       onChanged();
       return this;
@@ -1480,80 +1644,99 @@ private static final long serialVersionUID = 0L;
 
     private int requestStatsView_ = 0;
     /**
+     *
+     *
      * <pre>
      * The view into RequestStats, as described above.
      * </pre>
      *
      * <code>.google.bigtable.v2.ReadRowsRequest.RequestStatsView request_stats_view = 6;</code>
+     *
      * @return The enum numeric value on the wire for requestStatsView.
      */
-    @java.lang.Override public int getRequestStatsViewValue() {
+    @java.lang.Override
+    public int getRequestStatsViewValue() {
       return requestStatsView_;
     }
     /**
+     *
+     *
      * <pre>
      * The view into RequestStats, as described above.
      * </pre>
      *
      * <code>.google.bigtable.v2.ReadRowsRequest.RequestStatsView request_stats_view = 6;</code>
+     *
      * @param value The enum numeric value on the wire for requestStatsView to set.
      * @return This builder for chaining.
      */
     public Builder setRequestStatsViewValue(int value) {
-      
       requestStatsView_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * The view into RequestStats, as described above.
      * </pre>
      *
      * <code>.google.bigtable.v2.ReadRowsRequest.RequestStatsView request_stats_view = 6;</code>
+     *
      * @return The requestStatsView.
      */
     @java.lang.Override
     public com.google.bigtable.v2.ReadRowsRequest.RequestStatsView getRequestStatsView() {
-      @SuppressWarnings("deprecation")
-      com.google.bigtable.v2.ReadRowsRequest.RequestStatsView result = com.google.bigtable.v2.ReadRowsRequest.RequestStatsView.valueOf(requestStatsView_);
-      return result == null ? com.google.bigtable.v2.ReadRowsRequest.RequestStatsView.UNRECOGNIZED : result;
+      com.google.bigtable.v2.ReadRowsRequest.RequestStatsView result =
+          com.google.bigtable.v2.ReadRowsRequest.RequestStatsView.forNumber(requestStatsView_);
+      return result == null
+          ? com.google.bigtable.v2.ReadRowsRequest.RequestStatsView.UNRECOGNIZED
+          : result;
     }
     /**
+     *
+     *
      * <pre>
      * The view into RequestStats, as described above.
      * </pre>
      *
      * <code>.google.bigtable.v2.ReadRowsRequest.RequestStatsView request_stats_view = 6;</code>
+     *
      * @param value The requestStatsView to set.
      * @return This builder for chaining.
      */
-    public Builder setRequestStatsView(com.google.bigtable.v2.ReadRowsRequest.RequestStatsView value) {
+    public Builder setRequestStatsView(
+        com.google.bigtable.v2.ReadRowsRequest.RequestStatsView value) {
       if (value == null) {
         throw new NullPointerException();
       }
-      
+      bitField0_ |= 0x00000020;
       requestStatsView_ = value.getNumber();
       onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * The view into RequestStats, as described above.
      * </pre>
      *
      * <code>.google.bigtable.v2.ReadRowsRequest.RequestStatsView request_stats_view = 6;</code>
+     *
      * @return This builder for chaining.
      */
     public Builder clearRequestStatsView() {
-      
+      bitField0_ = (bitField0_ & ~0x00000020);
       requestStatsView_ = 0;
       onChanged();
       return this;
     }
+
     @java.lang.Override
-    public final Builder setUnknownFields(
-        final com.google.protobuf.UnknownFieldSet unknownFields) {
+    public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.setUnknownFields(unknownFields);
     }
 
@@ -1563,12 +1746,12 @@ private static final long serialVersionUID = 0L;
       return super.mergeUnknownFields(unknownFields);
     }
 
-
     // @@protoc_insertion_point(builder_scope:google.bigtable.v2.ReadRowsRequest)
   }
 
   // @@protoc_insertion_point(class_scope:google.bigtable.v2.ReadRowsRequest)
   private static final com.google.bigtable.v2.ReadRowsRequest DEFAULT_INSTANCE;
+
   static {
     DEFAULT_INSTANCE = new com.google.bigtable.v2.ReadRowsRequest();
   }
@@ -1577,27 +1760,27 @@ private static final long serialVersionUID = 0L;
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<ReadRowsRequest>
-      PARSER = new com.google.protobuf.AbstractParser<ReadRowsRequest>() {
-    @java.lang.Override
-    public ReadRowsRequest parsePartialFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      Builder builder = newBuilder();
-      try {
-        builder.mergeFrom(input, extensionRegistry);
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(builder.buildPartial());
-      } catch (com.google.protobuf.UninitializedMessageException e) {
-        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(e)
-            .setUnfinishedMessage(builder.buildPartial());
-      }
-      return builder.buildPartial();
-    }
-  };
+  private static final com.google.protobuf.Parser<ReadRowsRequest> PARSER =
+      new com.google.protobuf.AbstractParser<ReadRowsRequest>() {
+        @java.lang.Override
+        public ReadRowsRequest parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          Builder builder = newBuilder();
+          try {
+            builder.mergeFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(builder.buildPartial());
+          } catch (com.google.protobuf.UninitializedMessageException e) {
+            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+          } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(e)
+                .setUnfinishedMessage(builder.buildPartial());
+          }
+          return builder.buildPartial();
+        }
+      };
 
   public static com.google.protobuf.Parser<ReadRowsRequest> parser() {
     return PARSER;
@@ -1612,6 +1795,4 @@ private static final long serialVersionUID = 0L;
   public com.google.bigtable.v2.ReadRowsRequest getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
-
 }
-

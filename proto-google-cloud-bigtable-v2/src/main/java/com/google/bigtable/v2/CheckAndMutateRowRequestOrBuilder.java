@@ -24,9 +24,8 @@ public interface CheckAndMutateRowRequestOrBuilder extends
 
   /**
    * <pre>
-   * Required. The unique name of the table to which the conditional mutation should be
-   * applied.
-   * Values are of the form
+   * Required. The unique name of the table to which the conditional mutation
+   * should be applied. Values are of the form
    * `projects/&lt;project&gt;/instances/&lt;instance&gt;/tables/&lt;table&gt;`.
    * </pre>
    *
@@ -36,9 +35,8 @@ public interface CheckAndMutateRowRequestOrBuilder extends
   java.lang.String getTableName();
   /**
    * <pre>
-   * Required. The unique name of the table to which the conditional mutation should be
-   * applied.
-   * Values are of the form
+   * Required. The unique name of the table to which the conditional mutation
+   * should be applied. Values are of the form
    * `projects/&lt;project&gt;/instances/&lt;instance&gt;/tables/&lt;table&gt;`.
    * </pre>
    *
@@ -72,7 +70,8 @@ public interface CheckAndMutateRowRequestOrBuilder extends
 
   /**
    * <pre>
-   * Required. The key of the row to which the conditional mutation should be applied.
+   * Required. The key of the row to which the conditional mutation should be
+   * applied.
    * </pre>
    *
    * <code>bytes row_key = 2 [(.google.api.field_behavior) = REQUIRED];</code>

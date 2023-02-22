@@ -19,57 +19,63 @@
 package com.google.bigtable.v2;
 
 /**
+ *
+ *
  * <pre>
  * Specified a contiguous range of microsecond timestamps.
  * </pre>
  *
  * Protobuf type {@code google.bigtable.v2.TimestampRange}
  */
-public final class TimestampRange extends
-    com.google.protobuf.GeneratedMessageV3 implements
+public final class TimestampRange extends com.google.protobuf.GeneratedMessageV3
+    implements
     // @@protoc_insertion_point(message_implements:google.bigtable.v2.TimestampRange)
     TimestampRangeOrBuilder {
-private static final long serialVersionUID = 0L;
+  private static final long serialVersionUID = 0L;
   // Use TimestampRange.newBuilder() to construct.
   private TimestampRange(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private TimestampRange() {
-  }
+
+  private TimestampRange() {}
 
   @java.lang.Override
   @SuppressWarnings({"unused"})
-  protected java.lang.Object newInstance(
-      UnusedPrivateParameter unused) {
+  protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
     return new TimestampRange();
   }
 
   @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
+  public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
     return this.unknownFields;
   }
-  public static final com.google.protobuf.Descriptors.Descriptor
-      getDescriptor() {
-    return com.google.bigtable.v2.DataProto.internal_static_google_bigtable_v2_TimestampRange_descriptor;
+
+  public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+    return com.google.bigtable.v2.DataProto
+        .internal_static_google_bigtable_v2_TimestampRange_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.google.bigtable.v2.DataProto.internal_static_google_bigtable_v2_TimestampRange_fieldAccessorTable
+    return com.google.bigtable.v2.DataProto
+        .internal_static_google_bigtable_v2_TimestampRange_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.google.bigtable.v2.TimestampRange.class, com.google.bigtable.v2.TimestampRange.Builder.class);
+            com.google.bigtable.v2.TimestampRange.class,
+            com.google.bigtable.v2.TimestampRange.Builder.class);
   }
 
   public static final int START_TIMESTAMP_MICROS_FIELD_NUMBER = 1;
-  private long startTimestampMicros_;
+  private long startTimestampMicros_ = 0L;
   /**
+   *
+   *
    * <pre>
    * Inclusive lower bound. If left empty, interpreted as 0.
    * </pre>
    *
    * <code>int64 start_timestamp_micros = 1;</code>
+   *
    * @return The startTimestampMicros.
    */
   @java.lang.Override
@@ -78,13 +84,16 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int END_TIMESTAMP_MICROS_FIELD_NUMBER = 2;
-  private long endTimestampMicros_;
+  private long endTimestampMicros_ = 0L;
   /**
+   *
+   *
    * <pre>
    * Exclusive upper bound. If left empty, interpreted as infinity.
    * </pre>
    *
    * <code>int64 end_timestamp_micros = 2;</code>
+   *
    * @return The endTimestampMicros.
    */
   @java.lang.Override
@@ -93,6 +102,7 @@ private static final long serialVersionUID = 0L;
   }
 
   private byte memoizedIsInitialized = -1;
+
   @java.lang.Override
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
@@ -104,8 +114,7 @@ private static final long serialVersionUID = 0L;
   }
 
   @java.lang.Override
-  public void writeTo(com.google.protobuf.CodedOutputStream output)
-                      throws java.io.IOException {
+  public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
     if (startTimestampMicros_ != 0L) {
       output.writeInt64(1, startTimestampMicros_);
     }
@@ -122,12 +131,10 @@ private static final long serialVersionUID = 0L;
 
     size = 0;
     if (startTimestampMicros_ != 0L) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt64Size(1, startTimestampMicros_);
+      size += com.google.protobuf.CodedOutputStream.computeInt64Size(1, startTimestampMicros_);
     }
     if (endTimestampMicros_ != 0L) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt64Size(2, endTimestampMicros_);
+      size += com.google.protobuf.CodedOutputStream.computeInt64Size(2, endTimestampMicros_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -137,17 +144,15 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public boolean equals(final java.lang.Object obj) {
     if (obj == this) {
-     return true;
+      return true;
     }
     if (!(obj instanceof com.google.bigtable.v2.TimestampRange)) {
       return super.equals(obj);
     }
     com.google.bigtable.v2.TimestampRange other = (com.google.bigtable.v2.TimestampRange) obj;
 
-    if (getStartTimestampMicros()
-        != other.getStartTimestampMicros()) return false;
-    if (getEndTimestampMicros()
-        != other.getEndTimestampMicros()) return false;
+    if (getStartTimestampMicros() != other.getStartTimestampMicros()) return false;
+    if (getEndTimestampMicros() != other.getEndTimestampMicros()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -160,154 +165,156 @@ private static final long serialVersionUID = 0L;
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + START_TIMESTAMP_MICROS_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-        getStartTimestampMicros());
+    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getStartTimestampMicros());
     hash = (37 * hash) + END_TIMESTAMP_MICROS_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-        getEndTimestampMicros());
+    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(getEndTimestampMicros());
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static com.google.bigtable.v2.TimestampRange parseFrom(
-      java.nio.ByteBuffer data)
+  public static com.google.bigtable.v2.TimestampRange parseFrom(java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
+
   public static com.google.bigtable.v2.TimestampRange parseFrom(
-      java.nio.ByteBuffer data,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+      java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.google.bigtable.v2.TimestampRange parseFrom(
-      com.google.protobuf.ByteString data)
+
+  public static com.google.bigtable.v2.TimestampRange parseFrom(com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
+
   public static com.google.bigtable.v2.TimestampRange parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
+
   public static com.google.bigtable.v2.TimestampRange parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
+
   public static com.google.bigtable.v2.TimestampRange parseFrom(
-      byte[] data,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+      byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
+
   public static com.google.bigtable.v2.TimestampRange parseFrom(java.io.InputStream input)
       throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input);
+    return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
   }
+
   public static com.google.bigtable.v2.TimestampRange parseFrom(
-      java.io.InputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+      java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input, extensionRegistry);
+    return com.google.protobuf.GeneratedMessageV3.parseWithIOException(
+        PARSER, input, extensionRegistry);
   }
+
   public static com.google.bigtable.v2.TimestampRange parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseDelimitedWithIOException(PARSER, input);
+    return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
   }
+
   public static com.google.bigtable.v2.TimestampRange parseDelimitedFrom(
-      java.io.InputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+      java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(
+        PARSER, input, extensionRegistry);
   }
+
   public static com.google.bigtable.v2.TimestampRange parseFrom(
-      com.google.protobuf.CodedInputStream input)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input);
+      com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+    return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
   }
+
   public static com.google.bigtable.v2.TimestampRange parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input, extensionRegistry);
+    return com.google.protobuf.GeneratedMessageV3.parseWithIOException(
+        PARSER, input, extensionRegistry);
   }
 
   @java.lang.Override
-  public Builder newBuilderForType() { return newBuilder(); }
+  public Builder newBuilderForType() {
+    return newBuilder();
+  }
+
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
+
   public static Builder newBuilder(com.google.bigtable.v2.TimestampRange prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
+
   @java.lang.Override
   public Builder toBuilder() {
-    return this == DEFAULT_INSTANCE
-        ? new Builder() : new Builder().mergeFrom(this);
+    return this == DEFAULT_INSTANCE ? new Builder() : new Builder().mergeFrom(this);
   }
 
   @java.lang.Override
-  protected Builder newBuilderForType(
-      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+  protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
     Builder builder = new Builder(parent);
     return builder;
   }
   /**
+   *
+   *
    * <pre>
    * Specified a contiguous range of microsecond timestamps.
    * </pre>
    *
    * Protobuf type {@code google.bigtable.v2.TimestampRange}
    */
-  public static final class Builder extends
-      com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+  public static final class Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder>
+      implements
       // @@protoc_insertion_point(builder_implements:google.bigtable.v2.TimestampRange)
       com.google.bigtable.v2.TimestampRangeOrBuilder {
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.google.bigtable.v2.DataProto.internal_static_google_bigtable_v2_TimestampRange_descriptor;
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+      return com.google.bigtable.v2.DataProto
+          .internal_static_google_bigtable_v2_TimestampRange_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.google.bigtable.v2.DataProto.internal_static_google_bigtable_v2_TimestampRange_fieldAccessorTable
+      return com.google.bigtable.v2.DataProto
+          .internal_static_google_bigtable_v2_TimestampRange_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.google.bigtable.v2.TimestampRange.class, com.google.bigtable.v2.TimestampRange.Builder.class);
+              com.google.bigtable.v2.TimestampRange.class,
+              com.google.bigtable.v2.TimestampRange.Builder.class);
     }
 
     // Construct using com.google.bigtable.v2.TimestampRange.newBuilder()
-    private Builder() {
+    private Builder() {}
 
-    }
-
-    private Builder(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+    private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-
     }
+
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       startTimestampMicros_ = 0L;
-
       endTimestampMicros_ = 0L;
-
       return this;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Descriptors.Descriptor
-        getDescriptorForType() {
-      return com.google.bigtable.v2.DataProto.internal_static_google_bigtable_v2_TimestampRange_descriptor;
+    public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+      return com.google.bigtable.v2.DataProto
+          .internal_static_google_bigtable_v2_TimestampRange_descriptor;
     }
 
     @java.lang.Override
@@ -326,49 +333,62 @@ private static final long serialVersionUID = 0L;
 
     @java.lang.Override
     public com.google.bigtable.v2.TimestampRange buildPartial() {
-      com.google.bigtable.v2.TimestampRange result = new com.google.bigtable.v2.TimestampRange(this);
-      result.startTimestampMicros_ = startTimestampMicros_;
-      result.endTimestampMicros_ = endTimestampMicros_;
+      com.google.bigtable.v2.TimestampRange result =
+          new com.google.bigtable.v2.TimestampRange(this);
+      if (bitField0_ != 0) {
+        buildPartial0(result);
+      }
       onBuilt();
       return result;
+    }
+
+    private void buildPartial0(com.google.bigtable.v2.TimestampRange result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.startTimestampMicros_ = startTimestampMicros_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.endTimestampMicros_ = endTimestampMicros_;
+      }
     }
 
     @java.lang.Override
     public Builder clone() {
       return super.clone();
     }
+
     @java.lang.Override
     public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
+        com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
       return super.setField(field, value);
     }
+
     @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
+    public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
       return super.clearField(field);
     }
+
     @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+    public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
       return super.clearOneof(oneof);
     }
+
     @java.lang.Override
     public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
+        com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
       return super.setRepeatedField(field, index, value);
     }
+
     @java.lang.Override
     public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
+        com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
       return super.addRepeatedField(field, value);
     }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.bigtable.v2.TimestampRange) {
-        return mergeFrom((com.google.bigtable.v2.TimestampRange)other);
+        return mergeFrom((com.google.bigtable.v2.TimestampRange) other);
       } else {
         super.mergeFrom(other);
         return this;
@@ -409,22 +429,25 @@ private static final long serialVersionUID = 0L;
             case 0:
               done = true;
               break;
-            case 8: {
-              startTimestampMicros_ = input.readInt64();
-
-              break;
-            } // case 8
-            case 16: {
-              endTimestampMicros_ = input.readInt64();
-
-              break;
-            } // case 16
-            default: {
-              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
-                done = true; // was an endgroup tag
-              }
-              break;
-            } // default:
+            case 8:
+              {
+                startTimestampMicros_ = input.readInt64();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 8
+            case 16:
+              {
+                endTimestampMicros_ = input.readInt64();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 16
+            default:
+              {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
           } // switch (tag)
         } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -435,13 +458,18 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private long startTimestampMicros_ ;
+    private int bitField0_;
+
+    private long startTimestampMicros_;
     /**
+     *
+     *
      * <pre>
      * Inclusive lower bound. If left empty, interpreted as 0.
      * </pre>
      *
      * <code>int64 start_timestamp_micros = 1;</code>
+     *
      * @return The startTimestampMicros.
      */
     @java.lang.Override
@@ -449,42 +477,52 @@ private static final long serialVersionUID = 0L;
       return startTimestampMicros_;
     }
     /**
+     *
+     *
      * <pre>
      * Inclusive lower bound. If left empty, interpreted as 0.
      * </pre>
      *
      * <code>int64 start_timestamp_micros = 1;</code>
+     *
      * @param value The startTimestampMicros to set.
      * @return This builder for chaining.
      */
     public Builder setStartTimestampMicros(long value) {
-      
+
       startTimestampMicros_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * Inclusive lower bound. If left empty, interpreted as 0.
      * </pre>
      *
      * <code>int64 start_timestamp_micros = 1;</code>
+     *
      * @return This builder for chaining.
      */
     public Builder clearStartTimestampMicros() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       startTimestampMicros_ = 0L;
       onChanged();
       return this;
     }
 
-    private long endTimestampMicros_ ;
+    private long endTimestampMicros_;
     /**
+     *
+     *
      * <pre>
      * Exclusive upper bound. If left empty, interpreted as infinity.
      * </pre>
      *
      * <code>int64 end_timestamp_micros = 2;</code>
+     *
      * @return The endTimestampMicros.
      */
     @java.lang.Override
@@ -492,37 +530,44 @@ private static final long serialVersionUID = 0L;
       return endTimestampMicros_;
     }
     /**
+     *
+     *
      * <pre>
      * Exclusive upper bound. If left empty, interpreted as infinity.
      * </pre>
      *
      * <code>int64 end_timestamp_micros = 2;</code>
+     *
      * @param value The endTimestampMicros to set.
      * @return This builder for chaining.
      */
     public Builder setEndTimestampMicros(long value) {
-      
+
       endTimestampMicros_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * Exclusive upper bound. If left empty, interpreted as infinity.
      * </pre>
      *
      * <code>int64 end_timestamp_micros = 2;</code>
+     *
      * @return This builder for chaining.
      */
     public Builder clearEndTimestampMicros() {
-      
+      bitField0_ = (bitField0_ & ~0x00000002);
       endTimestampMicros_ = 0L;
       onChanged();
       return this;
     }
+
     @java.lang.Override
-    public final Builder setUnknownFields(
-        final com.google.protobuf.UnknownFieldSet unknownFields) {
+    public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.setUnknownFields(unknownFields);
     }
 
@@ -532,12 +577,12 @@ private static final long serialVersionUID = 0L;
       return super.mergeUnknownFields(unknownFields);
     }
 
-
     // @@protoc_insertion_point(builder_scope:google.bigtable.v2.TimestampRange)
   }
 
   // @@protoc_insertion_point(class_scope:google.bigtable.v2.TimestampRange)
   private static final com.google.bigtable.v2.TimestampRange DEFAULT_INSTANCE;
+
   static {
     DEFAULT_INSTANCE = new com.google.bigtable.v2.TimestampRange();
   }
@@ -546,27 +591,27 @@ private static final long serialVersionUID = 0L;
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<TimestampRange>
-      PARSER = new com.google.protobuf.AbstractParser<TimestampRange>() {
-    @java.lang.Override
-    public TimestampRange parsePartialFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      Builder builder = newBuilder();
-      try {
-        builder.mergeFrom(input, extensionRegistry);
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(builder.buildPartial());
-      } catch (com.google.protobuf.UninitializedMessageException e) {
-        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(e)
-            .setUnfinishedMessage(builder.buildPartial());
-      }
-      return builder.buildPartial();
-    }
-  };
+  private static final com.google.protobuf.Parser<TimestampRange> PARSER =
+      new com.google.protobuf.AbstractParser<TimestampRange>() {
+        @java.lang.Override
+        public TimestampRange parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          Builder builder = newBuilder();
+          try {
+            builder.mergeFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(builder.buildPartial());
+          } catch (com.google.protobuf.UninitializedMessageException e) {
+            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+          } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(e)
+                .setUnfinishedMessage(builder.buildPartial());
+          }
+          return builder.buildPartial();
+        }
+      };
 
   public static com.google.protobuf.Parser<TimestampRange> parser() {
     return PARSER;
@@ -581,6 +626,4 @@ private static final long serialVersionUID = 0L;
   public com.google.bigtable.v2.TimestampRange getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
-
 }
-

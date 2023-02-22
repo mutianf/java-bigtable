@@ -18,11 +18,14 @@
 
 package com.google.bigtable.v2;
 
-public interface GenerateInitialChangeStreamPartitionsRequestOrBuilder extends
+public interface GenerateInitialChangeStreamPartitionsRequestOrBuilder
+    extends
     // @@protoc_insertion_point(interface_extends:google.bigtable.v2.GenerateInitialChangeStreamPartitionsRequest)
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   *
+   *
    * <pre>
    * Required. The unique name of the table from which to get change stream
    * partitions. Values are of the form
@@ -30,11 +33,16 @@ public interface GenerateInitialChangeStreamPartitionsRequestOrBuilder extends
    * Change streaming must be enabled on the table.
    * </pre>
    *
-   * <code>string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>
+   * <code>
+   * string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+   * </code>
+   *
    * @return The tableName.
    */
   java.lang.String getTableName();
   /**
+   *
+   *
    * <pre>
    * Required. The unique name of the table from which to get change stream
    * partitions. Values are of the form
@@ -42,13 +50,17 @@ public interface GenerateInitialChangeStreamPartitionsRequestOrBuilder extends
    * Change streaming must be enabled on the table.
    * </pre>
    *
-   * <code>string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>
+   * <code>
+   * string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+   * </code>
+   *
    * @return The bytes for tableName.
    */
-  com.google.protobuf.ByteString
-      getTableNameBytes();
+  com.google.protobuf.ByteString getTableNameBytes();
 
   /**
+   *
+   *
    * <pre>
    * This value specifies routing for replication. If not specified, the
    * "default" application profile will be used.
@@ -56,10 +68,13 @@ public interface GenerateInitialChangeStreamPartitionsRequestOrBuilder extends
    * </pre>
    *
    * <code>string app_profile_id = 2;</code>
+   *
    * @return The appProfileId.
    */
   java.lang.String getAppProfileId();
   /**
+   *
+   *
    * <pre>
    * This value specifies routing for replication. If not specified, the
    * "default" application profile will be used.
@@ -67,8 +82,8 @@ public interface GenerateInitialChangeStreamPartitionsRequestOrBuilder extends
    * </pre>
    *
    * <code>string app_profile_id = 2;</code>
+   *
    * @return The bytes for appProfileId.
    */
-  com.google.protobuf.ByteString
-      getAppProfileIdBytes();
+  com.google.protobuf.ByteString getAppProfileIdBytes();
 }

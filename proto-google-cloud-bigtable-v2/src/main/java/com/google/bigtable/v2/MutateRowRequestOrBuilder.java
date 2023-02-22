@@ -24,8 +24,8 @@ public interface MutateRowRequestOrBuilder extends
 
   /**
    * <pre>
-   * Required. The unique name of the table to which the mutation should be applied.
-   * Values are of the form
+   * Required. The unique name of the table to which the mutation should be
+   * applied. Values are of the form
    * `projects/&lt;project&gt;/instances/&lt;instance&gt;/tables/&lt;table&gt;`.
    * </pre>
    *
@@ -35,8 +35,8 @@ public interface MutateRowRequestOrBuilder extends
   java.lang.String getTableName();
   /**
    * <pre>
-   * Required. The unique name of the table to which the mutation should be applied.
-   * Values are of the form
+   * Required. The unique name of the table to which the mutation should be
+   * applied. Values are of the form
    * `projects/&lt;project&gt;/instances/&lt;instance&gt;/tables/&lt;table&gt;`.
    * </pre>
    *
@@ -80,9 +80,9 @@ public interface MutateRowRequestOrBuilder extends
 
   /**
    * <pre>
-   * Required. Changes to be atomically applied to the specified row. Entries are applied
-   * in order, meaning that earlier mutations can be masked by later ones.
-   * Must contain at least one entry and at most 100000.
+   * Required. Changes to be atomically applied to the specified row. Entries
+   * are applied in order, meaning that earlier mutations can be masked by later
+   * ones. Must contain at least one entry and at most 100000.
    * </pre>
    *
    * <code>repeated .google.bigtable.v2.Mutation mutations = 3 [(.google.api.field_behavior) = REQUIRED];</code>
@@ -91,9 +91,9 @@ public interface MutateRowRequestOrBuilder extends
       getMutationsList();
   /**
    * <pre>
-   * Required. Changes to be atomically applied to the specified row. Entries are applied
-   * in order, meaning that earlier mutations can be masked by later ones.
-   * Must contain at least one entry and at most 100000.
+   * Required. Changes to be atomically applied to the specified row. Entries
+   * are applied in order, meaning that earlier mutations can be masked by later
+   * ones. Must contain at least one entry and at most 100000.
    * </pre>
    *
    * <code>repeated .google.bigtable.v2.Mutation mutations = 3 [(.google.api.field_behavior) = REQUIRED];</code>
@@ -101,9 +101,9 @@ public interface MutateRowRequestOrBuilder extends
   com.google.bigtable.v2.Mutation getMutations(int index);
   /**
    * <pre>
-   * Required. Changes to be atomically applied to the specified row. Entries are applied
-   * in order, meaning that earlier mutations can be masked by later ones.
-   * Must contain at least one entry and at most 100000.
+   * Required. Changes to be atomically applied to the specified row. Entries
+   * are applied in order, meaning that earlier mutations can be masked by later
+   * ones. Must contain at least one entry and at most 100000.
    * </pre>
    *
    * <code>repeated .google.bigtable.v2.Mutation mutations = 3 [(.google.api.field_behavior) = REQUIRED];</code>
@@ -111,9 +111,9 @@ public interface MutateRowRequestOrBuilder extends
   int getMutationsCount();
   /**
    * <pre>
-   * Required. Changes to be atomically applied to the specified row. Entries are applied
-   * in order, meaning that earlier mutations can be masked by later ones.
-   * Must contain at least one entry and at most 100000.
+   * Required. Changes to be atomically applied to the specified row. Entries
+   * are applied in order, meaning that earlier mutations can be masked by later
+   * ones. Must contain at least one entry and at most 100000.
    * </pre>
    *
    * <code>repeated .google.bigtable.v2.Mutation mutations = 3 [(.google.api.field_behavior) = REQUIRED];</code>
@@ -122,9 +122,9 @@ public interface MutateRowRequestOrBuilder extends
       getMutationsOrBuilderList();
   /**
    * <pre>
-   * Required. Changes to be atomically applied to the specified row. Entries are applied
-   * in order, meaning that earlier mutations can be masked by later ones.
-   * Must contain at least one entry and at most 100000.
+   * Required. Changes to be atomically applied to the specified row. Entries
+   * are applied in order, meaning that earlier mutations can be masked by later
+   * ones. Must contain at least one entry and at most 100000.
    * </pre>
    *
    * <code>repeated .google.bigtable.v2.Mutation mutations = 3 [(.google.api.field_behavior) = REQUIRED];</code>

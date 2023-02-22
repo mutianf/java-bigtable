@@ -24,7 +24,8 @@ public interface MutateRowsRequestOrBuilder extends
 
   /**
    * <pre>
-   * Required. The unique name of the table to which the mutations should be applied.
+   * Required. The unique name of the table to which the mutations should be
+   * applied.
    * </pre>
    *
    * <code>string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>
@@ -33,7 +34,8 @@ public interface MutateRowsRequestOrBuilder extends
   java.lang.String getTableName();
   /**
    * <pre>
-   * Required. The unique name of the table to which the mutations should be applied.
+   * Required. The unique name of the table to which the mutations should be
+   * applied.
    * </pre>
    *
    * <code>string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>

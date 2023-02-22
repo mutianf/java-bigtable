@@ -32,13 +32,14 @@ import com.google.api.gax.rpc.StubSettings;
 import com.google.api.gax.rpc.TransportChannelProvider;
 import com.google.api.gax.rpc.UnaryCallSettings;
 import com.google.auth.Credentials;
-import com.google.bigtable.v2.FeatureFlags;
 import com.google.bigtable.v2.PingAndWarmRequest;
 import com.google.cloud.bigtable.Version;
-import com.google.cloud.bigtable.data.v2.internal.FeatureFlagChannelConfigurator;
+import com.google.cloud.bigtable.data.v2.models.ChangeStreamRecord;
 import com.google.cloud.bigtable.data.v2.models.ConditionalRowMutation;
 import com.google.cloud.bigtable.data.v2.models.KeyOffset;
 import com.google.cloud.bigtable.data.v2.models.Query;
+import com.google.cloud.bigtable.data.v2.models.Range.ByteStringRange;
+import com.google.cloud.bigtable.data.v2.models.ReadChangeStreamQuery;
 import com.google.cloud.bigtable.data.v2.models.ReadModifyWriteRow;
 import com.google.cloud.bigtable.data.v2.models.Row;
 import com.google.cloud.bigtable.data.v2.models.RowMutation;
@@ -49,10 +50,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -89,10 +87,6 @@ import org.threeten.bp.Duration;
  * }</pre>
  */
 public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableStubSettings> {
-  // Feature flags this client supports
-  private static final FeatureFlags FEATURE_FLAGS =
-      FeatureFlags.newBuilder().setCpuMetrics(true).build();
-
   private static final Logger logger =
       Logger.getLogger(EnhancedBigtableStubSettings.class.getName());
 
@@ -149,6 +143,42 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
           .setTotalTimeout(Duration.ofMinutes(10))
           .build();
 
+  private static final Set<Code> GENERATE_INITIAL_CHANGE_STREAM_PARTITIONS_RETRY_CODES =
+      ImmutableSet.<Code>builder().addAll(IDEMPOTENT_RETRY_CODES).add(Code.ABORTED).build();
+
+  private static final RetrySettings GENERATE_INITIAL_CHANGE_STREAM_PARTITIONS_RETRY_SETTINGS =
+      RetrySettings.newBuilder()
+          .setInitialRetryDelay(Duration.ofMillis(10))
+          .setRetryDelayMultiplier(2.0)
+          .setMaxRetryDelay(Duration.ofMinutes(1))
+          .setMaxAttempts(10)
+          .setJittered(true)
+          .setInitialRpcTimeout(Duration.ofMinutes(1))
+          .setRpcTimeoutMultiplier(2.0)
+          .setMaxRpcTimeout(Duration.ofMinutes(10))
+          .setTotalTimeout(Duration.ofMinutes(60))
+          .build();
+
+  // Allow retrying ABORTED statuses. These will be returned by the server when the client is
+  // too slow to read the change stream records. This makes sense for the java client because
+  // retries happen after the mutation merging logic. Which means that the retry will not be
+  // invoked until the current buffered change stream mutations are consumed.
+  private static final Set<Code> READ_CHANGE_STREAM_RETRY_CODES =
+      ImmutableSet.<Code>builder().addAll(IDEMPOTENT_RETRY_CODES).add(Code.ABORTED).build();
+
+  private static final RetrySettings READ_CHANGE_STREAM_RETRY_SETTINGS =
+      RetrySettings.newBuilder()
+          .setInitialRetryDelay(Duration.ofMillis(10))
+          .setRetryDelayMultiplier(2.0)
+          .setMaxRetryDelay(Duration.ofMinutes(1))
+          .setMaxAttempts(10)
+          .setJittered(true)
+          .setInitialRpcTimeout(Duration.ofMinutes(5))
+          .setRpcTimeoutMultiplier(2.0)
+          .setMaxRpcTimeout(Duration.ofMinutes(5))
+          .setTotalTimeout(Duration.ofHours(12))
+          .build();
+
   /**
    * Scopes that are equivalent to JWT's audience.
    *
@@ -185,6 +215,10 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
   private final BigtableBulkReadRowsCallSettings bulkReadRowsSettings;
   private final UnaryCallSettings<ConditionalRowMutation, Boolean> checkAndMutateRowSettings;
   private final UnaryCallSettings<ReadModifyWriteRow, Row> readModifyWriteRowSettings;
+  private final ServerStreamingCallSettings<String, ByteStringRange>
+      generateInitialChangeStreamPartitionsSettings;
+  private final ServerStreamingCallSettings<ReadChangeStreamQuery, ChangeStreamRecord>
+      readChangeStreamSettings;
   private final UnaryCallSettings<PingAndWarmRequest, Void> pingAndWarmSettings;
 
   private EnhancedBigtableStubSettings(Builder builder) {
@@ -221,6 +255,9 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
     bulkReadRowsSettings = builder.bulkReadRowsSettings.build();
     checkAndMutateRowSettings = builder.checkAndMutateRowSettings.build();
     readModifyWriteRowSettings = builder.readModifyWriteRowSettings.build();
+    generateInitialChangeStreamPartitionsSettings =
+        builder.generateInitialChangeStreamPartitionsSettings.build();
+    readChangeStreamSettings = builder.readChangeStreamSettings.build();
     pingAndWarmSettings = builder.pingAndWarmSettings.build();
   }
 
@@ -270,7 +307,7 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
 
   /** Returns a builder for the default ChannelProvider for this service. */
   public static InstantiatingGrpcChannelProvider.Builder defaultGrpcTransportProviderBuilder() {
-    return InstantiatingGrpcChannelProvider.newBuilder()
+    return BigtableStubSettings.defaultGrpcTransportProviderBuilder()
         .setPoolSize(getDefaultChannelPoolSize())
         .setMaxInboundMessageSize(MAX_MESSAGE_SIZE)
         .setKeepAliveTime(Duration.ofSeconds(30)) // sends ping in this interval
@@ -279,9 +316,6 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
         // Attempts direct access to CBT service over gRPC to improve throughput,
         // whether the attempt is allowed is totally controlled by service owner.
         .setAttemptDirectPath(true);
-        // .setChannelConfigurator(
-        //     new FeatureFlagChannelConfigurator(
-        //         null, FEATURE_FLAGS));
   }
 
   static int getDefaultChannelPoolSize() {
@@ -515,6 +549,16 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
     return readModifyWriteRowSettings;
   }
 
+  public ServerStreamingCallSettings<String, ByteStringRange>
+      generateInitialChangeStreamPartitionsSettings() {
+    return generateInitialChangeStreamPartitionsSettings;
+  }
+
+  public ServerStreamingCallSettings<ReadChangeStreamQuery, ChangeStreamRecord>
+      readChangeStreamSettings() {
+    return readChangeStreamSettings;
+  }
+
   /**
    * Returns the object with the settings used for calls to PingAndWarm.
    *
@@ -548,6 +592,10 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
     private final UnaryCallSettings.Builder<ConditionalRowMutation, Boolean>
         checkAndMutateRowSettings;
     private final UnaryCallSettings.Builder<ReadModifyWriteRow, Row> readModifyWriteRowSettings;
+    private final ServerStreamingCallSettings.Builder<String, ByteStringRange>
+        generateInitialChangeStreamPartitionsSettings;
+    private final ServerStreamingCallSettings.Builder<ReadChangeStreamQuery, ChangeStreamRecord>
+        readChangeStreamSettings;
     private final UnaryCallSettings.Builder<PingAndWarmRequest, Void> pingAndWarmSettings;
 
     /**
@@ -573,16 +621,6 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
       setStreamWatchdogCheckInterval(baseDefaults.getStreamWatchdogCheckInterval());
       setStreamWatchdogProvider(baseDefaults.getStreamWatchdogProvider());
 
-      // Serialize the web64 encode the bigtable feature flags
-      ByteArrayOutputStream boas = new ByteArrayOutputStream();
-      try {
-        FEATURE_FLAGS.writeTo(boas);
-      } catch (IOException e) {
-        throw new IllegalStateException("Unexpected IOException while serializing feature flags");
-      }
-      byte[] serializedFlags = boas.toByteArray();
-      byte[] encodedFlags = Base64.getEncoder().encode(serializedFlags);
-
       // Inject the UserAgent in addition to api-client header
       Map<String, String> headers =
           ImmutableMap.<String, String>builder()
@@ -590,7 +628,6 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
                   BigtableStubSettings.defaultApiClientHeaderProviderBuilder().build().getHeaders())
               // GrpcHeaderInterceptor treats the `user-agent` as a magic string
               .put("user-agent", "bigtable-java/" + Version.VERSION)
-              .put("bigtable-features", new String(encodedFlags, StandardCharsets.UTF_8))
               .build();
       setInternalHeaderProvider(FixedHeaderProvider.create(headers));
 
@@ -672,6 +709,18 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
       readModifyWriteRowSettings = UnaryCallSettings.newUnaryCallSettingsBuilder();
       copyRetrySettings(baseDefaults.readModifyWriteRowSettings(), readModifyWriteRowSettings);
 
+      generateInitialChangeStreamPartitionsSettings = ServerStreamingCallSettings.newBuilder();
+      generateInitialChangeStreamPartitionsSettings
+          .setRetryableCodes(GENERATE_INITIAL_CHANGE_STREAM_PARTITIONS_RETRY_CODES)
+          .setRetrySettings(GENERATE_INITIAL_CHANGE_STREAM_PARTITIONS_RETRY_SETTINGS)
+          .setIdleTimeout(Duration.ofMinutes(5));
+
+      readChangeStreamSettings = ServerStreamingCallSettings.newBuilder();
+      readChangeStreamSettings
+          .setRetryableCodes(READ_CHANGE_STREAM_RETRY_CODES)
+          .setRetrySettings(READ_CHANGE_STREAM_RETRY_SETTINGS)
+          .setIdleTimeout(Duration.ofMinutes(5));
+
       pingAndWarmSettings = UnaryCallSettings.newUnaryCallSettingsBuilder();
       pingAndWarmSettings.setRetrySettings(
           RetrySettings.newBuilder()
@@ -700,6 +749,9 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
       bulkReadRowsSettings = settings.bulkReadRowsSettings.toBuilder();
       checkAndMutateRowSettings = settings.checkAndMutateRowSettings.toBuilder();
       readModifyWriteRowSettings = settings.readModifyWriteRowSettings.toBuilder();
+      generateInitialChangeStreamPartitionsSettings =
+          settings.generateInitialChangeStreamPartitionsSettings.toBuilder();
+      readChangeStreamSettings = settings.readChangeStreamSettings.toBuilder();
       pingAndWarmSettings = settings.pingAndWarmSettings.toBuilder();
     }
     // <editor-fold desc="Private Helpers">
@@ -874,6 +926,20 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
       return readModifyWriteRowSettings;
     }
 
+    /** Returns the builder for the settings used for calls to ReadChangeStream. */
+    public ServerStreamingCallSettings.Builder<ReadChangeStreamQuery, ChangeStreamRecord>
+        readChangeStreamSettings() {
+      return readChangeStreamSettings;
+    }
+
+    /**
+     * Returns the builder for the settings used for calls to GenerateInitialChangeStreamPartitions.
+     */
+    public ServerStreamingCallSettings.Builder<String, ByteStringRange>
+        generateInitialChangeStreamPartitionsSettings() {
+      return generateInitialChangeStreamPartitionsSettings;
+    }
+
     /** Returns the builder with the settings used for calls to PingAndWarm. */
     public UnaryCallSettings.Builder<PingAndWarmRequest, Void> pingAndWarmSettings() {
       return pingAndWarmSettings;
@@ -926,6 +992,10 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
         .add("bulkReadRowsSettings", bulkReadRowsSettings)
         .add("checkAndMutateRowSettings", checkAndMutateRowSettings)
         .add("readModifyWriteRowSettings", readModifyWriteRowSettings)
+        .add(
+            "generateInitialChangeStreamPartitionsSettings",
+            generateInitialChangeStreamPartitionsSettings)
+        .add("readChangeStreamSettings", readChangeStreamSettings)
         .add("pingAndWarmSettings", pingAndWarmSettings)
         .add("parent", super.toString())
         .toString();

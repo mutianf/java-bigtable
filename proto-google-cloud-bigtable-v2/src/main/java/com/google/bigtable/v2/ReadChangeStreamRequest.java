@@ -19,22 +19,25 @@
 package com.google.bigtable.v2;
 
 /**
+ *
+ *
  * <pre>
- * NOTE: This API is not generally available. Users must be allowlisted.
+ * NOTE: This API is intended to be used by Apache Beam BigtableIO.
  * Request message for Bigtable.ReadChangeStream.
  * </pre>
  *
  * Protobuf type {@code google.bigtable.v2.ReadChangeStreamRequest}
  */
-public final class ReadChangeStreamRequest extends
-    com.google.protobuf.GeneratedMessageV3 implements
+public final class ReadChangeStreamRequest extends com.google.protobuf.GeneratedMessageV3
+    implements
     // @@protoc_insertion_point(message_implements:google.bigtable.v2.ReadChangeStreamRequest)
     ReadChangeStreamRequestOrBuilder {
-private static final long serialVersionUID = 0L;
+  private static final long serialVersionUID = 0L;
   // Use ReadChangeStreamRequest.newBuilder() to construct.
   private ReadChangeStreamRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
+
   private ReadChangeStreamRequest() {
     tableName_ = "";
     appProfileId_ = "";
@@ -42,38 +45,42 @@ private static final long serialVersionUID = 0L;
 
   @java.lang.Override
   @SuppressWarnings({"unused"})
-  protected java.lang.Object newInstance(
-      UnusedPrivateParameter unused) {
+  protected java.lang.Object newInstance(UnusedPrivateParameter unused) {
     return new ReadChangeStreamRequest();
   }
 
   @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
+  public final com.google.protobuf.UnknownFieldSet getUnknownFields() {
     return this.unknownFields;
   }
-  public static final com.google.protobuf.Descriptors.Descriptor
-      getDescriptor() {
-    return com.google.bigtable.v2.BigtableProto.internal_static_google_bigtable_v2_ReadChangeStreamRequest_descriptor;
+
+  public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+    return com.google.bigtable.v2.BigtableProto
+        .internal_static_google_bigtable_v2_ReadChangeStreamRequest_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.google.bigtable.v2.BigtableProto.internal_static_google_bigtable_v2_ReadChangeStreamRequest_fieldAccessorTable
+    return com.google.bigtable.v2.BigtableProto
+        .internal_static_google_bigtable_v2_ReadChangeStreamRequest_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.google.bigtable.v2.ReadChangeStreamRequest.class, com.google.bigtable.v2.ReadChangeStreamRequest.Builder.class);
+            com.google.bigtable.v2.ReadChangeStreamRequest.class,
+            com.google.bigtable.v2.ReadChangeStreamRequest.Builder.class);
   }
 
   private int startFromCase_ = 0;
   private java.lang.Object startFrom_;
+
   public enum StartFromCase
-      implements com.google.protobuf.Internal.EnumLite,
+      implements
+          com.google.protobuf.Internal.EnumLite,
           com.google.protobuf.AbstractMessage.InternalOneOfEnum {
     START_TIME(4),
     CONTINUATION_TOKENS(6),
     STARTFROM_NOT_SET(0);
     private final int value;
+
     private StartFromCase(int value) {
       this.value = value;
     }
@@ -89,26 +96,33 @@ private static final long serialVersionUID = 0L;
 
     public static StartFromCase forNumber(int value) {
       switch (value) {
-        case 4: return START_TIME;
-        case 6: return CONTINUATION_TOKENS;
-        case 0: return STARTFROM_NOT_SET;
-        default: return null;
+        case 4:
+          return START_TIME;
+        case 6:
+          return CONTINUATION_TOKENS;
+        case 0:
+          return STARTFROM_NOT_SET;
+        default:
+          return null;
       }
     }
+
     public int getNumber() {
       return this.value;
     }
   };
 
-  public StartFromCase
-  getStartFromCase() {
-    return StartFromCase.forNumber(
-        startFromCase_);
+  public StartFromCase getStartFromCase() {
+    return StartFromCase.forNumber(startFromCase_);
   }
 
   public static final int TABLE_NAME_FIELD_NUMBER = 1;
-  private volatile java.lang.Object tableName_;
+
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object tableName_ = "";
   /**
+   *
+   *
    * <pre>
    * Required. The unique name of the table from which to read a change stream.
    * Values are of the form
@@ -116,7 +130,10 @@ private static final long serialVersionUID = 0L;
    * Change streaming must be enabled on the table.
    * </pre>
    *
-   * <code>string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>
+   * <code>
+   * string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+   * </code>
+   *
    * @return The tableName.
    */
   @java.lang.Override
@@ -125,14 +142,15 @@ private static final long serialVersionUID = 0L;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
+      com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
       tableName_ = s;
       return s;
     }
   }
   /**
+   *
+   *
    * <pre>
    * Required. The unique name of the table from which to read a change stream.
    * Values are of the form
@@ -140,17 +158,18 @@ private static final long serialVersionUID = 0L;
    * Change streaming must be enabled on the table.
    * </pre>
    *
-   * <code>string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>
+   * <code>
+   * string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+   * </code>
+   *
    * @return The bytes for tableName.
    */
   @java.lang.Override
-  public com.google.protobuf.ByteString
-      getTableNameBytes() {
+  public com.google.protobuf.ByteString getTableNameBytes() {
     java.lang.Object ref = tableName_;
     if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
+      com.google.protobuf.ByteString b =
+          com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
       tableName_ = b;
       return b;
     } else {
@@ -159,8 +178,12 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int APP_PROFILE_ID_FIELD_NUMBER = 2;
-  private volatile java.lang.Object appProfileId_;
+
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object appProfileId_ = "";
   /**
+   *
+   *
    * <pre>
    * This value specifies routing for replication. If not specified, the
    * "default" application profile will be used.
@@ -168,6 +191,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>string app_profile_id = 2;</code>
+   *
    * @return The appProfileId.
    */
   @java.lang.Override
@@ -176,14 +200,15 @@ private static final long serialVersionUID = 0L;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
+      com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
       appProfileId_ = s;
       return s;
     }
   }
   /**
+   *
+   *
    * <pre>
    * This value specifies routing for replication. If not specified, the
    * "default" application profile will be used.
@@ -191,16 +216,15 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>string app_profile_id = 2;</code>
+   *
    * @return The bytes for appProfileId.
    */
   @java.lang.Override
-  public com.google.protobuf.ByteString
-      getAppProfileIdBytes() {
+  public com.google.protobuf.ByteString getAppProfileIdBytes() {
     java.lang.Object ref = appProfileId_;
     if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
+      com.google.protobuf.ByteString b =
+          com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
       appProfileId_ = b;
       return b;
     } else {
@@ -211,11 +235,14 @@ private static final long serialVersionUID = 0L;
   public static final int PARTITION_FIELD_NUMBER = 3;
   private com.google.bigtable.v2.StreamPartition partition_;
   /**
+   *
+   *
    * <pre>
    * The partition to read changes from.
    * </pre>
    *
    * <code>.google.bigtable.v2.StreamPartition partition = 3;</code>
+   *
    * @return Whether the partition field is set.
    */
   @java.lang.Override
@@ -223,18 +250,25 @@ private static final long serialVersionUID = 0L;
     return partition_ != null;
   }
   /**
+   *
+   *
    * <pre>
    * The partition to read changes from.
    * </pre>
    *
    * <code>.google.bigtable.v2.StreamPartition partition = 3;</code>
+   *
    * @return The partition.
    */
   @java.lang.Override
   public com.google.bigtable.v2.StreamPartition getPartition() {
-    return partition_ == null ? com.google.bigtable.v2.StreamPartition.getDefaultInstance() : partition_;
+    return partition_ == null
+        ? com.google.bigtable.v2.StreamPartition.getDefaultInstance()
+        : partition_;
   }
   /**
+   *
+   *
    * <pre>
    * The partition to read changes from.
    * </pre>
@@ -243,11 +277,15 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public com.google.bigtable.v2.StreamPartitionOrBuilder getPartitionOrBuilder() {
-    return getPartition();
+    return partition_ == null
+        ? com.google.bigtable.v2.StreamPartition.getDefaultInstance()
+        : partition_;
   }
 
   public static final int START_TIME_FIELD_NUMBER = 4;
   /**
+   *
+   *
    * <pre>
    * Start reading the stream at the specified timestamp. This timestamp must
    * be within the change stream retention period, less than or equal to the
@@ -256,6 +294,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>.google.protobuf.Timestamp start_time = 4;</code>
+   *
    * @return Whether the startTime field is set.
    */
   @java.lang.Override
@@ -263,6 +302,8 @@ private static final long serialVersionUID = 0L;
     return startFromCase_ == 4;
   }
   /**
+   *
+   *
    * <pre>
    * Start reading the stream at the specified timestamp. This timestamp must
    * be within the change stream retention period, less than or equal to the
@@ -271,16 +312,19 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>.google.protobuf.Timestamp start_time = 4;</code>
+   *
    * @return The startTime.
    */
   @java.lang.Override
   public com.google.protobuf.Timestamp getStartTime() {
     if (startFromCase_ == 4) {
-       return (com.google.protobuf.Timestamp) startFrom_;
+      return (com.google.protobuf.Timestamp) startFrom_;
     }
     return com.google.protobuf.Timestamp.getDefaultInstance();
   }
   /**
+   *
+   *
    * <pre>
    * Start reading the stream at the specified timestamp. This timestamp must
    * be within the change stream retention period, less than or equal to the
@@ -293,13 +337,15 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public com.google.protobuf.TimestampOrBuilder getStartTimeOrBuilder() {
     if (startFromCase_ == 4) {
-       return (com.google.protobuf.Timestamp) startFrom_;
+      return (com.google.protobuf.Timestamp) startFrom_;
     }
     return com.google.protobuf.Timestamp.getDefaultInstance();
   }
 
   public static final int CONTINUATION_TOKENS_FIELD_NUMBER = 6;
   /**
+   *
+   *
    * <pre>
    * Tokens that describe how to resume reading a stream where reading
    * previously left off. If specified, changes will be read starting at the
@@ -313,6 +359,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>.google.bigtable.v2.StreamContinuationTokens continuation_tokens = 6;</code>
+   *
    * @return Whether the continuationTokens field is set.
    */
   @java.lang.Override
@@ -320,6 +367,8 @@ private static final long serialVersionUID = 0L;
     return startFromCase_ == 6;
   }
   /**
+   *
+   *
    * <pre>
    * Tokens that describe how to resume reading a stream where reading
    * previously left off. If specified, changes will be read starting at the
@@ -333,16 +382,19 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>.google.bigtable.v2.StreamContinuationTokens continuation_tokens = 6;</code>
+   *
    * @return The continuationTokens.
    */
   @java.lang.Override
   public com.google.bigtable.v2.StreamContinuationTokens getContinuationTokens() {
     if (startFromCase_ == 6) {
-       return (com.google.bigtable.v2.StreamContinuationTokens) startFrom_;
+      return (com.google.bigtable.v2.StreamContinuationTokens) startFrom_;
     }
     return com.google.bigtable.v2.StreamContinuationTokens.getDefaultInstance();
   }
   /**
+   *
+   *
    * <pre>
    * Tokens that describe how to resume reading a stream where reading
    * previously left off. If specified, changes will be read starting at the
@@ -360,7 +412,7 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public com.google.bigtable.v2.StreamContinuationTokensOrBuilder getContinuationTokensOrBuilder() {
     if (startFromCase_ == 6) {
-       return (com.google.bigtable.v2.StreamContinuationTokens) startFrom_;
+      return (com.google.bigtable.v2.StreamContinuationTokens) startFrom_;
     }
     return com.google.bigtable.v2.StreamContinuationTokens.getDefaultInstance();
   }
@@ -368,6 +420,8 @@ private static final long serialVersionUID = 0L;
   public static final int END_TIME_FIELD_NUMBER = 5;
   private com.google.protobuf.Timestamp endTime_;
   /**
+   *
+   *
    * <pre>
    * If specified, OK will be returned when the stream advances beyond
    * this time. Otherwise, changes will be continuously delivered on the stream.
@@ -375,6 +429,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>.google.protobuf.Timestamp end_time = 5;</code>
+   *
    * @return Whether the endTime field is set.
    */
   @java.lang.Override
@@ -382,6 +437,8 @@ private static final long serialVersionUID = 0L;
     return endTime_ != null;
   }
   /**
+   *
+   *
    * <pre>
    * If specified, OK will be returned when the stream advances beyond
    * this time. Otherwise, changes will be continuously delivered on the stream.
@@ -389,6 +446,7 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>.google.protobuf.Timestamp end_time = 5;</code>
+   *
    * @return The endTime.
    */
   @java.lang.Override
@@ -396,6 +454,8 @@ private static final long serialVersionUID = 0L;
     return endTime_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : endTime_;
   }
   /**
+   *
+   *
    * <pre>
    * If specified, OK will be returned when the stream advances beyond
    * this time. Otherwise, changes will be continuously delivered on the stream.
@@ -406,18 +466,21 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public com.google.protobuf.TimestampOrBuilder getEndTimeOrBuilder() {
-    return getEndTime();
+    return endTime_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : endTime_;
   }
 
   public static final int HEARTBEAT_DURATION_FIELD_NUMBER = 7;
   private com.google.protobuf.Duration heartbeatDuration_;
   /**
+   *
+   *
    * <pre>
    * If specified, the duration between `Heartbeat` messages on the stream.
    * Otherwise, defaults to 5 seconds.
    * </pre>
    *
    * <code>.google.protobuf.Duration heartbeat_duration = 7;</code>
+   *
    * @return Whether the heartbeatDuration field is set.
    */
   @java.lang.Override
@@ -425,19 +488,26 @@ private static final long serialVersionUID = 0L;
     return heartbeatDuration_ != null;
   }
   /**
+   *
+   *
    * <pre>
    * If specified, the duration between `Heartbeat` messages on the stream.
    * Otherwise, defaults to 5 seconds.
    * </pre>
    *
    * <code>.google.protobuf.Duration heartbeat_duration = 7;</code>
+   *
    * @return The heartbeatDuration.
    */
   @java.lang.Override
   public com.google.protobuf.Duration getHeartbeatDuration() {
-    return heartbeatDuration_ == null ? com.google.protobuf.Duration.getDefaultInstance() : heartbeatDuration_;
+    return heartbeatDuration_ == null
+        ? com.google.protobuf.Duration.getDefaultInstance()
+        : heartbeatDuration_;
   }
   /**
+   *
+   *
    * <pre>
    * If specified, the duration between `Heartbeat` messages on the stream.
    * Otherwise, defaults to 5 seconds.
@@ -447,10 +517,13 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public com.google.protobuf.DurationOrBuilder getHeartbeatDurationOrBuilder() {
-    return getHeartbeatDuration();
+    return heartbeatDuration_ == null
+        ? com.google.protobuf.Duration.getDefaultInstance()
+        : heartbeatDuration_;
   }
 
   private byte memoizedIsInitialized = -1;
+
   @java.lang.Override
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
@@ -462,8 +535,7 @@ private static final long serialVersionUID = 0L;
   }
 
   @java.lang.Override
-  public void writeTo(com.google.protobuf.CodedOutputStream output)
-                      throws java.io.IOException {
+  public void writeTo(com.google.protobuf.CodedOutputStream output) throws java.io.IOException {
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(tableName_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, tableName_);
     }
@@ -501,24 +573,23 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, appProfileId_);
     }
     if (partition_ != null) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(3, getPartition());
+      size += com.google.protobuf.CodedOutputStream.computeMessageSize(3, getPartition());
     }
     if (startFromCase_ == 4) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(4, (com.google.protobuf.Timestamp) startFrom_);
+      size +=
+          com.google.protobuf.CodedOutputStream.computeMessageSize(
+              4, (com.google.protobuf.Timestamp) startFrom_);
     }
     if (endTime_ != null) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(5, getEndTime());
+      size += com.google.protobuf.CodedOutputStream.computeMessageSize(5, getEndTime());
     }
     if (startFromCase_ == 6) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(6, (com.google.bigtable.v2.StreamContinuationTokens) startFrom_);
+      size +=
+          com.google.protobuf.CodedOutputStream.computeMessageSize(
+              6, (com.google.bigtable.v2.StreamContinuationTokens) startFrom_);
     }
     if (heartbeatDuration_ != null) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(7, getHeartbeatDuration());
+      size += com.google.protobuf.CodedOutputStream.computeMessageSize(7, getHeartbeatDuration());
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -528,41 +599,35 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public boolean equals(final java.lang.Object obj) {
     if (obj == this) {
-     return true;
+      return true;
     }
     if (!(obj instanceof com.google.bigtable.v2.ReadChangeStreamRequest)) {
       return super.equals(obj);
     }
-    com.google.bigtable.v2.ReadChangeStreamRequest other = (com.google.bigtable.v2.ReadChangeStreamRequest) obj;
+    com.google.bigtable.v2.ReadChangeStreamRequest other =
+        (com.google.bigtable.v2.ReadChangeStreamRequest) obj;
 
-    if (!getTableName()
-        .equals(other.getTableName())) return false;
-    if (!getAppProfileId()
-        .equals(other.getAppProfileId())) return false;
+    if (!getTableName().equals(other.getTableName())) return false;
+    if (!getAppProfileId().equals(other.getAppProfileId())) return false;
     if (hasPartition() != other.hasPartition()) return false;
     if (hasPartition()) {
-      if (!getPartition()
-          .equals(other.getPartition())) return false;
+      if (!getPartition().equals(other.getPartition())) return false;
     }
     if (hasEndTime() != other.hasEndTime()) return false;
     if (hasEndTime()) {
-      if (!getEndTime()
-          .equals(other.getEndTime())) return false;
+      if (!getEndTime().equals(other.getEndTime())) return false;
     }
     if (hasHeartbeatDuration() != other.hasHeartbeatDuration()) return false;
     if (hasHeartbeatDuration()) {
-      if (!getHeartbeatDuration()
-          .equals(other.getHeartbeatDuration())) return false;
+      if (!getHeartbeatDuration().equals(other.getHeartbeatDuration())) return false;
     }
     if (!getStartFromCase().equals(other.getStartFromCase())) return false;
     switch (startFromCase_) {
       case 4:
-        if (!getStartTime()
-            .equals(other.getStartTime())) return false;
+        if (!getStartTime().equals(other.getStartTime())) return false;
         break;
       case 6:
-        if (!getContinuationTokens()
-            .equals(other.getContinuationTokens())) return false;
+        if (!getContinuationTokens().equals(other.getContinuationTokens())) return false;
         break;
       case 0:
       default:
@@ -611,142 +676,146 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static com.google.bigtable.v2.ReadChangeStreamRequest parseFrom(
-      java.nio.ByteBuffer data)
+  public static com.google.bigtable.v2.ReadChangeStreamRequest parseFrom(java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
+
   public static com.google.bigtable.v2.ReadChangeStreamRequest parseFrom(
-      java.nio.ByteBuffer data,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+      java.nio.ByteBuffer data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
+
   public static com.google.bigtable.v2.ReadChangeStreamRequest parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
+
   public static com.google.bigtable.v2.ReadChangeStreamRequest parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
+
   public static com.google.bigtable.v2.ReadChangeStreamRequest parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
+
   public static com.google.bigtable.v2.ReadChangeStreamRequest parseFrom(
-      byte[] data,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+      byte[] data, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
+
   public static com.google.bigtable.v2.ReadChangeStreamRequest parseFrom(java.io.InputStream input)
       throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input);
+    return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
   }
+
   public static com.google.bigtable.v2.ReadChangeStreamRequest parseFrom(
-      java.io.InputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+      java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input, extensionRegistry);
+    return com.google.protobuf.GeneratedMessageV3.parseWithIOException(
+        PARSER, input, extensionRegistry);
   }
-  public static com.google.bigtable.v2.ReadChangeStreamRequest parseDelimitedFrom(java.io.InputStream input)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseDelimitedWithIOException(PARSER, input);
-  }
+
   public static com.google.bigtable.v2.ReadChangeStreamRequest parseDelimitedFrom(
-      java.io.InputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      java.io.InputStream input) throws java.io.IOException {
+    return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(PARSER, input);
   }
+
+  public static com.google.bigtable.v2.ReadChangeStreamRequest parseDelimitedFrom(
+      java.io.InputStream input, com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+      throws java.io.IOException {
+    return com.google.protobuf.GeneratedMessageV3.parseDelimitedWithIOException(
+        PARSER, input, extensionRegistry);
+  }
+
   public static com.google.bigtable.v2.ReadChangeStreamRequest parseFrom(
-      com.google.protobuf.CodedInputStream input)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input);
+      com.google.protobuf.CodedInputStream input) throws java.io.IOException {
+    return com.google.protobuf.GeneratedMessageV3.parseWithIOException(PARSER, input);
   }
+
   public static com.google.bigtable.v2.ReadChangeStreamRequest parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input, extensionRegistry);
+    return com.google.protobuf.GeneratedMessageV3.parseWithIOException(
+        PARSER, input, extensionRegistry);
   }
 
   @java.lang.Override
-  public Builder newBuilderForType() { return newBuilder(); }
+  public Builder newBuilderForType() {
+    return newBuilder();
+  }
+
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
+
   public static Builder newBuilder(com.google.bigtable.v2.ReadChangeStreamRequest prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
+
   @java.lang.Override
   public Builder toBuilder() {
-    return this == DEFAULT_INSTANCE
-        ? new Builder() : new Builder().mergeFrom(this);
+    return this == DEFAULT_INSTANCE ? new Builder() : new Builder().mergeFrom(this);
   }
 
   @java.lang.Override
-  protected Builder newBuilderForType(
-      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+  protected Builder newBuilderForType(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
     Builder builder = new Builder(parent);
     return builder;
   }
   /**
+   *
+   *
    * <pre>
-   * NOTE: This API is not generally available. Users must be allowlisted.
+   * NOTE: This API is intended to be used by Apache Beam BigtableIO.
    * Request message for Bigtable.ReadChangeStream.
    * </pre>
    *
    * Protobuf type {@code google.bigtable.v2.ReadChangeStreamRequest}
    */
-  public static final class Builder extends
-      com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+  public static final class Builder extends com.google.protobuf.GeneratedMessageV3.Builder<Builder>
+      implements
       // @@protoc_insertion_point(builder_implements:google.bigtable.v2.ReadChangeStreamRequest)
       com.google.bigtable.v2.ReadChangeStreamRequestOrBuilder {
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.google.bigtable.v2.BigtableProto.internal_static_google_bigtable_v2_ReadChangeStreamRequest_descriptor;
+    public static final com.google.protobuf.Descriptors.Descriptor getDescriptor() {
+      return com.google.bigtable.v2.BigtableProto
+          .internal_static_google_bigtable_v2_ReadChangeStreamRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.google.bigtable.v2.BigtableProto.internal_static_google_bigtable_v2_ReadChangeStreamRequest_fieldAccessorTable
+      return com.google.bigtable.v2.BigtableProto
+          .internal_static_google_bigtable_v2_ReadChangeStreamRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.google.bigtable.v2.ReadChangeStreamRequest.class, com.google.bigtable.v2.ReadChangeStreamRequest.Builder.class);
+              com.google.bigtable.v2.ReadChangeStreamRequest.class,
+              com.google.bigtable.v2.ReadChangeStreamRequest.Builder.class);
     }
 
     // Construct using com.google.bigtable.v2.ReadChangeStreamRequest.newBuilder()
-    private Builder() {
+    private Builder() {}
 
-    }
-
-    private Builder(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+    private Builder(com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-
     }
+
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       tableName_ = "";
-
       appProfileId_ = "";
-
-      if (partitionBuilder_ == null) {
-        partition_ = null;
-      } else {
-        partition_ = null;
+      partition_ = null;
+      if (partitionBuilder_ != null) {
+        partitionBuilder_.dispose();
         partitionBuilder_ = null;
       }
       if (startTimeBuilder_ != null) {
@@ -755,16 +824,14 @@ private static final long serialVersionUID = 0L;
       if (continuationTokensBuilder_ != null) {
         continuationTokensBuilder_.clear();
       }
-      if (endTimeBuilder_ == null) {
-        endTime_ = null;
-      } else {
-        endTime_ = null;
+      endTime_ = null;
+      if (endTimeBuilder_ != null) {
+        endTimeBuilder_.dispose();
         endTimeBuilder_ = null;
       }
-      if (heartbeatDurationBuilder_ == null) {
-        heartbeatDuration_ = null;
-      } else {
-        heartbeatDuration_ = null;
+      heartbeatDuration_ = null;
+      if (heartbeatDurationBuilder_ != null) {
+        heartbeatDurationBuilder_.dispose();
         heartbeatDurationBuilder_ = null;
       }
       startFromCase_ = 0;
@@ -773,9 +840,9 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Descriptors.Descriptor
-        getDescriptorForType() {
-      return com.google.bigtable.v2.BigtableProto.internal_static_google_bigtable_v2_ReadChangeStreamRequest_descriptor;
+    public com.google.protobuf.Descriptors.Descriptor getDescriptorForType() {
+      return com.google.bigtable.v2.BigtableProto
+          .internal_static_google_bigtable_v2_ReadChangeStreamRequest_descriptor;
     }
 
     @java.lang.Override
@@ -794,79 +861,86 @@ private static final long serialVersionUID = 0L;
 
     @java.lang.Override
     public com.google.bigtable.v2.ReadChangeStreamRequest buildPartial() {
-      com.google.bigtable.v2.ReadChangeStreamRequest result = new com.google.bigtable.v2.ReadChangeStreamRequest(this);
-      result.tableName_ = tableName_;
-      result.appProfileId_ = appProfileId_;
-      if (partitionBuilder_ == null) {
-        result.partition_ = partition_;
-      } else {
-        result.partition_ = partitionBuilder_.build();
+      com.google.bigtable.v2.ReadChangeStreamRequest result =
+          new com.google.bigtable.v2.ReadChangeStreamRequest(this);
+      if (bitField0_ != 0) {
+        buildPartial0(result);
       }
-      if (startFromCase_ == 4) {
-        if (startTimeBuilder_ == null) {
-          result.startFrom_ = startFrom_;
-        } else {
-          result.startFrom_ = startTimeBuilder_.build();
-        }
-      }
-      if (startFromCase_ == 6) {
-        if (continuationTokensBuilder_ == null) {
-          result.startFrom_ = startFrom_;
-        } else {
-          result.startFrom_ = continuationTokensBuilder_.build();
-        }
-      }
-      if (endTimeBuilder_ == null) {
-        result.endTime_ = endTime_;
-      } else {
-        result.endTime_ = endTimeBuilder_.build();
-      }
-      if (heartbeatDurationBuilder_ == null) {
-        result.heartbeatDuration_ = heartbeatDuration_;
-      } else {
-        result.heartbeatDuration_ = heartbeatDurationBuilder_.build();
-      }
-      result.startFromCase_ = startFromCase_;
+      buildPartialOneofs(result);
       onBuilt();
       return result;
+    }
+
+    private void buildPartial0(com.google.bigtable.v2.ReadChangeStreamRequest result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.tableName_ = tableName_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.appProfileId_ = appProfileId_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.partition_ = partitionBuilder_ == null ? partition_ : partitionBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.endTime_ = endTimeBuilder_ == null ? endTime_ : endTimeBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.heartbeatDuration_ =
+            heartbeatDurationBuilder_ == null
+                ? heartbeatDuration_
+                : heartbeatDurationBuilder_.build();
+      }
+    }
+
+    private void buildPartialOneofs(com.google.bigtable.v2.ReadChangeStreamRequest result) {
+      result.startFromCase_ = startFromCase_;
+      result.startFrom_ = this.startFrom_;
+      if (startFromCase_ == 4 && startTimeBuilder_ != null) {
+        result.startFrom_ = startTimeBuilder_.build();
+      }
+      if (startFromCase_ == 6 && continuationTokensBuilder_ != null) {
+        result.startFrom_ = continuationTokensBuilder_.build();
+      }
     }
 
     @java.lang.Override
     public Builder clone() {
       return super.clone();
     }
+
     @java.lang.Override
     public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
+        com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
       return super.setField(field, value);
     }
+
     @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
+    public Builder clearField(com.google.protobuf.Descriptors.FieldDescriptor field) {
       return super.clearField(field);
     }
+
     @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+    public Builder clearOneof(com.google.protobuf.Descriptors.OneofDescriptor oneof) {
       return super.clearOneof(oneof);
     }
+
     @java.lang.Override
     public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
+        com.google.protobuf.Descriptors.FieldDescriptor field, int index, java.lang.Object value) {
       return super.setRepeatedField(field, index, value);
     }
+
     @java.lang.Override
     public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
+        com.google.protobuf.Descriptors.FieldDescriptor field, java.lang.Object value) {
       return super.addRepeatedField(field, value);
     }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.bigtable.v2.ReadChangeStreamRequest) {
-        return mergeFrom((com.google.bigtable.v2.ReadChangeStreamRequest)other);
+        return mergeFrom((com.google.bigtable.v2.ReadChangeStreamRequest) other);
       } else {
         super.mergeFrom(other);
         return this;
@@ -877,10 +951,12 @@ private static final long serialVersionUID = 0L;
       if (other == com.google.bigtable.v2.ReadChangeStreamRequest.getDefaultInstance()) return this;
       if (!other.getTableName().isEmpty()) {
         tableName_ = other.tableName_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (!other.getAppProfileId().isEmpty()) {
         appProfileId_ = other.appProfileId_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasPartition()) {
@@ -893,17 +969,20 @@ private static final long serialVersionUID = 0L;
         mergeHeartbeatDuration(other.getHeartbeatDuration());
       }
       switch (other.getStartFromCase()) {
-        case START_TIME: {
-          mergeStartTime(other.getStartTime());
-          break;
-        }
-        case CONTINUATION_TOKENS: {
-          mergeContinuationTokens(other.getContinuationTokens());
-          break;
-        }
-        case STARTFROM_NOT_SET: {
-          break;
-        }
+        case START_TIME:
+          {
+            mergeStartTime(other.getStartTime());
+            break;
+          }
+        case CONTINUATION_TOKENS:
+          {
+            mergeContinuationTokens(other.getContinuationTokens());
+            break;
+          }
+        case STARTFROM_NOT_SET:
+          {
+            break;
+          }
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -931,57 +1010,57 @@ private static final long serialVersionUID = 0L;
             case 0:
               done = true;
               break;
-            case 10: {
-              tableName_ = input.readStringRequireUtf8();
-
-              break;
-            } // case 10
-            case 18: {
-              appProfileId_ = input.readStringRequireUtf8();
-
-              break;
-            } // case 18
-            case 26: {
-              input.readMessage(
-                  getPartitionFieldBuilder().getBuilder(),
-                  extensionRegistry);
-
-              break;
-            } // case 26
-            case 34: {
-              input.readMessage(
-                  getStartTimeFieldBuilder().getBuilder(),
-                  extensionRegistry);
-              startFromCase_ = 4;
-              break;
-            } // case 34
-            case 42: {
-              input.readMessage(
-                  getEndTimeFieldBuilder().getBuilder(),
-                  extensionRegistry);
-
-              break;
-            } // case 42
-            case 50: {
-              input.readMessage(
-                  getContinuationTokensFieldBuilder().getBuilder(),
-                  extensionRegistry);
-              startFromCase_ = 6;
-              break;
-            } // case 50
-            case 58: {
-              input.readMessage(
-                  getHeartbeatDurationFieldBuilder().getBuilder(),
-                  extensionRegistry);
-
-              break;
-            } // case 58
-            default: {
-              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
-                done = true; // was an endgroup tag
-              }
-              break;
-            } // default:
+            case 10:
+              {
+                tableName_ = input.readStringRequireUtf8();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 10
+            case 18:
+              {
+                appProfileId_ = input.readStringRequireUtf8();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 18
+            case 26:
+              {
+                input.readMessage(getPartitionFieldBuilder().getBuilder(), extensionRegistry);
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 26
+            case 34:
+              {
+                input.readMessage(getStartTimeFieldBuilder().getBuilder(), extensionRegistry);
+                startFromCase_ = 4;
+                break;
+              } // case 34
+            case 42:
+              {
+                input.readMessage(getEndTimeFieldBuilder().getBuilder(), extensionRegistry);
+                bitField0_ |= 0x00000020;
+                break;
+              } // case 42
+            case 50:
+              {
+                input.readMessage(
+                    getContinuationTokensFieldBuilder().getBuilder(), extensionRegistry);
+                startFromCase_ = 6;
+                break;
+              } // case 50
+            case 58:
+              {
+                input.readMessage(
+                    getHeartbeatDurationFieldBuilder().getBuilder(), extensionRegistry);
+                bitField0_ |= 0x00000040;
+                break;
+              } // case 58
+            default:
+              {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
           } // switch (tag)
         } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -991,12 +1070,12 @@ private static final long serialVersionUID = 0L;
       } // finally
       return this;
     }
+
     private int startFromCase_ = 0;
     private java.lang.Object startFrom_;
-    public StartFromCase
-        getStartFromCase() {
-      return StartFromCase.forNumber(
-          startFromCase_);
+
+    public StartFromCase getStartFromCase() {
+      return StartFromCase.forNumber(startFromCase_);
     }
 
     public Builder clearStartFrom() {
@@ -1006,9 +1085,12 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private int bitField0_;
 
     private java.lang.Object tableName_ = "";
     /**
+     *
+     *
      * <pre>
      * Required. The unique name of the table from which to read a change stream.
      * Values are of the form
@@ -1016,14 +1098,16 @@ private static final long serialVersionUID = 0L;
      * Change streaming must be enabled on the table.
      * </pre>
      *
-     * <code>string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>
+     * <code>
+     * string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
      * @return The tableName.
      */
     public java.lang.String getTableName() {
       java.lang.Object ref = tableName_;
       if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         tableName_ = s;
         return s;
@@ -1032,6 +1116,8 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     *
+     *
      * <pre>
      * Required. The unique name of the table from which to read a change stream.
      * Values are of the form
@@ -1039,16 +1125,17 @@ private static final long serialVersionUID = 0L;
      * Change streaming must be enabled on the table.
      * </pre>
      *
-     * <code>string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>
+     * <code>
+     * string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
      * @return The bytes for tableName.
      */
-    public com.google.protobuf.ByteString
-        getTableNameBytes() {
+    public com.google.protobuf.ByteString getTableNameBytes() {
       java.lang.Object ref = tableName_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+            com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
         tableName_ = b;
         return b;
       } else {
@@ -1056,6 +1143,8 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     *
+     *
      * <pre>
      * Required. The unique name of the table from which to read a change stream.
      * Values are of the form
@@ -1063,21 +1152,25 @@ private static final long serialVersionUID = 0L;
      * Change streaming must be enabled on the table.
      * </pre>
      *
-     * <code>string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>
+     * <code>
+     * string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
      * @param value The tableName to set.
      * @return This builder for chaining.
      */
-    public Builder setTableName(
-        java.lang.String value) {
+    public Builder setTableName(java.lang.String value) {
       if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        throw new NullPointerException();
+      }
       tableName_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * Required. The unique name of the table from which to read a change stream.
      * Values are of the form
@@ -1085,16 +1178,21 @@ private static final long serialVersionUID = 0L;
      * Change streaming must be enabled on the table.
      * </pre>
      *
-     * <code>string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>
+     * <code>
+     * string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
      * @return This builder for chaining.
      */
     public Builder clearTableName() {
-      
       tableName_ = getDefaultInstance().getTableName();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * Required. The unique name of the table from which to read a change stream.
      * Values are of the form
@@ -1102,24 +1200,28 @@ private static final long serialVersionUID = 0L;
      * Change streaming must be enabled on the table.
      * </pre>
      *
-     * <code>string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>
+     * <code>
+     * string table_name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }
+     * </code>
+     *
      * @param value The bytes for tableName to set.
      * @return This builder for chaining.
      */
-    public Builder setTableNameBytes(
-        com.google.protobuf.ByteString value) {
+    public Builder setTableNameBytes(com.google.protobuf.ByteString value) {
       if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+        throw new NullPointerException();
+      }
+      checkByteStringIsUtf8(value);
       tableName_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
 
     private java.lang.Object appProfileId_ = "";
     /**
+     *
+     *
      * <pre>
      * This value specifies routing for replication. If not specified, the
      * "default" application profile will be used.
@@ -1127,13 +1229,13 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>string app_profile_id = 2;</code>
+     *
      * @return The appProfileId.
      */
     public java.lang.String getAppProfileId() {
       java.lang.Object ref = appProfileId_;
       if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs = (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         appProfileId_ = s;
         return s;
@@ -1142,6 +1244,8 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     *
+     *
      * <pre>
      * This value specifies routing for replication. If not specified, the
      * "default" application profile will be used.
@@ -1149,15 +1253,14 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>string app_profile_id = 2;</code>
+     *
      * @return The bytes for appProfileId.
      */
-    public com.google.protobuf.ByteString
-        getAppProfileIdBytes() {
+    public com.google.protobuf.ByteString getAppProfileIdBytes() {
       java.lang.Object ref = appProfileId_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+            com.google.protobuf.ByteString.copyFromUtf8((java.lang.String) ref);
         appProfileId_ = b;
         return b;
       } else {
@@ -1165,6 +1268,8 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     *
+     *
      * <pre>
      * This value specifies routing for replication. If not specified, the
      * "default" application profile will be used.
@@ -1172,20 +1277,22 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>string app_profile_id = 2;</code>
+     *
      * @param value The appProfileId to set.
      * @return This builder for chaining.
      */
-    public Builder setAppProfileId(
-        java.lang.String value) {
+    public Builder setAppProfileId(java.lang.String value) {
       if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        throw new NullPointerException();
+      }
       appProfileId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * This value specifies routing for replication. If not specified, the
      * "default" application profile will be used.
@@ -1193,15 +1300,18 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>string app_profile_id = 2;</code>
+     *
      * @return This builder for chaining.
      */
     public Builder clearAppProfileId() {
-      
       appProfileId_ = getDefaultInstance().getAppProfileId();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * This value specifies routing for replication. If not specified, the
      * "default" application profile will be used.
@@ -1209,51 +1319,64 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>string app_profile_id = 2;</code>
+     *
      * @param value The bytes for appProfileId to set.
      * @return This builder for chaining.
      */
-    public Builder setAppProfileIdBytes(
-        com.google.protobuf.ByteString value) {
+    public Builder setAppProfileIdBytes(com.google.protobuf.ByteString value) {
       if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+        throw new NullPointerException();
+      }
+      checkByteStringIsUtf8(value);
       appProfileId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
 
     private com.google.bigtable.v2.StreamPartition partition_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.bigtable.v2.StreamPartition, com.google.bigtable.v2.StreamPartition.Builder, com.google.bigtable.v2.StreamPartitionOrBuilder> partitionBuilder_;
+            com.google.bigtable.v2.StreamPartition,
+            com.google.bigtable.v2.StreamPartition.Builder,
+            com.google.bigtable.v2.StreamPartitionOrBuilder>
+        partitionBuilder_;
     /**
+     *
+     *
      * <pre>
      * The partition to read changes from.
      * </pre>
      *
      * <code>.google.bigtable.v2.StreamPartition partition = 3;</code>
+     *
      * @return Whether the partition field is set.
      */
     public boolean hasPartition() {
-      return partitionBuilder_ != null || partition_ != null;
+      return ((bitField0_ & 0x00000004) != 0);
     }
     /**
+     *
+     *
      * <pre>
      * The partition to read changes from.
      * </pre>
      *
      * <code>.google.bigtable.v2.StreamPartition partition = 3;</code>
+     *
      * @return The partition.
      */
     public com.google.bigtable.v2.StreamPartition getPartition() {
       if (partitionBuilder_ == null) {
-        return partition_ == null ? com.google.bigtable.v2.StreamPartition.getDefaultInstance() : partition_;
+        return partition_ == null
+            ? com.google.bigtable.v2.StreamPartition.getDefaultInstance()
+            : partition_;
       } else {
         return partitionBuilder_.getMessage();
       }
     }
     /**
+     *
+     *
      * <pre>
      * The partition to read changes from.
      * </pre>
@@ -1266,32 +1389,35 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         partition_ = value;
-        onChanged();
       } else {
         partitionBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * The partition to read changes from.
      * </pre>
      *
      * <code>.google.bigtable.v2.StreamPartition partition = 3;</code>
      */
-    public Builder setPartition(
-        com.google.bigtable.v2.StreamPartition.Builder builderForValue) {
+    public Builder setPartition(com.google.bigtable.v2.StreamPartition.Builder builderForValue) {
       if (partitionBuilder_ == null) {
         partition_ = builderForValue.build();
-        onChanged();
       } else {
         partitionBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * The partition to read changes from.
      * </pre>
@@ -1300,20 +1426,23 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergePartition(com.google.bigtable.v2.StreamPartition value) {
       if (partitionBuilder_ == null) {
-        if (partition_ != null) {
-          partition_ =
-            com.google.bigtable.v2.StreamPartition.newBuilder(partition_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000004) != 0)
+            && partition_ != null
+            && partition_ != com.google.bigtable.v2.StreamPartition.getDefaultInstance()) {
+          getPartitionBuilder().mergeFrom(value);
         } else {
           partition_ = value;
         }
-        onChanged();
       } else {
         partitionBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * The partition to read changes from.
      * </pre>
@@ -1321,17 +1450,18 @@ private static final long serialVersionUID = 0L;
      * <code>.google.bigtable.v2.StreamPartition partition = 3;</code>
      */
     public Builder clearPartition() {
-      if (partitionBuilder_ == null) {
-        partition_ = null;
-        onChanged();
-      } else {
-        partition_ = null;
+      bitField0_ = (bitField0_ & ~0x00000004);
+      partition_ = null;
+      if (partitionBuilder_ != null) {
+        partitionBuilder_.dispose();
         partitionBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * The partition to read changes from.
      * </pre>
@@ -1339,11 +1469,13 @@ private static final long serialVersionUID = 0L;
      * <code>.google.bigtable.v2.StreamPartition partition = 3;</code>
      */
     public com.google.bigtable.v2.StreamPartition.Builder getPartitionBuilder() {
-      
+      bitField0_ |= 0x00000004;
       onChanged();
       return getPartitionFieldBuilder().getBuilder();
     }
     /**
+     *
+     *
      * <pre>
      * The partition to read changes from.
      * </pre>
@@ -1354,11 +1486,14 @@ private static final long serialVersionUID = 0L;
       if (partitionBuilder_ != null) {
         return partitionBuilder_.getMessageOrBuilder();
       } else {
-        return partition_ == null ?
-            com.google.bigtable.v2.StreamPartition.getDefaultInstance() : partition_;
+        return partition_ == null
+            ? com.google.bigtable.v2.StreamPartition.getDefaultInstance()
+            : partition_;
       }
     }
     /**
+     *
+     *
      * <pre>
      * The partition to read changes from.
      * </pre>
@@ -1366,22 +1501,30 @@ private static final long serialVersionUID = 0L;
      * <code>.google.bigtable.v2.StreamPartition partition = 3;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.bigtable.v2.StreamPartition, com.google.bigtable.v2.StreamPartition.Builder, com.google.bigtable.v2.StreamPartitionOrBuilder> 
+            com.google.bigtable.v2.StreamPartition,
+            com.google.bigtable.v2.StreamPartition.Builder,
+            com.google.bigtable.v2.StreamPartitionOrBuilder>
         getPartitionFieldBuilder() {
       if (partitionBuilder_ == null) {
-        partitionBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.google.bigtable.v2.StreamPartition, com.google.bigtable.v2.StreamPartition.Builder, com.google.bigtable.v2.StreamPartitionOrBuilder>(
-                getPartition(),
-                getParentForChildren(),
-                isClean());
+        partitionBuilder_ =
+            new com.google.protobuf.SingleFieldBuilderV3<
+                com.google.bigtable.v2.StreamPartition,
+                com.google.bigtable.v2.StreamPartition.Builder,
+                com.google.bigtable.v2.StreamPartitionOrBuilder>(
+                getPartition(), getParentForChildren(), isClean());
         partition_ = null;
       }
       return partitionBuilder_;
     }
 
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> startTimeBuilder_;
+            com.google.protobuf.Timestamp,
+            com.google.protobuf.Timestamp.Builder,
+            com.google.protobuf.TimestampOrBuilder>
+        startTimeBuilder_;
     /**
+     *
+     *
      * <pre>
      * Start reading the stream at the specified timestamp. This timestamp must
      * be within the change stream retention period, less than or equal to the
@@ -1390,6 +1533,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>.google.protobuf.Timestamp start_time = 4;</code>
+     *
      * @return Whether the startTime field is set.
      */
     @java.lang.Override
@@ -1397,6 +1541,8 @@ private static final long serialVersionUID = 0L;
       return startFromCase_ == 4;
     }
     /**
+     *
+     *
      * <pre>
      * Start reading the stream at the specified timestamp. This timestamp must
      * be within the change stream retention period, less than or equal to the
@@ -1405,6 +1551,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>.google.protobuf.Timestamp start_time = 4;</code>
+     *
      * @return The startTime.
      */
     @java.lang.Override
@@ -1422,6 +1569,8 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     *
+     *
      * <pre>
      * Start reading the stream at the specified timestamp. This timestamp must
      * be within the change stream retention period, less than or equal to the
@@ -1445,6 +1594,8 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * Start reading the stream at the specified timestamp. This timestamp must
      * be within the change stream retention period, less than or equal to the
@@ -1454,8 +1605,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.google.protobuf.Timestamp start_time = 4;</code>
      */
-    public Builder setStartTime(
-        com.google.protobuf.Timestamp.Builder builderForValue) {
+    public Builder setStartTime(com.google.protobuf.Timestamp.Builder builderForValue) {
       if (startTimeBuilder_ == null) {
         startFrom_ = builderForValue.build();
         onChanged();
@@ -1466,6 +1616,8 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * Start reading the stream at the specified timestamp. This timestamp must
      * be within the change stream retention period, less than or equal to the
@@ -1477,10 +1629,12 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeStartTime(com.google.protobuf.Timestamp value) {
       if (startTimeBuilder_ == null) {
-        if (startFromCase_ == 4 &&
-            startFrom_ != com.google.protobuf.Timestamp.getDefaultInstance()) {
-          startFrom_ = com.google.protobuf.Timestamp.newBuilder((com.google.protobuf.Timestamp) startFrom_)
-              .mergeFrom(value).buildPartial();
+        if (startFromCase_ == 4
+            && startFrom_ != com.google.protobuf.Timestamp.getDefaultInstance()) {
+          startFrom_ =
+              com.google.protobuf.Timestamp.newBuilder((com.google.protobuf.Timestamp) startFrom_)
+                  .mergeFrom(value)
+                  .buildPartial();
         } else {
           startFrom_ = value;
         }
@@ -1496,6 +1650,8 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * Start reading the stream at the specified timestamp. This timestamp must
      * be within the change stream retention period, less than or equal to the
@@ -1522,6 +1678,8 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * Start reading the stream at the specified timestamp. This timestamp must
      * be within the change stream retention period, less than or equal to the
@@ -1535,6 +1693,8 @@ private static final long serialVersionUID = 0L;
       return getStartTimeFieldBuilder().getBuilder();
     }
     /**
+     *
+     *
      * <pre>
      * Start reading the stream at the specified timestamp. This timestamp must
      * be within the change stream retention period, less than or equal to the
@@ -1556,6 +1716,8 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     *
+     *
      * <pre>
      * Start reading the stream at the specified timestamp. This timestamp must
      * be within the change stream retention period, less than or equal to the
@@ -1566,27 +1728,35 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Timestamp start_time = 4;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> 
+            com.google.protobuf.Timestamp,
+            com.google.protobuf.Timestamp.Builder,
+            com.google.protobuf.TimestampOrBuilder>
         getStartTimeFieldBuilder() {
       if (startTimeBuilder_ == null) {
         if (!(startFromCase_ == 4)) {
           startFrom_ = com.google.protobuf.Timestamp.getDefaultInstance();
         }
-        startTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(
-                (com.google.protobuf.Timestamp) startFrom_,
-                getParentForChildren(),
-                isClean());
+        startTimeBuilder_ =
+            new com.google.protobuf.SingleFieldBuilderV3<
+                com.google.protobuf.Timestamp,
+                com.google.protobuf.Timestamp.Builder,
+                com.google.protobuf.TimestampOrBuilder>(
+                (com.google.protobuf.Timestamp) startFrom_, getParentForChildren(), isClean());
         startFrom_ = null;
       }
       startFromCase_ = 4;
-      onChanged();;
+      onChanged();
       return startTimeBuilder_;
     }
 
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.bigtable.v2.StreamContinuationTokens, com.google.bigtable.v2.StreamContinuationTokens.Builder, com.google.bigtable.v2.StreamContinuationTokensOrBuilder> continuationTokensBuilder_;
+            com.google.bigtable.v2.StreamContinuationTokens,
+            com.google.bigtable.v2.StreamContinuationTokens.Builder,
+            com.google.bigtable.v2.StreamContinuationTokensOrBuilder>
+        continuationTokensBuilder_;
     /**
+     *
+     *
      * <pre>
      * Tokens that describe how to resume reading a stream where reading
      * previously left off. If specified, changes will be read starting at the
@@ -1600,6 +1770,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>.google.bigtable.v2.StreamContinuationTokens continuation_tokens = 6;</code>
+     *
      * @return Whether the continuationTokens field is set.
      */
     @java.lang.Override
@@ -1607,6 +1778,8 @@ private static final long serialVersionUID = 0L;
       return startFromCase_ == 6;
     }
     /**
+     *
+     *
      * <pre>
      * Tokens that describe how to resume reading a stream where reading
      * previously left off. If specified, changes will be read starting at the
@@ -1620,6 +1793,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>.google.bigtable.v2.StreamContinuationTokens continuation_tokens = 6;</code>
+     *
      * @return The continuationTokens.
      */
     @java.lang.Override
@@ -1637,6 +1811,8 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     *
+     *
      * <pre>
      * Tokens that describe how to resume reading a stream where reading
      * previously left off. If specified, changes will be read starting at the
@@ -1665,6 +1841,8 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * Tokens that describe how to resume reading a stream where reading
      * previously left off. If specified, changes will be read starting at the
@@ -1691,6 +1869,8 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * Tokens that describe how to resume reading a stream where reading
      * previously left off. If specified, changes will be read starting at the
@@ -1707,10 +1887,13 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeContinuationTokens(com.google.bigtable.v2.StreamContinuationTokens value) {
       if (continuationTokensBuilder_ == null) {
-        if (startFromCase_ == 6 &&
-            startFrom_ != com.google.bigtable.v2.StreamContinuationTokens.getDefaultInstance()) {
-          startFrom_ = com.google.bigtable.v2.StreamContinuationTokens.newBuilder((com.google.bigtable.v2.StreamContinuationTokens) startFrom_)
-              .mergeFrom(value).buildPartial();
+        if (startFromCase_ == 6
+            && startFrom_ != com.google.bigtable.v2.StreamContinuationTokens.getDefaultInstance()) {
+          startFrom_ =
+              com.google.bigtable.v2.StreamContinuationTokens.newBuilder(
+                      (com.google.bigtable.v2.StreamContinuationTokens) startFrom_)
+                  .mergeFrom(value)
+                  .buildPartial();
         } else {
           startFrom_ = value;
         }
@@ -1726,6 +1909,8 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * Tokens that describe how to resume reading a stream where reading
      * previously left off. If specified, changes will be read starting at the
@@ -1757,6 +1942,8 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * Tokens that describe how to resume reading a stream where reading
      * previously left off. If specified, changes will be read starting at the
@@ -1775,6 +1962,8 @@ private static final long serialVersionUID = 0L;
       return getContinuationTokensFieldBuilder().getBuilder();
     }
     /**
+     *
+     *
      * <pre>
      * Tokens that describe how to resume reading a stream where reading
      * previously left off. If specified, changes will be read starting at the
@@ -1790,7 +1979,8 @@ private static final long serialVersionUID = 0L;
      * <code>.google.bigtable.v2.StreamContinuationTokens continuation_tokens = 6;</code>
      */
     @java.lang.Override
-    public com.google.bigtable.v2.StreamContinuationTokensOrBuilder getContinuationTokensOrBuilder() {
+    public com.google.bigtable.v2.StreamContinuationTokensOrBuilder
+        getContinuationTokensOrBuilder() {
       if ((startFromCase_ == 6) && (continuationTokensBuilder_ != null)) {
         return continuationTokensBuilder_.getMessageOrBuilder();
       } else {
@@ -1801,6 +1991,8 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     *
+     *
      * <pre>
      * Tokens that describe how to resume reading a stream where reading
      * previously left off. If specified, changes will be read starting at the
@@ -1816,28 +2008,38 @@ private static final long serialVersionUID = 0L;
      * <code>.google.bigtable.v2.StreamContinuationTokens continuation_tokens = 6;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.bigtable.v2.StreamContinuationTokens, com.google.bigtable.v2.StreamContinuationTokens.Builder, com.google.bigtable.v2.StreamContinuationTokensOrBuilder> 
+            com.google.bigtable.v2.StreamContinuationTokens,
+            com.google.bigtable.v2.StreamContinuationTokens.Builder,
+            com.google.bigtable.v2.StreamContinuationTokensOrBuilder>
         getContinuationTokensFieldBuilder() {
       if (continuationTokensBuilder_ == null) {
         if (!(startFromCase_ == 6)) {
           startFrom_ = com.google.bigtable.v2.StreamContinuationTokens.getDefaultInstance();
         }
-        continuationTokensBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.google.bigtable.v2.StreamContinuationTokens, com.google.bigtable.v2.StreamContinuationTokens.Builder, com.google.bigtable.v2.StreamContinuationTokensOrBuilder>(
+        continuationTokensBuilder_ =
+            new com.google.protobuf.SingleFieldBuilderV3<
+                com.google.bigtable.v2.StreamContinuationTokens,
+                com.google.bigtable.v2.StreamContinuationTokens.Builder,
+                com.google.bigtable.v2.StreamContinuationTokensOrBuilder>(
                 (com.google.bigtable.v2.StreamContinuationTokens) startFrom_,
                 getParentForChildren(),
                 isClean());
         startFrom_ = null;
       }
       startFromCase_ = 6;
-      onChanged();;
+      onChanged();
       return continuationTokensBuilder_;
     }
 
     private com.google.protobuf.Timestamp endTime_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> endTimeBuilder_;
+            com.google.protobuf.Timestamp,
+            com.google.protobuf.Timestamp.Builder,
+            com.google.protobuf.TimestampOrBuilder>
+        endTimeBuilder_;
     /**
+     *
+     *
      * <pre>
      * If specified, OK will be returned when the stream advances beyond
      * this time. Otherwise, changes will be continuously delivered on the stream.
@@ -1845,12 +2047,15 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>.google.protobuf.Timestamp end_time = 5;</code>
+     *
      * @return Whether the endTime field is set.
      */
     public boolean hasEndTime() {
-      return endTimeBuilder_ != null || endTime_ != null;
+      return ((bitField0_ & 0x00000020) != 0);
     }
     /**
+     *
+     *
      * <pre>
      * If specified, OK will be returned when the stream advances beyond
      * this time. Otherwise, changes will be continuously delivered on the stream.
@@ -1858,6 +2063,7 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>.google.protobuf.Timestamp end_time = 5;</code>
+     *
      * @return The endTime.
      */
     public com.google.protobuf.Timestamp getEndTime() {
@@ -1868,6 +2074,8 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     *
+     *
      * <pre>
      * If specified, OK will be returned when the stream advances beyond
      * this time. Otherwise, changes will be continuously delivered on the stream.
@@ -1882,14 +2090,16 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         endTime_ = value;
-        onChanged();
       } else {
         endTimeBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * If specified, OK will be returned when the stream advances beyond
      * this time. Otherwise, changes will be continuously delivered on the stream.
@@ -1898,18 +2108,19 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.google.protobuf.Timestamp end_time = 5;</code>
      */
-    public Builder setEndTime(
-        com.google.protobuf.Timestamp.Builder builderForValue) {
+    public Builder setEndTime(com.google.protobuf.Timestamp.Builder builderForValue) {
       if (endTimeBuilder_ == null) {
         endTime_ = builderForValue.build();
-        onChanged();
       } else {
         endTimeBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * If specified, OK will be returned when the stream advances beyond
      * this time. Otherwise, changes will be continuously delivered on the stream.
@@ -1920,20 +2131,23 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeEndTime(com.google.protobuf.Timestamp value) {
       if (endTimeBuilder_ == null) {
-        if (endTime_ != null) {
-          endTime_ =
-            com.google.protobuf.Timestamp.newBuilder(endTime_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000020) != 0)
+            && endTime_ != null
+            && endTime_ != com.google.protobuf.Timestamp.getDefaultInstance()) {
+          getEndTimeBuilder().mergeFrom(value);
         } else {
           endTime_ = value;
         }
-        onChanged();
       } else {
         endTimeBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * If specified, OK will be returned when the stream advances beyond
      * this time. Otherwise, changes will be continuously delivered on the stream.
@@ -1943,17 +2157,18 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Timestamp end_time = 5;</code>
      */
     public Builder clearEndTime() {
-      if (endTimeBuilder_ == null) {
-        endTime_ = null;
-        onChanged();
-      } else {
-        endTime_ = null;
+      bitField0_ = (bitField0_ & ~0x00000020);
+      endTime_ = null;
+      if (endTimeBuilder_ != null) {
+        endTimeBuilder_.dispose();
         endTimeBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * If specified, OK will be returned when the stream advances beyond
      * this time. Otherwise, changes will be continuously delivered on the stream.
@@ -1963,11 +2178,13 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Timestamp end_time = 5;</code>
      */
     public com.google.protobuf.Timestamp.Builder getEndTimeBuilder() {
-      
+      bitField0_ |= 0x00000020;
       onChanged();
       return getEndTimeFieldBuilder().getBuilder();
     }
     /**
+     *
+     *
      * <pre>
      * If specified, OK will be returned when the stream advances beyond
      * this time. Otherwise, changes will be continuously delivered on the stream.
@@ -1980,11 +2197,12 @@ private static final long serialVersionUID = 0L;
       if (endTimeBuilder_ != null) {
         return endTimeBuilder_.getMessageOrBuilder();
       } else {
-        return endTime_ == null ?
-            com.google.protobuf.Timestamp.getDefaultInstance() : endTime_;
+        return endTime_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : endTime_;
       }
     }
     /**
+     *
+     *
      * <pre>
      * If specified, OK will be returned when the stream advances beyond
      * this time. Otherwise, changes will be continuously delivered on the stream.
@@ -1994,14 +2212,17 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Timestamp end_time = 5;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder> 
+            com.google.protobuf.Timestamp,
+            com.google.protobuf.Timestamp.Builder,
+            com.google.protobuf.TimestampOrBuilder>
         getEndTimeFieldBuilder() {
       if (endTimeBuilder_ == null) {
-        endTimeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.google.protobuf.Timestamp, com.google.protobuf.Timestamp.Builder, com.google.protobuf.TimestampOrBuilder>(
-                getEndTime(),
-                getParentForChildren(),
-                isClean());
+        endTimeBuilder_ =
+            new com.google.protobuf.SingleFieldBuilderV3<
+                com.google.protobuf.Timestamp,
+                com.google.protobuf.Timestamp.Builder,
+                com.google.protobuf.TimestampOrBuilder>(
+                getEndTime(), getParentForChildren(), isClean());
         endTime_ = null;
       }
       return endTimeBuilder_;
@@ -2009,36 +2230,49 @@ private static final long serialVersionUID = 0L;
 
     private com.google.protobuf.Duration heartbeatDuration_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.protobuf.Duration, com.google.protobuf.Duration.Builder, com.google.protobuf.DurationOrBuilder> heartbeatDurationBuilder_;
+            com.google.protobuf.Duration,
+            com.google.protobuf.Duration.Builder,
+            com.google.protobuf.DurationOrBuilder>
+        heartbeatDurationBuilder_;
     /**
+     *
+     *
      * <pre>
      * If specified, the duration between `Heartbeat` messages on the stream.
      * Otherwise, defaults to 5 seconds.
      * </pre>
      *
      * <code>.google.protobuf.Duration heartbeat_duration = 7;</code>
+     *
      * @return Whether the heartbeatDuration field is set.
      */
     public boolean hasHeartbeatDuration() {
-      return heartbeatDurationBuilder_ != null || heartbeatDuration_ != null;
+      return ((bitField0_ & 0x00000040) != 0);
     }
     /**
+     *
+     *
      * <pre>
      * If specified, the duration between `Heartbeat` messages on the stream.
      * Otherwise, defaults to 5 seconds.
      * </pre>
      *
      * <code>.google.protobuf.Duration heartbeat_duration = 7;</code>
+     *
      * @return The heartbeatDuration.
      */
     public com.google.protobuf.Duration getHeartbeatDuration() {
       if (heartbeatDurationBuilder_ == null) {
-        return heartbeatDuration_ == null ? com.google.protobuf.Duration.getDefaultInstance() : heartbeatDuration_;
+        return heartbeatDuration_ == null
+            ? com.google.protobuf.Duration.getDefaultInstance()
+            : heartbeatDuration_;
       } else {
         return heartbeatDurationBuilder_.getMessage();
       }
     }
     /**
+     *
+     *
      * <pre>
      * If specified, the duration between `Heartbeat` messages on the stream.
      * Otherwise, defaults to 5 seconds.
@@ -2052,14 +2286,16 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         heartbeatDuration_ = value;
-        onChanged();
       } else {
         heartbeatDurationBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * If specified, the duration between `Heartbeat` messages on the stream.
      * Otherwise, defaults to 5 seconds.
@@ -2067,18 +2303,19 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.google.protobuf.Duration heartbeat_duration = 7;</code>
      */
-    public Builder setHeartbeatDuration(
-        com.google.protobuf.Duration.Builder builderForValue) {
+    public Builder setHeartbeatDuration(com.google.protobuf.Duration.Builder builderForValue) {
       if (heartbeatDurationBuilder_ == null) {
         heartbeatDuration_ = builderForValue.build();
-        onChanged();
       } else {
         heartbeatDurationBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * If specified, the duration between `Heartbeat` messages on the stream.
      * Otherwise, defaults to 5 seconds.
@@ -2088,20 +2325,23 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeHeartbeatDuration(com.google.protobuf.Duration value) {
       if (heartbeatDurationBuilder_ == null) {
-        if (heartbeatDuration_ != null) {
-          heartbeatDuration_ =
-            com.google.protobuf.Duration.newBuilder(heartbeatDuration_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000040) != 0)
+            && heartbeatDuration_ != null
+            && heartbeatDuration_ != com.google.protobuf.Duration.getDefaultInstance()) {
+          getHeartbeatDurationBuilder().mergeFrom(value);
         } else {
           heartbeatDuration_ = value;
         }
-        onChanged();
       } else {
         heartbeatDurationBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * If specified, the duration between `Heartbeat` messages on the stream.
      * Otherwise, defaults to 5 seconds.
@@ -2110,17 +2350,18 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Duration heartbeat_duration = 7;</code>
      */
     public Builder clearHeartbeatDuration() {
-      if (heartbeatDurationBuilder_ == null) {
-        heartbeatDuration_ = null;
-        onChanged();
-      } else {
-        heartbeatDuration_ = null;
+      bitField0_ = (bitField0_ & ~0x00000040);
+      heartbeatDuration_ = null;
+      if (heartbeatDurationBuilder_ != null) {
+        heartbeatDurationBuilder_.dispose();
         heartbeatDurationBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
+     *
+     *
      * <pre>
      * If specified, the duration between `Heartbeat` messages on the stream.
      * Otherwise, defaults to 5 seconds.
@@ -2129,11 +2370,13 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Duration heartbeat_duration = 7;</code>
      */
     public com.google.protobuf.Duration.Builder getHeartbeatDurationBuilder() {
-      
+      bitField0_ |= 0x00000040;
       onChanged();
       return getHeartbeatDurationFieldBuilder().getBuilder();
     }
     /**
+     *
+     *
      * <pre>
      * If specified, the duration between `Heartbeat` messages on the stream.
      * Otherwise, defaults to 5 seconds.
@@ -2145,11 +2388,14 @@ private static final long serialVersionUID = 0L;
       if (heartbeatDurationBuilder_ != null) {
         return heartbeatDurationBuilder_.getMessageOrBuilder();
       } else {
-        return heartbeatDuration_ == null ?
-            com.google.protobuf.Duration.getDefaultInstance() : heartbeatDuration_;
+        return heartbeatDuration_ == null
+            ? com.google.protobuf.Duration.getDefaultInstance()
+            : heartbeatDuration_;
       }
     }
     /**
+     *
+     *
      * <pre>
      * If specified, the duration between `Heartbeat` messages on the stream.
      * Otherwise, defaults to 5 seconds.
@@ -2158,21 +2404,24 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Duration heartbeat_duration = 7;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.google.protobuf.Duration, com.google.protobuf.Duration.Builder, com.google.protobuf.DurationOrBuilder> 
+            com.google.protobuf.Duration,
+            com.google.protobuf.Duration.Builder,
+            com.google.protobuf.DurationOrBuilder>
         getHeartbeatDurationFieldBuilder() {
       if (heartbeatDurationBuilder_ == null) {
-        heartbeatDurationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.google.protobuf.Duration, com.google.protobuf.Duration.Builder, com.google.protobuf.DurationOrBuilder>(
-                getHeartbeatDuration(),
-                getParentForChildren(),
-                isClean());
+        heartbeatDurationBuilder_ =
+            new com.google.protobuf.SingleFieldBuilderV3<
+                com.google.protobuf.Duration,
+                com.google.protobuf.Duration.Builder,
+                com.google.protobuf.DurationOrBuilder>(
+                getHeartbeatDuration(), getParentForChildren(), isClean());
         heartbeatDuration_ = null;
       }
       return heartbeatDurationBuilder_;
     }
+
     @java.lang.Override
-    public final Builder setUnknownFields(
-        final com.google.protobuf.UnknownFieldSet unknownFields) {
+    public final Builder setUnknownFields(final com.google.protobuf.UnknownFieldSet unknownFields) {
       return super.setUnknownFields(unknownFields);
     }
 
@@ -2182,12 +2431,12 @@ private static final long serialVersionUID = 0L;
       return super.mergeUnknownFields(unknownFields);
     }
 
-
     // @@protoc_insertion_point(builder_scope:google.bigtable.v2.ReadChangeStreamRequest)
   }
 
   // @@protoc_insertion_point(class_scope:google.bigtable.v2.ReadChangeStreamRequest)
   private static final com.google.bigtable.v2.ReadChangeStreamRequest DEFAULT_INSTANCE;
+
   static {
     DEFAULT_INSTANCE = new com.google.bigtable.v2.ReadChangeStreamRequest();
   }
@@ -2196,27 +2445,27 @@ private static final long serialVersionUID = 0L;
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<ReadChangeStreamRequest>
-      PARSER = new com.google.protobuf.AbstractParser<ReadChangeStreamRequest>() {
-    @java.lang.Override
-    public ReadChangeStreamRequest parsePartialFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      Builder builder = newBuilder();
-      try {
-        builder.mergeFrom(input, extensionRegistry);
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(builder.buildPartial());
-      } catch (com.google.protobuf.UninitializedMessageException e) {
-        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(e)
-            .setUnfinishedMessage(builder.buildPartial());
-      }
-      return builder.buildPartial();
-    }
-  };
+  private static final com.google.protobuf.Parser<ReadChangeStreamRequest> PARSER =
+      new com.google.protobuf.AbstractParser<ReadChangeStreamRequest>() {
+        @java.lang.Override
+        public ReadChangeStreamRequest parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          Builder builder = newBuilder();
+          try {
+            builder.mergeFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(builder.buildPartial());
+          } catch (com.google.protobuf.UninitializedMessageException e) {
+            throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+          } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(e)
+                .setUnfinishedMessage(builder.buildPartial());
+          }
+          return builder.buildPartial();
+        }
+      };
 
   public static com.google.protobuf.Parser<ReadChangeStreamRequest> parser() {
     return PARSER;
@@ -2231,6 +2480,4 @@ private static final long serialVersionUID = 0L;
   public com.google.bigtable.v2.ReadChangeStreamRequest getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
-
 }
-

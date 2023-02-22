@@ -24,8 +24,9 @@ public interface PingAndWarmRequestOrBuilder extends
 
   /**
    * <pre>
-   * Required. The unique name of the instance to check permissions for as well as
-   * respond. Values are of the form `projects/&lt;project&gt;/instances/&lt;instance&gt;`.
+   * Required. The unique name of the instance to check permissions for as well
+   * as respond. Values are of the form
+   * `projects/&lt;project&gt;/instances/&lt;instance&gt;`.
    * </pre>
    *
    * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>
@@ -34,8 +35,9 @@ public interface PingAndWarmRequestOrBuilder extends
   java.lang.String getName();
   /**
    * <pre>
-   * Required. The unique name of the instance to check permissions for as well as
-   * respond. Values are of the form `projects/&lt;project&gt;/instances/&lt;instance&gt;`.
+   * Required. The unique name of the instance to check permissions for as well
+   * as respond. Values are of the form
+   * `projects/&lt;project&gt;/instances/&lt;instance&gt;`.
    * </pre>
    *
    * <code>string name = 1 [(.google.api.field_behavior) = REQUIRED, (.google.api.resource_reference) = { ... }</code>
