@@ -1,11 +1,11 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -735,12 +735,24 @@ public class EnhancedBigtableStub implements AutoCloseable {
     ServerStreamingCallable<MutateRowsRequest, MutateRowsResponse> withStatsHeaders =
         new StatsHeadersServerStreamingCallable<>(base);
 
+    ServerStreamingCallable<MutateRowsRequest, MutateRowsResponse> rateLimitingStreamingCallable =
+        null;
+
+    if (settings.bulkMutateRowsSettings().isCpuBasedThrottlingEnabled()) {
+      rateLimitingStreamingCallable =
+          new RateLimitingServerStreamingCallable(
+              withStatsHeaders, settings.bulkMutateRowsSettings().getTargetCpuPercent());
+    }
+
     // Sometimes MutateRows connections are disconnected via an RST frame. This error is transient
     // and
     // should be treated similar to UNAVAILABLE. However, this exception has an INTERNAL error code
     // which by default is not retryable. Convert the exception so it can be retried in the client.
     ServerStreamingCallable<MutateRowsRequest, MutateRowsResponse> convertException =
-        new ConvertExceptionCallable<>(withStatsHeaders);
+        new ConvertExceptionCallable<>(
+            rateLimitingStreamingCallable != null
+                ? rateLimitingStreamingCallable
+                : withStatsHeaders);
 
     RetryAlgorithm<Void> retryAlgorithm =
         new RetryAlgorithm<>(

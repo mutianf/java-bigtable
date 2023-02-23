@@ -1,11 +1,11 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,6 +32,7 @@ import com.google.api.gax.rpc.StubSettings;
 import com.google.api.gax.rpc.TransportChannelProvider;
 import com.google.api.gax.rpc.UnaryCallSettings;
 import com.google.auth.Credentials;
+import com.google.bigtable.v2.FeatureFlags;
 import com.google.bigtable.v2.PingAndWarmRequest;
 import com.google.cloud.bigtable.Version;
 import com.google.cloud.bigtable.data.v2.models.ChangeStreamRecord;
@@ -50,7 +51,10 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -93,6 +97,10 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
   // The largest message that can be received is a 256 MB ReadRowsResponse.
   private static final int MAX_MESSAGE_SIZE = 256 * 1024 * 1024;
   private static final String SERVER_DEFAULT_APP_PROFILE_ID = "";
+
+  // Feature flags this client supports
+  private static final FeatureFlags FEATURE_FLAGS =
+      FeatureFlags.newBuilder().setCpuMetrics(true).build();
 
   private static final Set<Code> IDEMPOTENT_RETRY_CODES =
       ImmutableSet.of(Code.DEADLINE_EXCEEDED, Code.UNAVAILABLE);
@@ -621,13 +629,25 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
       setStreamWatchdogCheckInterval(baseDefaults.getStreamWatchdogCheckInterval());
       setStreamWatchdogProvider(baseDefaults.getStreamWatchdogProvider());
 
-      // Inject the UserAgent in addition to api-client header
+      // Serialize the web64 encode the bigtable feature flags
+      ByteArrayOutputStream boas = new ByteArrayOutputStream();
+      try {
+        FEATURE_FLAGS.writeTo(boas);
+      } catch (IOException e) {
+        throw new IllegalStateException("Unexpected IOException while serializing feature flags");
+      }
+      byte[] serializedFlags = boas.toByteArray();
+      byte[] encodedFlags = Base64.getEncoder().encode(serializedFlags);
+
+      // Inject the UserAgent in addition to api-client header and feature flags to mark features
+      // this client supports
       Map<String, String> headers =
           ImmutableMap.<String, String>builder()
               .putAll(
                   BigtableStubSettings.defaultApiClientHeaderProviderBuilder().build().getHeaders())
               // GrpcHeaderInterceptor treats the `user-agent` as a magic string
               .put("user-agent", "bigtable-java/" + Version.VERSION)
+              .put("bigtable-features", new String(encodedFlags, StandardCharsets.UTF_8))
               .build();
       setInternalHeaderProvider(FixedHeaderProvider.create(headers));
 

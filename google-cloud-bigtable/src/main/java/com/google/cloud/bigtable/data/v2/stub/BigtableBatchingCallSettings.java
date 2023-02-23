@@ -1,11 +1,11 @@
 /*
- * Copyright 2019 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -237,11 +237,13 @@ public final class BigtableBatchingCallSettings extends UnaryCallSettings<BulkMu
       return this;
     }
 
+    /**
+     * Enable CPU based throttling with the targetCpuPercent. targetCpuPercent must be a number
+     * between 10 and 90.
+     */
     public Builder enableCpuBasedThrottling(int targetCpuPercent) {
       Preconditions.checkArgument(
-          targetCpuPercent >= 10, "target CPU must be between 10 and 90");
-      Preconditions.checkArgument(
-          targetCpuPercent <= 90, "target CPU must be between 10 and 90");
+          targetCpuPercent >= 10 && targetCpuPercent <= 90, "target CPU must be between 10 and 90");
       this.isCpuBasedThrottlingEnabled = true;
       this.targetCpuPercent = targetCpuPercent;
       return this;
@@ -265,6 +267,7 @@ public final class BigtableBatchingCallSettings extends UnaryCallSettings<BulkMu
       return this.isLatencyBasedThrottlingEnabled;
     }
 
+    /** Gets targe cpu percent is cpu based throttling is enabled. Otherwise returns null. */
     @Nullable
     public Integer getTargetCpuPercent() {
       return isCpuBasedThrottlingEnabled ? targetCpuPercent : null;

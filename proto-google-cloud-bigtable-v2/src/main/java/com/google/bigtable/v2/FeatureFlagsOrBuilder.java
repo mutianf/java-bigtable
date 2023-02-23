@@ -18,26 +18,33 @@
 
 package com.google.bigtable.v2;
 
-public interface FeatureFlagsOrBuilder extends
+public interface FeatureFlagsOrBuilder
+    extends
     // @@protoc_insertion_point(interface_extends:google.bigtable.v2.FeatureFlags)
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   *
+   *
    * <pre>
    * Notify the server that the client supports reverse scans.
    * </pre>
    *
    * <code>bool reverse_scans = 1;</code>
+   *
    * @return The reverseScans.
    */
   boolean getReverseScans();
 
   /**
+   *
+   *
    * <pre>
    * Server will send cpu metrics for some RPC.
    * </pre>
    *
    * <code>bool cpu_metrics = 2;</code>
+   *
    * @return The cpuMetrics.
    */
   boolean getCpuMetrics();
