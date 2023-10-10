@@ -271,23 +271,6 @@ public class EnhancedBigtableStub implements AutoCloseable {
                 // Add user configured tracer
                 settings.getTracerFactory())));
 
-    if (builder.getTransportChannelProvider() instanceof InstantiatingGrpcChannelProvider) {
-      // Inject RPC logging, ChannelPrimer use fixed channel so will be skipped here
-      InstantiatingGrpcChannelProvider transportProvider =
-          (InstantiatingGrpcChannelProvider) builder.getTransportChannelProvider();
-
-      builder.setTransportChannelProvider(
-          transportProvider
-              .toBuilder()
-              .setInterceptorProvider(
-                  () -> {
-                    OutstandingRpcLogger interceptor = new OutstandingRpcLogger();
-                    interceptor.startLogging();
-                    return ImmutableList.of(interceptor);
-                  })
-              .build());
-    }
-
     return builder.build();
   }
 
@@ -1243,77 +1226,6 @@ public class EnhancedBigtableStub implements AutoCloseable {
       if (stuck > 0) {
         LOGGER.info(String.format("[%s] Outstanding started RPCs: %d", label, stuck));
       }
-    }
-  }
-
-  static class OutstandingRpcLogger implements ClientInterceptor {
-    private static final Logger LOGGER = Logger.getLogger(SafeResponseObserver.class.getName());
-    private static final AtomicLong channelCounter = new AtomicLong();
-    private final long channelNum;
-    private final ConcurrentHashMap<String, Instant> outstandingRpcs = new ConcurrentHashMap<>();
-
-    public OutstandingRpcLogger() {
-      channelNum = channelCounter.getAndIncrement();
-      LOGGER.info("injecting grpc RPC tracker for channel " + channelNum);
-    }
-
-    public void startLogging() {
-      Thread thread =
-          new Thread(
-              () -> {
-                while (true) {
-                  try {
-                    Thread.sleep(TimeUnit.MINUTES.toMillis(1));
-                  } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                  }
-
-                  Instant now = Instant.now();
-                  int stuck = 0;
-                  List<String> stuckKeys = new ArrayList<>();
-                  for (Map.Entry<String, Instant> e : outstandingRpcs.entrySet()) {
-                    if (Duration.between(e.getValue(), now).compareTo(Duration.ofMinutes(1)) >= 0) {
-                      stuck++;
-                      stuckKeys.add(e.getKey());
-                    }
-                  }
-                  if (stuck > 0) {
-                    LOGGER.warning(
-                        String.format("[%d] grpc Outstanding started RPCs: %d", channelNum, stuck));
-                    LOGGER.warning(
-                        String.format(
-                            "[%d] stuck keys: %s", channelNum, String.join(",", stuckKeys)));
-                  }
-                }
-              },
-              "grpc-outstanding RPC counter thread");
-      thread.setDaemon(true);
-      thread.start();
-    }
-
-    @Override
-    public <ReqT, RespT> ClientCall<ReqT, RespT> interceptCall(
-        MethodDescriptor<ReqT, RespT> methodDescriptor, CallOptions callOptions, Channel channel) {
-      String method = methodDescriptor.getBareMethodName();
-      UUID uuid = UUID.randomUUID();
-      String key = method + "-" + uuid;
-      outstandingRpcs.put(key, Instant.now());
-      return new ForwardingClientCall.SimpleForwardingClientCall<ReqT, RespT>(
-          channel.newCall(methodDescriptor, callOptions)) {
-        @Override
-        public void start(Listener<RespT> responseListener, Metadata headers) {
-          Listener<RespT> instrumentedListener =
-              new ForwardingClientCallListener.SimpleForwardingClientCallListener<RespT>(
-                  responseListener) {
-                @Override
-                public void onClose(io.grpc.Status status, Metadata trailers) {
-                  outstandingRpcs.remove(key);
-                  super.onClose(status, trailers);
-                }
-              };
-          super.start(instrumentedListener, headers);
-        }
-      };
     }
   }
 }
