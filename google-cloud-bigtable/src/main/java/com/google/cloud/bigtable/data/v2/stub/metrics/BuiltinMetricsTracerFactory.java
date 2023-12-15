@@ -42,9 +42,10 @@ public class BuiltinMetricsTracerFactory extends BaseApiTracerFactory {
 
   @Override
   public ApiTracer newTracer(ApiTracer parent, SpanName spanName, OperationType operationType) {
-    return new BuiltinMetricsTracer(
-        operationType,
-        spanName,
-        StatsWrapper.createRecorder(operationType, spanName, statsAttributes));
+    return new BigtableTracer();
+//    return new BuiltinMetricsTracer(
+//        operationType,
+//        spanName,
+//        StatsWrapper.createRecorder(operationType, spanName, statsAttributes));
   }
 }
