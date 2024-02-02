@@ -71,14 +71,14 @@ class BuiltinMetricsTracer extends BigtableTracer {
 
   private boolean flowControlIsDisabled = false;
 
-  private AtomicInteger requestLeft = new AtomicInteger(0);
+  private final AtomicInteger requestLeft = new AtomicInteger(0);
 
   // Monitored resource labels
   private String tableId = "unspecified";
   private String zone = "global";
   private String cluster = "unspecified";
 
-  private AtomicLong totalClientBlockingTime = new AtomicLong(0);
+  private final AtomicLong totalClientBlockingTime = new AtomicLong(0);
 
   private final Attributes baseAttributes;
 
@@ -121,10 +121,7 @@ class BuiltinMetricsTracer extends BigtableTracer {
 
   @Override
   public Scope inScope() {
-    return new Scope() {
-      @Override
-      public void close() {}
-    };
+    return () -> {};
   }
 
   @Override
