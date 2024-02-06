@@ -104,17 +104,18 @@ public final class BigtableCloudMonitoringExporter implements MetricExporter {
 
   @Override
   public CompletableResultCode export(Collection<MetricData> collection) {
-    if (isShutdown.get()) {
-      logger.log(Level.WARNING, "Exporter is shutting down");
-      return CompletableResultCode.ofFailure();
-    }
-    if (!collection.stream()
-        .flatMap(metricData -> metricData.getData().getPoints().stream())
-        .allMatch(pd -> projectId.equals(BigtableExporterUtils.getProjectId(pd)))) {
-      logger.log(Level.WARNING, "Metric data has different a projectId. Skip exporting.");
-      return CompletableResultCode.ofFailure();
-    }
+//    if (isShutdown.get()) {
+//      logger.log(Level.WARNING, "Exporter is shutting down");
+//      return CompletableResultCode.ofFailure();
+//    }
+//    if (!collection.stream()
+//        .flatMap(metricData -> metricData.getData().getPoints().stream())
+//        .allMatch(pd -> projectId.equals(BigtableExporterUtils.getProjectId(pd)))) {
+//      logger.log(Level.WARNING, "Metric data has different a projectId. Skip exporting.");
+//      return CompletableResultCode.ofFailure();
+//    }
 
+    System.out.println("exporting metrics");
     List<TimeSeries> allTimeSeries;
     try {
       allTimeSeries =

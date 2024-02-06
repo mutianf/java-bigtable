@@ -26,7 +26,7 @@ import io.opentelemetry.api.OpenTelemetry;
  * SdkMeterProviderBuilder sdkMeterProvider = SdkMeterProvider.builder();
  *
  * // register Builtin metrics on your meter provider
- * BuiltinMetricsViews.registerBuiltinMetrics("project-id", sdkMeterProvider);
+ * BuiltinMetricsView.registerBuiltinMetrics("project-id", sdkMeterProvider);
  *
  * // register other metrics reader and views
  * sdkMeterProvider.registerMetricReader(..);
@@ -35,7 +35,8 @@ import io.opentelemetry.api.OpenTelemetry;
  * // create the OTEL instance
  * OpenTelemetry openTelemetry = OpenTelemetrySdk
  *     .builder()
- *     .setMeterProvider(sdkMeterProvider().build());
+ *     .setMeterProvider(sdkMeterProvider.build())
+ *     .build();
  *
  * // Override MetricsProvider in BigtableDataSettings
  * BigtableDataSettings settings = BigtableDataSettings.newBuilder()

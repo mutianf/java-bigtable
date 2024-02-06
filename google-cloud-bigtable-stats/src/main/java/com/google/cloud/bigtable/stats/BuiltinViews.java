@@ -39,7 +39,7 @@ public class BuiltinViews {
           BuiltinViewConstants.THROTTLING_LATENCIES_VIEW);
 
   @VisibleForTesting
-  void registerPrivateViews(ViewManager viewManager) {
+  public static void registerPrivateViews(ViewManager viewManager) {
     for (View view : BIGTABLE_BUILTIN_VIEWS) {
       viewManager.registerView(view);
     }

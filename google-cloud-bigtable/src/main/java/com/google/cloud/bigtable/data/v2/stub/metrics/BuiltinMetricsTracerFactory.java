@@ -49,14 +49,14 @@ public class BuiltinMetricsTracerFactory extends BaseApiTracerFactory {
   private static final String MILLISECOND = "ms";
   private static final String COUNT = "1";
 
-  private final LongHistogram operationLatenciesHistogram;
-  private final LongHistogram attemptLatenciesHistogram;
-  private final LongHistogram serverLatenciesHistogram;
-  private final LongHistogram firstResponseLatenciesHistogram;
-  private final LongHistogram clientBlockingLatenciesHistogram;
-  private final LongHistogram applicationBlockingLatenciesHistogram;
-  private final LongCounter connectivityErrorCounter;
-  private final LongCounter retryCounter;
+  public final LongHistogram operationLatenciesHistogram;
+  public final LongHistogram attemptLatenciesHistogram;
+  public final LongHistogram serverLatenciesHistogram;
+  public final LongHistogram firstResponseLatenciesHistogram;
+  public final LongHistogram clientBlockingLatenciesHistogram;
+  public final LongHistogram applicationBlockingLatenciesHistogram;
+  public final LongCounter connectivityErrorCounter;
+  public final LongCounter retryCounter;
 
   public static BuiltinMetricsTracerFactory create(
       OpenTelemetry openTelemetry, Attributes attributes) throws IOException {
