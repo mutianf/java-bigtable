@@ -241,8 +241,8 @@ class BigtableStackdriverExportUtils {
             .setMean(
                 distribution.getCount() == 0L
                     ? 0.0D
-                    : distribution.getSum() / (double) distribution.getCount())
-            .setSumOfSquaredDeviation(distribution.getSumOfSquaredDeviations());
+                    : distribution.getSum() / (double) distribution.getCount());
+//            .setSumOfSquaredDeviation(distribution.getSumOfSquaredDeviations());
     setBucketCounts(distribution.getBuckets(), builder);
     return builder.build();
   }

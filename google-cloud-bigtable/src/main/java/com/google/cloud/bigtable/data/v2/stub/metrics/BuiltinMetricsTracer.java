@@ -85,6 +85,8 @@ class BuiltinMetricsTracer extends BigtableTracer {
 
   private Long serverLatencies = null;
 
+  private double toMs = 1e-6;
+
   private final DoubleHistogram operationLatenciesHistogram;
   private final DoubleHistogram attemptLatenciesHistogram;
   private final DoubleHistogram serverLatenciesHistogram;
@@ -252,7 +254,7 @@ class BuiltinMetricsTracer extends BigtableTracer {
 
   @Override
   public void batchRequestThrottled(long throttledTimeNanos) {
-    totalClientBlockingTime.addAndGet(throttledTimeNanos / 10e6);
+    totalClientBlockingTime.addAndGet(throttledTimeNanos * toMs);
   }
 
   @Override
@@ -293,16 +295,16 @@ class BuiltinMetricsTracer extends BigtableTracer {
     }
 
     // serverLatencyTimer should already be stopped in recordAttemptCompletion
-    operationLatenciesHistogram.record(operationLatencyNano / 10e6,
+    operationLatenciesHistogram.record(operationLatencyNano * toMs,
         attributes.toBuilder().put(STREAMING_KEY, isStreaming).put(STATUS_KEY, statusStr).build());
 
     long applicationLatencyNano = operationLatencyNano - totalServerLatencyNano.get();
-    applicationBlockingLatenciesHistogram.record(applicationLatencyNano / 10e6, attributes);
+    applicationBlockingLatenciesHistogram.record(applicationLatencyNano * toMs, attributes);
 
     if (operationType == OperationType.ServerStreaming
         && spanName.getMethodName().equals("ReadRows")) {
       firstResponseLatenciesHistogram.record(
-          firstResponsePerOpTimer.elapsed(TimeUnit.NANOSECONDS) / 10e6,
+          firstResponsePerOpTimer.elapsed(TimeUnit.NANOSECONDS) * toMs,
           attributes.toBuilder().put(STATUS_KEY, Util.extractStatus(status)).build());
     }
   }
@@ -344,7 +346,7 @@ class BuiltinMetricsTracer extends BigtableTracer {
     String statusStr = Util.extractStatus(status);
 
     attemptLatenciesHistogram.record(
-        attemptTimer.elapsed(TimeUnit.NANOSECONDS) / 10e6,
+        attemptTimer.elapsed(TimeUnit.NANOSECONDS) * toMs,
         attributes.toBuilder().put(STREAMING_KEY, isStreaming).put(STATUS_KEY, statusStr).build());
 
     if (serverLatencies != null) {

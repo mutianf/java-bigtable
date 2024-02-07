@@ -51,7 +51,7 @@ public class BuiltinMetricsTracerFactory extends BaseApiTracerFactory {
   private static final String COUNT = "1";
 
   private final DoubleHistogram operationLatenciesHistogram;
-  private final DoubleHistogram attemptLatenciesHistogram;
+  public final DoubleHistogram attemptLatenciesHistogram;
   private final DoubleHistogram serverLatenciesHistogram;
   private final DoubleHistogram firstResponseLatenciesHistogram;
   private final DoubleHistogram clientBlockingLatenciesHistogram;

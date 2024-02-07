@@ -134,6 +134,8 @@ public final class BigtableCloudMonitoringExporter implements MetricExporter {
             .addAllTimeSeries(allTimeSeries)
             .build();
 
+    System.out.println("otel export " + request);
+
     ApiFuture<Empty> future = this.client.createServiceTimeSeriesCallable().futureCall(request);
 
     lastExportCode = new CompletableResultCode();
