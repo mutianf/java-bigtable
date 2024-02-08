@@ -76,6 +76,7 @@ final class BigtableCreateTimeSeriesExporter extends MetricExporter {
                 .setName(projectName.toString())
                 .addAllTimeSeries(entry.getValue())
                 .build();
+        System.out.println("opencensus exporting " + request);
         try {
           this.metricServiceClient.createServiceTimeSeries(request);
         } catch (Throwable e) {
