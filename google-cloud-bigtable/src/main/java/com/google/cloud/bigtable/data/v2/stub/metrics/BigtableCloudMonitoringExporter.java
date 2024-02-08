@@ -15,6 +15,7 @@
  */
 package com.google.cloud.bigtable.data.v2.stub.metrics;
 
+import com.google.api.MetricDescriptor;
 import com.google.api.MonitoredResource;
 import com.google.api.core.ApiFuture;
 import com.google.api.core.ApiFutureCallback;
@@ -117,7 +118,6 @@ public final class BigtableCloudMonitoringExporter implements MetricExporter {
 //      return CompletableResultCode.ofFailure();
 //    }
 
-    System.out.println("exporting metrics");
     List<TimeSeries> allTimeSeries;
     try {
       allTimeSeries =
@@ -135,7 +135,7 @@ public final class BigtableCloudMonitoringExporter implements MetricExporter {
             .addAllTimeSeries(allTimeSeries)
             .build();
 
-    System.out.println("otel export " + request);
+    print(request);
 
     ApiFuture<Empty> future = this.client.createServiceTimeSeriesCallable().futureCall(request);
 
@@ -201,5 +201,26 @@ public final class BigtableCloudMonitoringExporter implements MetricExporter {
   @Override
   public AggregationTemporality getAggregationTemporality(InstrumentType instrumentType) {
     return AggregationTemporality.CUMULATIVE;
+  }
+
+  private synchronized void print(CreateTimeSeriesRequest request) {
+    System.out.println("==== exporting OTEL ====");
+    request.getTimeSeriesList().stream().forEach(a -> {
+      System.out.println(a.getMetric().getType());
+      System.out.println(a.getMetric().getLabelsMap());
+      a.getPointsList().stream().forEach(
+              p -> {
+                System.out.println(p.getInterval());
+                if (a.getValueType() == MetricDescriptor.ValueType.DISTRIBUTION) {
+                  System.out.println("Distribution mean: " + p.getValue().getDistributionValue().getMean());
+                  System.out.println("Distribution count: " + p.getValue().getDistributionValue().getCount());
+                  System.out.println("Distribution bucket: " + p.getValue().getDistributionValue().getBucketCountsList());
+                } else {
+                  System.out.println("Long Sum: " + p.getValue().getInt64Value());
+                }
+              }
+      );
+    });
+    System.out.println("==== done exporting OTEL ====");
   }
 }

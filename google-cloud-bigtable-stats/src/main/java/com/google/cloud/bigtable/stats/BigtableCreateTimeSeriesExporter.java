@@ -15,6 +15,7 @@
  */
 package com.google.cloud.bigtable.stats;
 
+import com.google.api.MetricDescriptor;
 import com.google.api.MonitoredResource;
 import com.google.cloud.monitoring.v3.MetricServiceClient;
 import com.google.monitoring.v3.CreateTimeSeriesRequest;
@@ -76,7 +77,9 @@ final class BigtableCreateTimeSeriesExporter extends MetricExporter {
                 .setName(projectName.toString())
                 .addAllTimeSeries(entry.getValue())
                 .build();
-        System.out.println("opencensus exporting " + request);
+
+        print(request);
+
         try {
           this.metricServiceClient.createServiceTimeSeries(request);
         } catch (Throwable e) {
@@ -88,5 +91,27 @@ final class BigtableCreateTimeSeriesExporter extends MetricExporter {
         }
       }
     }
+  }
+
+  private synchronized void print(CreateTimeSeriesRequest request) {
+    System.out.println("==== exporting opencensus ====");
+    request.getTimeSeriesList().stream().forEach(a -> {
+      System.out.println(a.getMetric().getType());
+      System.out.println(a.getMetric().getLabelsMap());
+      a.getPointsList().stream().forEach(
+              p -> {
+                System.out.println(p.getInterval());
+                if (a.getValueType() == MetricDescriptor.ValueType.DISTRIBUTION) {
+                  System.out.println("Distribution mean: " + p.getValue().getDistributionValue().getMean());
+                  System.out.println("Distribution count: " + p.getValue().getDistributionValue().getCount());
+                  System.out.println("Distribution bucket: " + p.getValue().getDistributionValue().getBucketCountsList());
+                } else {
+                  System.out.println("Long Sum: " + p.getValue().getInt64Value());
+                }
+              }
+      );
+    });
+
+    System.out.println("==== done exporting opencensus ====");
   }
 }
