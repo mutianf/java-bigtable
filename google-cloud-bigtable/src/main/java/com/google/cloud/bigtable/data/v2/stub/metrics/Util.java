@@ -30,6 +30,7 @@ import com.google.bigtable.v2.ReadRowsRequest;
 import com.google.bigtable.v2.ResponseParams;
 import com.google.bigtable.v2.SampleRowKeysRequest;
 import com.google.bigtable.v2.TableName;
+import com.google.cloud.bigtable.data.v2.stub.readrows.ReadRowsUserCallable;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -58,6 +59,8 @@ public class Util {
       Metadata.Key.of("bigtable-attempt", Metadata.ASCII_STRING_MARSHALLER);
   static final Metadata.Key<String> ATTEMPT_EPOCH_KEY =
       Metadata.Key.of("bigtable-client-attempt-epoch-usec", Metadata.ASCII_STRING_MARSHALLER);
+  static final Metadata.Key<String> OPERATION_UUID =
+          Metadata.Key.of("bigtable-operation-uuid", Metadata.ASCII_STRING_MARSHALLER);
 
   private static final Metadata.Key<String> SERVER_TIMING_HEADER_KEY =
       Metadata.Key.of("server-timing", Metadata.ASCII_STRING_MARSHALLER);
@@ -137,6 +140,10 @@ public class Util {
     if (apiCallContext.getTracer() instanceof BigtableTracer) {
       int attemptCount = ((BigtableTracer) apiCallContext.getTracer()).getAttempt();
       headers.put(ATTEMPT_HEADER_KEY.name(), Arrays.asList(String.valueOf(attemptCount)));
+    }
+    if (apiCallContext.getOption(ReadRowsUserCallable.UUID_KEY) != null) {
+      headers.put(OPERATION_UUID.name(),
+              Arrays.asList(apiCallContext.getOption(ReadRowsUserCallable.UUID_KEY)));
     }
     return headers.build();
   }

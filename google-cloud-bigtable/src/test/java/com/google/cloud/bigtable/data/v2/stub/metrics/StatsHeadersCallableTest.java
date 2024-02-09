@@ -169,6 +169,14 @@ public class StatsHeadersCallableTest {
     verifyHeaders(1, startTimestamp);
   }
 
+  @Test
+  public void testUUID() throws Exception {
+    long startTimestamp = System.currentTimeMillis() * 1000;
+    stub.readRowsCallable().call(Query.create(TABLE_ID).rowKey("key")).iterator().next();
+
+    verifyHeaders(attemptCounts, startTimestamp);
+  }
+
   private static class MetadataInterceptor implements ServerInterceptor {
     final BlockingQueue<Metadata> headers = Queues.newLinkedBlockingDeque();
 
@@ -262,6 +270,7 @@ public class StatsHeadersCallableTest {
     assertThat(metadataInterceptor.headers).hasSize(expectedAttemptCounts);
     long timestamp = startTimestamp;
 
+    String uuid = null;
     for (int i = 0; i < expectedAttemptCounts; i++) {
       Metadata headers = metadataInterceptor.headers.take();
       String attemptCount = headers.get(Util.ATTEMPT_HEADER_KEY);
@@ -272,6 +281,12 @@ public class StatsHeadersCallableTest {
       assertThat(clientTimeStr).isNotNull();
       long clientTime = Long.valueOf(clientTimeStr);
       assertThat(clientTime).isAtLeast(timestamp);
+
+      if (uuid == null) {
+        uuid = headers.get(Util.OPERATION_UUID);
+      } else {
+        assertThat(headers.get(Util.OPERATION_UUID)).isEqualTo(uuid);
+      }
 
       timestamp = clientTime;
     }

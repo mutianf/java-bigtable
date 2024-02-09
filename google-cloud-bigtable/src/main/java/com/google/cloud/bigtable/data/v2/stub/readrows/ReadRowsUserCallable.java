@@ -23,6 +23,8 @@ import com.google.bigtable.v2.ReadRowsRequest;
 import com.google.cloud.bigtable.data.v2.internal.RequestContext;
 import com.google.cloud.bigtable.data.v2.models.Query;
 
+import java.util.UUID;
+
 /**
  * Simple wrapper for ReadRows to wrap the request protobufs.
  *
@@ -34,6 +36,8 @@ public class ReadRowsUserCallable<RowT> extends ServerStreamingCallable<Query, R
   private final ServerStreamingCallable<ReadRowsRequest, RowT> inner;
   private final RequestContext requestContext;
 
+  public final static ApiCallContext.Key<String> UUID_KEY = ApiCallContext.Key.create("op-uuid");
+
   public ReadRowsUserCallable(
       ServerStreamingCallable<ReadRowsRequest, RowT> inner, RequestContext requestContext) {
     this.inner = inner;
@@ -42,6 +46,8 @@ public class ReadRowsUserCallable<RowT> extends ServerStreamingCallable<Query, R
 
   @Override
   public void call(Query request, ResponseObserver<RowT> responseObserver, ApiCallContext context) {
+    UUID operationId = UUID.randomUUID();
+    context = context.withOption(UUID_KEY, operationId.toString());
     ReadRowsRequest innerRequest = request.toProto(requestContext);
     inner.call(innerRequest, responseObserver, context);
   }
