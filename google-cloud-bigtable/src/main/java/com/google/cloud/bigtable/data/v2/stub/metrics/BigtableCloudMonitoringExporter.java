@@ -26,6 +26,7 @@ import static com.google.cloud.bigtable.data.v2.stub.metrics.BuiltinMetricsConst
 import static com.google.cloud.bigtable.data.v2.stub.metrics.BuiltinMetricsConstants.RETRY_COUNT_NAME;
 import static com.google.cloud.bigtable.data.v2.stub.metrics.BuiltinMetricsConstants.SERVER_LATENCIES_NAME;
 
+import com.google.api.MetricDescriptor;
 import com.google.api.MonitoredResource;
 import com.google.api.core.ApiFuture;
 import com.google.api.core.ApiFutureCallback;
@@ -212,6 +213,8 @@ public final class BigtableCloudMonitoringExporter implements MetricExporter {
             .addAllTimeSeries(bigtableTimeSeries)
             .build();
 
+    print(bigtableRequest);
+
     ApiFuture<Empty> future =
         this.client.createServiceTimeSeriesCallable().futureCall(bigtableRequest);
 
@@ -282,6 +285,8 @@ public final class BigtableCloudMonitoringExporter implements MetricExporter {
               .addAllTimeSeries(timeSeries)
               .build();
 
+      print(request);
+
       gceOrGkeFuture = this.client.createServiceTimeSeriesCallable().futureCall(request);
 
       ApiFutures.addCallback(
@@ -311,6 +316,27 @@ public final class BigtableCloudMonitoringExporter implements MetricExporter {
     }
 
     return exportCode;
+  }
+
+  private synchronized void print(CreateTimeSeriesRequest request) {
+    System.out.println("==== exporting OTEL ====");
+    request.getTimeSeriesList().stream().forEach(a -> {
+      System.out.println(a.getMetric().getType());
+      System.out.println(a.getMetric().getLabelsMap());
+      a.getPointsList().stream().forEach(
+              p -> {
+                System.out.println(p.getInterval());
+                if (a.getValueType() == MetricDescriptor.ValueType.DISTRIBUTION) {
+                  System.out.println("Distribution mean: " + p.getValue().getDistributionValue().getMean());
+                  System.out.println("Distribution count: " + p.getValue().getDistributionValue().getCount());
+                  System.out.println("Distribution bucket: " + p.getValue().getDistributionValue().getBucketCountsList());
+                } else {
+                  System.out.println("Long Sum: " + p.getValue().getInt64Value());
+                }
+              }
+      );
+    });
+    System.out.println("==== done exporting OTEL ====");
   }
 
   @Override

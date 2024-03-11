@@ -100,6 +100,7 @@ import com.google.cloud.bigtable.data.v2.stub.changestream.ReadChangeStreamUserC
 import com.google.cloud.bigtable.data.v2.stub.metrics.BigtableTracerStreamingCallable;
 import com.google.cloud.bigtable.data.v2.stub.metrics.BigtableTracerUnaryCallable;
 import com.google.cloud.bigtable.data.v2.stub.metrics.BuiltinMetricsTracerFactory;
+import com.google.cloud.bigtable.data.v2.stub.metrics.BuiltinMetricsTracerFactory1;
 import com.google.cloud.bigtable.data.v2.stub.metrics.CompositeTracerFactory;
 import com.google.cloud.bigtable.data.v2.stub.metrics.CustomOpenTelemetryMetricsProvider;
 import com.google.cloud.bigtable.data.v2.stub.metrics.DefaultMetricsProvider;
@@ -324,6 +325,7 @@ public class EnhancedBigtableStub implements AutoCloseable {
                     .build()))
         // Add OpenCensus Metrics
         .add(MetricsTracerFactory.create(tagger, stats, attributes))
+        .add(BuiltinMetricsTracerFactory1.create(ImmutableMap.of("project_id", projectId, "instance", instanceId, "app_profile", "opencensus")))
         // Add user configured tracer
         .add(settings.getTracerFactory());
     BuiltinMetricsTracerFactory builtinMetricsTracerFactory =

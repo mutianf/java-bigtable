@@ -15,10 +15,15 @@
  */
 package com.google.cloud.bigtable.data.v2.stub.metrics;
 
+import static com.google.cloud.bigtable.data.v2.stub.metrics.BuiltinMetricsConstants.BIGTABLE_PROJECT_ID_KEY;
+import static com.google.cloud.bigtable.data.v2.stub.metrics.BuiltinMetricsConstants.INSTANCE_ID_KEY;
 import static com.google.cloud.bigtable.data.v2.stub.metrics.BuiltinMetricsConstants.METER_NAME;
 import static com.google.cloud.bigtable.data.v2.stub.metrics.BuiltinMetricsConstants.PER_CONNECTION_ERROR_COUNT_NAME;
 
 import com.google.api.core.InternalApi;
+import com.google.cloud.bigtable.stats.StatsRecorderWrapperForConnection;
+import com.google.cloud.bigtable.stats.StatsWrapper;
+import com.google.common.collect.ImmutableMap;
 import io.grpc.ClientInterceptor;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.Attributes;
@@ -39,6 +44,7 @@ public class ErrorCountPerConnectionMetricTracker implements Runnable {
   private final LongHistogram perConnectionErrorCountHistogram;
   private final Attributes attributes;
 
+  StatsRecorderWrapperForConnection wrapper;
   private final Set<ConnectionErrorCountInterceptor> connectionErrorCountInterceptors;
   private final Object interceptorsLock = new Object();
 
@@ -47,6 +53,9 @@ public class ErrorCountPerConnectionMetricTracker implements Runnable {
         Collections.synchronizedSet(Collections.newSetFromMap(new WeakHashMap<>()));
 
     Meter meter = openTelemetry.getMeter(METER_NAME);
+
+    wrapper = StatsWrapper.createRecorderForConnection(ImmutableMap.of("project_id",
+            attributes.get(BIGTABLE_PROJECT_ID_KEY), "instance", attributes.get(INSTANCE_ID_KEY), "app_profile", "opencensus"));
 
     perConnectionErrorCountHistogram =
         meter
@@ -85,6 +94,7 @@ public class ErrorCountPerConnectionMetricTracker implements Runnable {
           // TODO: add a metric to also keep track of the number of successful requests per each
           // connection.
           perConnectionErrorCountHistogram.record(errors, attributes);
+          wrapper.putAndRecordPerConnectionErrorCount(errors);
         }
       }
     }

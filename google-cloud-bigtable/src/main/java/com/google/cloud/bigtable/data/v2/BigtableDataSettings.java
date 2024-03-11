@@ -25,6 +25,7 @@ import com.google.api.gax.grpc.ChannelPoolSettings;
 import com.google.api.gax.grpc.InstantiatingGrpcChannelProvider;
 import com.google.api.gax.rpc.UnaryCallSettings;
 import com.google.auth.Credentials;
+import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.bigtable.data.v2.models.Query;
 import com.google.cloud.bigtable.data.v2.models.Row;
 import com.google.cloud.bigtable.data.v2.stub.BigtableBatchingCallSettings;
@@ -39,6 +40,8 @@ import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.threeten.bp.Duration;
+import com.google.cloud.bigtable.stats.BigtableStackdriverStatsExporter;
+import com.google.cloud.bigtable.stats.BuiltinViews;
 
 /**
  * Settings class to configure an instance of {@link BigtableDataClient}.
@@ -206,7 +209,10 @@ public final class BigtableDataSettings {
    *     disable built-in metrics.
    */
   @Deprecated
-  public static void enableBuiltinMetrics() throws IOException {}
+  public static void enableBuiltinMetrics() throws IOException {
+    BuiltinViews.registerBigtableBuiltinViews();
+    BigtableStackdriverStatsExporter.register(GoogleCredentials.getApplicationDefault());
+  }
 
   /**
    * Register built in metrics with credentials. The credentials need to have metric write access
