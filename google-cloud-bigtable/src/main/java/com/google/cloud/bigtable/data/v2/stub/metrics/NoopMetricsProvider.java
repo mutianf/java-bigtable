@@ -27,7 +27,9 @@ public final class NoopMetricsProvider implements MetricsProvider {
 
   public static NoopMetricsProvider INSTANCE = new NoopMetricsProvider();
 
-  private NoopMetricsProvider() {}
+  private NoopMetricsProvider() {
+    BuiltinMetricsView.unregister();
+  }
 
   @Override
   public String toString() {
