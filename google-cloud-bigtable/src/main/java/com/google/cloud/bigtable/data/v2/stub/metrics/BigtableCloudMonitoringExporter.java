@@ -203,6 +203,7 @@ public final class BigtableCloudMonitoringExporter implements MetricExporter {
       return CompletableResultCode.ofSuccess();
     }
 
+    // List of timeseries by project id
     Map<String, List<TimeSeries>> bigtableTimeSeries;
     try {
       bigtableTimeSeries =
