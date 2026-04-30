@@ -16,7 +16,6 @@
 package com.google.cloud.bigtable.gaxx.retrying;
 
 import com.google.api.core.InternalApi;
-import com.google.api.core.InternalExtensionOnly;
 import com.google.api.core.SettableApiFuture;
 import com.google.api.gax.retrying.RetryingFuture;
 import com.google.api.gax.retrying.ServerStreamingAttemptException;
@@ -86,34 +85,33 @@ import java.util.concurrent.CancellationException;
  * @param <ResponseT> response type
  */
 @InternalApi
-@InternalExtensionOnly
-public class ServerStreamingAttemptCallable<RequestT, ResponseT> implements Callable<Void> {
-  protected final Object lock = new Object();
+public final class ServerStreamingAttemptCallable<RequestT, ResponseT> implements Callable<Void> {
+  private final Object lock = new Object();
 
-  protected final ServerStreamingCallable<RequestT, ResponseT> innerCallable;
-  protected final StreamResumptionStrategy<RequestT, ResponseT> resumptionStrategy;
-  protected final RequestT initialRequest;
-  protected ApiCallContext context;
-  protected final ResponseObserver<ResponseT> outerObserver;
+  private final ServerStreamingCallable<RequestT, ResponseT> innerCallable;
+  private final StreamResumptionStrategy<RequestT, ResponseT> resumptionStrategy;
+  private final RequestT initialRequest;
+  private ApiCallContext context;
+  private final ResponseObserver<ResponseT> outerObserver;
 
   // Start state
-  protected boolean autoFlowControl = true;
-  protected boolean isStarted;
+  private boolean autoFlowControl = true;
+  private boolean isStarted;
 
   // Outer state
-  protected Throwable cancellationCause;
+  private Throwable cancellationCause;
 
-  protected int pendingRequests;
+  private int pendingRequests;
 
-  protected RetryingFuture<Void> outerRetryingFuture;
+  private RetryingFuture<Void> outerRetryingFuture;
 
   // Internal retry state
-  protected int numAttempts;
+  private int numAttempts;
 
-  protected StreamController innerController;
+  private StreamController innerController;
 
-  protected boolean seenSuccessSinceLastError;
-  protected SettableApiFuture<Void> innerAttemptFuture;
+  private boolean seenSuccessSinceLastError;
+  private SettableApiFuture<Void> innerAttemptFuture;
 
   public ServerStreamingAttemptCallable(
       ServerStreamingCallable<RequestT, ResponseT> innerCallable,
@@ -245,7 +243,7 @@ public class ServerStreamingAttemptCallable<RequestT, ResponseT> implements Call
    *
    * @see ResponseObserver#onStart(StreamController)
    */
-  protected void onAttemptStart(StreamController controller) {
+  private void onAttemptStart(StreamController controller) {
     if (!autoFlowControl) {
       controller.disableAutoInboundFlowControl();
     }
@@ -275,7 +273,7 @@ public class ServerStreamingAttemptCallable<RequestT, ResponseT> implements Call
    *
    * @see StreamController#cancel()
    */
-  protected void onCancel() {
+  private void onCancel() {
     StreamController localInnerController;
 
     synchronized (lock) {
@@ -302,7 +300,7 @@ public class ServerStreamingAttemptCallable<RequestT, ResponseT> implements Call
    *
    * @see StreamController#request(int)
    */
-  protected void onRequest(int count) {
+  private void onRequest(int count) {
     Preconditions.checkState(!autoFlowControl, "Automatic flow control is enabled");
     Preconditions.checkArgument(count > 0, "Count must be > 0");
 
@@ -325,7 +323,7 @@ public class ServerStreamingAttemptCallable<RequestT, ResponseT> implements Call
   }
 
   /** Called when the inner callable has responses to deliver. */
-  protected void onAttemptResponse(ResponseT message) {
+  private void onAttemptResponse(ResponseT message) {
     if (!autoFlowControl) {
       synchronized (lock) {
         pendingRequests--;
@@ -342,7 +340,7 @@ public class ServerStreamingAttemptCallable<RequestT, ResponseT> implements Call
    * Called when the current RPC fails. The error will be bubbled up to the outer {@link
    * RetryingFuture} via the {@link #innerAttemptFuture}.
    */
-  protected void onAttemptError(Throwable throwable) {
+  private void onAttemptError(Throwable throwable) {
     Throwable localCancellationCause;
     synchronized (lock) {
       localCancellationCause = cancellationCause;
@@ -366,7 +364,7 @@ public class ServerStreamingAttemptCallable<RequestT, ResponseT> implements Call
    * Called when the current RPC successfully completes. Notifies the outer {@link RetryingFuture}
    * via {@link #innerAttemptFuture}.
    */
-  protected void onAttemptComplete() {
+  private void onAttemptComplete() {
     innerAttemptFuture.set(null);
   }
 }
