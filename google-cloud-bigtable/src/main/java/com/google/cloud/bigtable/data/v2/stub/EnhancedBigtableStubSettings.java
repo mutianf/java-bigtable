@@ -148,7 +148,6 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
   @Nullable private final String metricsEndpoint;
   private final boolean areInternalMetricsEnabled;
   private final String jwtAudience;
-  private final boolean failOnLargeRows;
 
   @InternalApi
   public enum DirectPathConfig {
@@ -173,7 +172,6 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
     metricsEndpoint = builder.metricsEndpoint;
     areInternalMetricsEnabled = builder.areInternalMetricsEnabled;
     jwtAudience = builder.jwtAudience;
-    failOnLargeRows = builder.failOnLargeRows;
 
     this.sessionsEnabled = builder.sessionsEnabled;
 
@@ -266,10 +264,6 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
 
   public boolean areInternalMetricsEnabled() {
     return areInternalMetricsEnabled;
-  }
-
-  public boolean isFailOnLargeRows() {
-    return failOnLargeRows;
   }
 
   @InternalApi
@@ -617,7 +611,6 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
     private boolean isRefreshingChannel;
     private String jwtAudience;
     private boolean sessionsEnabled = true;
-    private boolean failOnLargeRows;
 
     private final ClientOperationSettings.Builder perOpSettings;
 
@@ -646,7 +639,6 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
       this.areInternalMetricsEnabled = true;
       this.jwtAudience = DEFAULT_DATA_JWT_AUDIENCE;
       this.sessionsEnabled = !SESSIONS_DISABLE_ENV_VAR;
-      this.failOnLargeRows = false;
 
       // Defaults provider
       BigtableStubSettings.Builder baseDefaults = BigtableStubSettings.newBuilder();
@@ -683,7 +675,6 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
       jwtAudience = settings.jwtAudience;
       this.directPathConfig = settings.getDirectPathConfig();
       sessionsEnabled = settings.sessionsEnabled;
-      failOnLargeRows = settings.failOnLargeRows;
 
       this.perOpSettings = new ClientOperationSettings.Builder(settings.perOpSettings);
 
@@ -927,15 +918,6 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
       return true;
     }
 
-    public Builder setFailOnLargeRows(boolean failOnLargeRows) {
-      this.failOnLargeRows = failOnLargeRows;
-      return this;
-    }
-
-    public boolean isFailOnLargeRows() {
-      return failOnLargeRows;
-    }
-
     /** Returns the builder for the settings used for calls to readRows. */
     public ServerStreamingCallSettings.Builder<Query, Row> readRowsSettings() {
       return perOpSettings.readRowsSettings;
@@ -1073,7 +1055,6 @@ public class EnhancedBigtableStubSettings extends StubSettings<EnhancedBigtableS
         .add("jwtAudience", jwtAudience)
         .add("directPathConfig", getDirectPathConfig().toString())
         .add("sessionsEnabled", sessionsEnabled)
-        .add("failOnLargeRows", failOnLargeRows)
         .add("parent", super.toString())
         .toString();
   }

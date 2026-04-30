@@ -151,6 +151,7 @@ public class EnhancedBigtableStub implements AutoCloseable {
   private final ServerStreamingCallable<Query, Row> readRowsCallable;
 
   private final ServerStreamingCallable<Query, Row> skipLargeRowsCallable;
+  private final ServerStreamingCallable<Query, Row> deferLargeRowsCallable;
 
   private final UnaryCallable<Query, Row> readRowCallable;
   private final UnaryCallable<Query, List<Row>> bulkReadRowsCallable;
@@ -172,34 +173,24 @@ public class EnhancedBigtableStub implements AutoCloseable {
   private final ExecuteQueryCallable executeQueryCallable;
   private final UnaryCallable<PrepareQueryRequest, PrepareResponse> prepareQueryCallable;
 
-  private final boolean failOnLargeRows;
-
   public static EnhancedBigtableStub create(EnhancedBigtableStubSettings settings)
       throws IOException {
     BigtableClientContext bigtableClientContext = BigtableClientContext.create(settings);
-    return new EnhancedBigtableStub(
-        settings.getPerOpSettings(), bigtableClientContext, settings.isFailOnLargeRows());
+    return new EnhancedBigtableStub(settings.getPerOpSettings(), bigtableClientContext);
   }
 
   public EnhancedBigtableStub(
       ClientOperationSettings perOpSettings, BigtableClientContext clientContext) {
-    this(perOpSettings, clientContext, false);
-  }
-
-  public EnhancedBigtableStub(
-      ClientOperationSettings perOpSettings,
-      BigtableClientContext clientContext,
-      boolean failOnLargeRows) {
     this.perOpSettings = perOpSettings;
     this.bigtableClientContext = clientContext;
     this.requestContext = RequestContext.create(clientContext.getClientInfo());
     this.bulkMutationFlowController =
         new FlowController(perOpSettings.bulkMutateRowsSettings.getDynamicFlowControlSettings());
     this.bulkMutationDynamicFlowControlStats = new DynamicFlowControlStats();
-    this.failOnLargeRows = failOnLargeRows;
 
     readRowsCallable = createReadRowsCallable(new DefaultRowAdapter());
     skipLargeRowsCallable = createSkipLargeRowsCallable(new DefaultRowAdapter());
+    deferLargeRowsCallable = createDeferLargeRowsCallable(new DefaultRowAdapter());
     readRowCallable = createReadRowCallable(new DefaultRowAdapter());
     bulkReadRowsCallable = createBulkReadRowsCallable(new DefaultRowAdapter());
     sampleRowKeysCallable = createSampleRowKeysCallable();
@@ -420,6 +411,16 @@ public class EnhancedBigtableStub implements AutoCloseable {
    */
   public <ReqT, RowT> ServerStreamingCallable<Query, RowT> createSkipLargeRowsCallable(
       RowAdapter<RowT> rowAdapter) {
+    return createLargeRowsCallable(rowAdapter, false);
+  }
+
+  public <ReqT, RowT> ServerStreamingCallable<Query, RowT> createDeferLargeRowsCallable(
+      RowAdapter<RowT> rowAdapter) {
+    return createLargeRowsCallable(rowAdapter, true);
+  }
+
+  private <ReqT, RowT> ServerStreamingCallable<Query, RowT> createLargeRowsCallable(
+      RowAdapter<RowT> rowAdapter, boolean failOnLargeRows) {
 
     ServerStreamingCallSettings<ReqT, Row> readRowsSettings =
         (ServerStreamingCallSettings<ReqT, Row>) perOpSettings.readRowsSettings;
@@ -1249,6 +1250,14 @@ public class EnhancedBigtableStub implements AutoCloseable {
   /** Returns a streaming read rows callable that skips large rows */
   public ServerStreamingCallable<Query, Row> skipLargeRowsCallable() {
     return skipLargeRowsCallable;
+  }
+
+  /**
+   * Returns a streaming read rows callable that defers large rows and throws an exception at the
+   * end
+   */
+  public ServerStreamingCallable<Query, Row> deferLargeRowsCallable() {
+    return deferLargeRowsCallable;
   }
 
   /** Return a point read callable */

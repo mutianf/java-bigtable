@@ -39,6 +39,7 @@ import com.google.cloud.bigtable.data.v2.models.Query;
 import com.google.cloud.bigtable.data.v2.models.Range.ByteStringRange;
 import com.google.cloud.bigtable.data.v2.models.Row;
 import com.google.cloud.bigtable.data.v2.models.TableId;
+import com.google.cloud.bigtable.data.v2.stub.EnhancedBigtableStub;
 import com.google.cloud.bigtable.data.v2.stub.metrics.NoopMetricsProvider;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -851,10 +852,9 @@ public class ReadRowsRetryTest {
         .stubSettings()
         .setTransportChannelProvider(
             FixedTransportChannelProvider.create(
-                GrpcTransportChannel.create(serverRule.getChannel())))
-        .setFailOnLargeRows(true);
+                GrpcTransportChannel.create(serverRule.getChannel())));
 
-    BigtableDataClient failureClient = BigtableDataClient.create(settingsBuilder.build());
+    EnhancedBigtableStub stub = EnhancedBigtableStub.create(settingsBuilder.stubSettings().build());
 
     service.expectations.add(
         RpcExpectation.create()
@@ -873,7 +873,7 @@ public class ReadRowsRetryTest {
 
     try {
       ServerStream<Row> actualRows =
-          failureClient.skipLargeRowsCallable().call(Query.create(TABLE_ID).range("r1", "r5"));
+          stub.deferLargeRowsCallable().call(Query.create(TABLE_ID).range("r1", "r5"));
       for (Row row : actualRows) {
         // consume
       }
@@ -886,7 +886,7 @@ public class ReadRowsRetryTest {
           .isEqualTo(com.google.api.gax.rpc.StatusCode.Code.FAILED_PRECONDITION.name());
       assertThat(lre.getLargeRowKeys()).containsExactly(ByteString.copyFromUtf8("r2"));
     } finally {
-      failureClient.close();
+      stub.close();
     }
   }
 
@@ -906,10 +906,9 @@ public class ReadRowsRetryTest {
         .stubSettings()
         .setTransportChannelProvider(
             FixedTransportChannelProvider.create(
-                GrpcTransportChannel.create(serverRule.getChannel())))
-        .setFailOnLargeRows(true);
+                GrpcTransportChannel.create(serverRule.getChannel())));
 
-    BigtableDataClient failureClient = BigtableDataClient.create(settingsBuilder.build());
+    EnhancedBigtableStub stub = EnhancedBigtableStub.create(settingsBuilder.stubSettings().build());
 
     service.expectations.add(
         RpcExpectation.create()
@@ -928,17 +927,14 @@ public class ReadRowsRetryTest {
 
     try {
       List<Row> ignored =
-          failureClient
-              .skipLargeRowsCallable()
-              .all()
-              .call(Query.create(TABLE_ID).range("r1", "r5"));
+          stub.deferLargeRowsCallable().all().call(Query.create(TABLE_ID).range("r1", "r5"));
       Truth.assert_().withMessage("Expected InvalidArgumentException").fail();
     } catch (ApiException e) {
       LargeRowException lre = findLargeRowException(e);
       assertThat(lre).isNotNull();
       assertThat(lre.getLargeRowKeys()).containsExactly(ByteString.copyFromUtf8("r2"));
     } finally {
-      failureClient.close();
+      stub.close();
     }
   }
 
