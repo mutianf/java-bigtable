@@ -33,6 +33,12 @@ public interface RowAdapter<RowT> {
    */
   boolean isScanMarkerRow(RowT row);
 
+  /**
+   * Called immediately when a large row is intercepted and silently skipped by the background stream
+   * resumption strategy. This allows the caller to handle the skipped row key out-of-band (e.g. for DLQ).
+   */
+  default void onLargeRowSkipped(com.google.protobuf.ByteString rowKey) {}
+
   ByteString getKey(RowT row);
 
   /**

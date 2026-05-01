@@ -99,6 +99,9 @@ public class LargeReadRowsResumptionStrategy<RowT>
     if (rowKeyExtracted != null) {
       this.largeRowKey = rowKeyExtracted;
       numProcessed = numProcessed + 1;
+
+      rowAdapter.onLargeRowSkipped(rowKeyExtracted);
+
       if (failOnLargeRows) {
         largeRowKeys.add(rowKeyExtracted);
       } else {
