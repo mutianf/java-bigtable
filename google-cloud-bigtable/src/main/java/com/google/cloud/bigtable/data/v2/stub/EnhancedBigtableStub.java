@@ -152,6 +152,7 @@ public class EnhancedBigtableStub implements AutoCloseable {
 
   private final ServerStreamingCallable<Query, Row> skipLargeRowsCallable;
   private final ServerStreamingCallable<Query, Row> deferLargeRowsCallable;
+  private final ServerStreamingCallable<Query, Row> paginatingReadRowsCallable;
 
   private final UnaryCallable<Query, Row> readRowCallable;
   private final UnaryCallable<Query, List<Row>> bulkReadRowsCallable;
@@ -191,6 +192,7 @@ public class EnhancedBigtableStub implements AutoCloseable {
     readRowsCallable = createReadRowsCallable(new DefaultRowAdapter());
     skipLargeRowsCallable = createSkipLargeRowsCallable(new DefaultRowAdapter());
     deferLargeRowsCallable = createDeferLargeRowsCallable(new DefaultRowAdapter());
+    paginatingReadRowsCallable = createPaginatingReadRowsCallable(new DefaultRowAdapter());
     readRowCallable = createReadRowCallable(new DefaultRowAdapter());
     bulkReadRowsCallable = createBulkReadRowsCallable(new DefaultRowAdapter());
     sampleRowKeysCallable = createSampleRowKeysCallable();
@@ -411,16 +413,16 @@ public class EnhancedBigtableStub implements AutoCloseable {
    */
   public <ReqT, RowT> ServerStreamingCallable<Query, RowT> createSkipLargeRowsCallable(
       RowAdapter<RowT> rowAdapter) {
-    return createLargeRowsCallable(rowAdapter, false);
+    return createLargeRowsCallable(rowAdapter, false, false);
   }
 
   public <ReqT, RowT> ServerStreamingCallable<Query, RowT> createDeferLargeRowsCallable(
       RowAdapter<RowT> rowAdapter) {
-    return createLargeRowsCallable(rowAdapter, true);
+    return createLargeRowsCallable(rowAdapter, true, false);
   }
 
   private <ReqT, RowT> ServerStreamingCallable<Query, RowT> createLargeRowsCallable(
-      RowAdapter<RowT> rowAdapter, boolean failOnLargeRows) {
+      RowAdapter<RowT> rowAdapter, boolean failOnLargeRows, boolean usePagination) {
 
     ServerStreamingCallSettings<ReqT, Row> readRowsSettings =
         (ServerStreamingCallSettings<ReqT, Row>) perOpSettings.readRowsSettings;
@@ -476,8 +478,14 @@ public class EnhancedBigtableStub implements AutoCloseable {
     ServerStreamingCallable<ReadRowsRequest, RowT> retrying2 =
         largeRowWithRetries(retrying1, innerSettings);
 
+    ServerStreamingCallable<ReadRowsRequest, RowT> finalInner = retrying2;
+    if (usePagination) {
+      finalInner = (ServerStreamingCallable<ReadRowsRequest, RowT>) new com.google.cloud.bigtable.gaxx.retrying.PaginatingServerStreamingCallable(
+          (ServerStreamingCallable<ReadRowsRequest, com.google.cloud.bigtable.data.v2.models.Row>) retrying2);
+    }
+
     ServerStreamingCallable<ReadRowsRequest, RowT> readRowsCallable =
-        new FilterMarkerRowsCallable<>(retrying2, rowAdapter);
+        new FilterMarkerRowsCallable<>(finalInner, rowAdapter);
 
     ServerStreamingCallable<Query, RowT> readRowsUserCallable =
         new ReadRowsUserCallable<>(readRowsCallable, requestContext);
@@ -494,6 +502,12 @@ public class EnhancedBigtableStub implements AutoCloseable {
             .getClientContext()
             .getDefaultCallContext()
             .withRetrySettings(readRowsSettings.getRetrySettings()));
+  }
+
+  public ServerStreamingCallable<Query, Row> createPaginatingReadRowsCallable(
+      RowAdapter<Row> rowAdapter) {
+    ServerStreamingCallable<Query, Row> baseCallable = createLargeRowsCallable(rowAdapter, true, true);
+    return baseCallable;
   }
 
   /**
@@ -1256,6 +1270,10 @@ public class EnhancedBigtableStub implements AutoCloseable {
    * Returns a streaming read rows callable that defers large rows and throws an exception at the
    * end
    */
+  public ServerStreamingCallable<Query, Row> paginatingReadRowsCallable() {
+    return paginatingReadRowsCallable;
+  }
+
   public ServerStreamingCallable<Query, Row> deferLargeRowsCallable() {
     return deferLargeRowsCallable;
   }

@@ -1394,6 +1394,21 @@ public class BigtableDataClient implements AutoCloseable {
     return stub.createSkipLargeRowsCallable(rowAdapter);
   }
 
+  public ServerStreamingCallable<Query, Row> deferLargeRowsCallable() {
+    return stub.deferLargeRowsCallable();
+  }
+
+  @InternalApi("For internal testing only")
+  public ServerStreamingCallable<Query, Row> paginatingReadRowsCallable() {
+    return stub.paginatingReadRowsCallable();
+  }
+
+  @InternalApi
+  public <RowT> ServerStreamingCallable<Query, RowT> deferLargeRowsCallable(
+      RowAdapter<RowT> rowAdapter) {
+    return stub.createDeferLargeRowsCallable(rowAdapter);
+  }
+
   /**
    * Convenience method to synchronously return a sample of row keys in the table. The returned row
    * keys will delimit contiguous sections of the table of approximately equal size, which can be

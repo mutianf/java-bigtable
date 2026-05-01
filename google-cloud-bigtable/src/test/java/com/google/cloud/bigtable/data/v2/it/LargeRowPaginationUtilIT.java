@@ -105,7 +105,7 @@ public class LargeRowPaginationUtilIT {
       assertThat(e.getStatusCode()).isEqualTo(GrpcStatusCode.of(Status.Code.FAILED_PRECONDITION));
     }
 
-    Row row = LargeRowPaginationUtil.readLargeRow(dataClient, table.getId(), rowKey);
+    Row row = LargeRowPaginationUtil.readLargeRow(dataClient, table.getId(), rowKey, null);
     assertThat(row).isNotNull();
     assertThat(row.getKey()).isEqualTo(rowKey);
     assertThat(row.getCells()).hasSize(3);
@@ -147,7 +147,7 @@ public class LargeRowPaginationUtilIT {
       assertThat(e.getStatusCode()).isEqualTo(GrpcStatusCode.of(Status.Code.FAILED_PRECONDITION));
     }
 
-    Row row = LargeRowPaginationUtil.readLargeRow(dataClient, table.getId(), rowKey);
+    Row row = LargeRowPaginationUtil.readLargeRow(dataClient, table.getId(), rowKey, null);
 
     assertThat(row).isNotNull();
     assertThat(row.getKey()).isEqualTo(rowKey);

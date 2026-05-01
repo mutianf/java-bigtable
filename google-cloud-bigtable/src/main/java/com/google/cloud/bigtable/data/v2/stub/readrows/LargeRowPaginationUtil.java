@@ -40,9 +40,15 @@ public final class LargeRowPaginationUtil {
    * values using strip filter. 2. Reads cells in chunks using limit and offset filters. 3. Divides
    * the chunk size by half if a failure occurs with FAILED_PRECONDITION.
    */
-  public static Row readLargeRow(BigtableDataClient client, String tableId, ByteString rowKey) {
+  public static Row readLargeRow(BigtableDataClient client, String tableId, ByteString rowKey, com.google.cloud.bigtable.data.v2.models.Filters.Filter baseFilter) {
     // Step 1: Read count with strip
-    Row countRow = client.readRow(TableId.of(tableId), rowKey, Filters.FILTERS.value().strip());
+    Filters.ChainFilter stripChain = Filters.FILTERS.chain();
+    if (baseFilter != null) {
+      stripChain.filter(baseFilter);
+    }
+    stripChain.filter(Filters.FILTERS.value().strip());
+
+    Row countRow = client.readRow(TableId.of(tableId), rowKey, stripChain);
     if (countRow == null) {
       return null; // row not found
     }
@@ -55,6 +61,9 @@ public final class LargeRowPaginationUtil {
     while (offset < totalCells) {
       try {
         Filters.ChainFilter chain = Filters.FILTERS.chain();
+        if (baseFilter != null) {
+          chain.filter(baseFilter);
+        }
         if (offset > 0) {
           chain.filter(Filters.FILTERS.offset().cellsPerRow(offset));
         }
