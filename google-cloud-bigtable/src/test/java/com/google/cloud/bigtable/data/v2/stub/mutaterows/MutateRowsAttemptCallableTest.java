@@ -115,6 +115,116 @@ public class MutateRowsAttemptCallableTest {
   }
 
   @Test
+  public void partialOmissionMultiEntryTest() throws Exception {
+    MutateRowsRequest request =
+        MutateRowsRequest.newBuilder()
+            .addEntries(Entry.newBuilder().setRowKey(ByteString.copyFromUtf8("0-ok")))
+            .addEntries(Entry.newBuilder().setRowKey(ByteString.copyFromUtf8("1-omitted")))
+            .addEntries(Entry.newBuilder().setRowKey(ByteString.copyFromUtf8("2-ok")))
+            .build();
+    innerCallable.response.add(
+        MutateRowsResponse.newBuilder()
+            .addEntries(
+                MutateRowsResponse.Entry.newBuilder().setIndex(0).setStatus(OK_STATUS_PROTO))
+            .addEntries(
+                MutateRowsResponse.Entry.newBuilder().setIndex(2).setStatus(OK_STATUS_PROTO))
+            .build());
+
+    MutateRowsAttemptCallable attemptCallable =
+        new MutateRowsAttemptCallable(innerCallable, request, callContext, retryCodes);
+    attemptCallable.setExternalFuture(parentFuture);
+    attemptCallable.call();
+
+    Throwable actualError = null;
+    try {
+      parentFuture.attemptFuture.get();
+    } catch (Throwable t) {
+      actualError = t.getCause();
+    }
+
+    assertThat(actualError).isInstanceOf(MutateRowsException.class);
+    MutateRowsException mutateRowsException = (MutateRowsException) actualError;
+    assertThat(mutateRowsException.isRetryable()).isFalse();
+    assertThat(mutateRowsException.getFailedMutations()).hasSize(1);
+    FailedMutation failedMutation = mutateRowsException.getFailedMutations().get(0);
+    assertThat(failedMutation.getIndex()).isEqualTo(1);
+    assertThat(failedMutation.getError().getStatusCode().getCode()).isEqualTo(Code.INTERNAL);
+    assertThat(failedMutation.getError().isRetryable()).isFalse();
+    assertThat(failedMutation.getError())
+        .hasMessageThat()
+        .contains("Missing entry response for entry 1");
+  }
+
+  @Test
+  public void midStreamErrorPreservesConfirmedEntriesTest() throws Exception {
+    MutateRowsRequest request =
+        MutateRowsRequest.newBuilder()
+            .addEntries(Entry.newBuilder().setRowKey(ByteString.copyFromUtf8("0-ok")))
+            .addEntries(Entry.newBuilder().setRowKey(ByteString.copyFromUtf8("1-unavailable")))
+            .build();
+
+    final UnavailableException rpcError =
+        new UnavailableException(
+            "mid-stream error", null, GrpcStatusCode.of(io.grpc.Status.Code.UNAVAILABLE), true);
+    final List<MutateRowsResponse> partialResponses =
+        Lists.newArrayList(
+            MutateRowsResponse.newBuilder()
+                .addEntries(
+                    MutateRowsResponse.Entry.newBuilder().setIndex(0).setStatus(OK_STATUS_PROTO))
+                .build());
+
+    final boolean[] firstCall = {true};
+    final List<MutateRowsRequest> capturedRequests = Lists.newArrayList();
+
+    UnaryCallable<MutateRowsRequest, List<MutateRowsResponse>> mockStreamingCallable =
+        new UnaryCallable<MutateRowsRequest, List<MutateRowsResponse>>() {
+          @Override
+          public ApiFuture<List<MutateRowsResponse>> futureCall(
+              MutateRowsRequest req, ApiCallContext context) {
+            capturedRequests.add(req);
+            if (firstCall[0]) {
+              firstCall[0] = false;
+              return ApiFutures.immediateFailedFuture(
+                  new MutateRowsAttemptCallable.PartialResponseException(
+                      rpcError, partialResponses));
+            }
+            return ApiFutures.immediateFuture(
+                Lists.newArrayList(
+                    MutateRowsResponse.newBuilder()
+                        .addEntries(
+                            MutateRowsResponse.Entry.newBuilder()
+                                .setIndex(0)
+                                .setStatus(OK_STATUS_PROTO))
+                        .build()));
+          }
+        };
+
+    MutateRowsAttemptCallable attemptCallable =
+        new MutateRowsAttemptCallable(mockStreamingCallable, request, callContext, retryCodes);
+    attemptCallable.setExternalFuture(parentFuture);
+
+    attemptCallable.call();
+    Throwable actualError = null;
+    try {
+      parentFuture.attemptFuture.get();
+    } catch (Throwable t) {
+      actualError = t.getCause();
+    }
+    assertThat(actualError).isInstanceOf(MutateRowsException.class);
+    MutateRowsException mutateRowsException = (MutateRowsException) actualError;
+    assertThat(mutateRowsException.isRetryable()).isTrue();
+    assertThat(mutateRowsException.getFailedMutations()).hasSize(1);
+    assertThat(mutateRowsException.getFailedMutations().get(0).getIndex()).isEqualTo(1);
+
+    attemptCallable.call();
+    parentFuture.attemptFuture.get();
+    assertThat(capturedRequests).hasSize(2);
+    assertThat(capturedRequests.get(1).getEntriesCount()).isEqualTo(1);
+    assertThat(capturedRequests.get(1).getEntries(0).getRowKey().toStringUtf8())
+        .isEqualTo("1-unavailable");
+  }
+
+  @Test
   public void mixedTest() {
     // Setup the request & response
     MutateRowsRequest request =

@@ -60,7 +60,11 @@ public class MutateRowsRetryingCallable extends UnaryCallable<MutateRowsRequest,
   public RetryingFuture<Void> futureCall(MutateRowsRequest request, ApiCallContext inputContext) {
     ApiCallContext context = callContextPrototype.nullToSelf(inputContext);
     MutateRowsAttemptCallable retryCallable =
-        new MutateRowsAttemptCallable(callable.all(), request, context, retryCodes);
+        new MutateRowsAttemptCallable(
+            MutateRowsAttemptCallable.createStreamingCollector(callable),
+            request,
+            context,
+            retryCodes);
 
     RetryingFuture<Void> retryingFuture = executor.createFuture(retryCallable, context);
     retryCallable.setExternalFuture(retryingFuture);
