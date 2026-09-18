@@ -18,16 +18,12 @@ package com.google.cloud.bigtable.data.v2.stub.mutaterows;
 import com.google.api.core.ApiFunction;
 import com.google.api.core.ApiFuture;
 import com.google.api.core.ApiFutures;
-import com.google.api.core.SettableApiFuture;
 import com.google.api.gax.grpc.GrpcStatusCode;
 import com.google.api.gax.retrying.RetryingFuture;
 import com.google.api.gax.rpc.ApiCallContext;
 import com.google.api.gax.rpc.ApiException;
 import com.google.api.gax.rpc.ApiExceptionFactory;
-import com.google.api.gax.rpc.ServerStreamingCallable;
-import com.google.api.gax.rpc.StateCheckingResponseObserver;
 import com.google.api.gax.rpc.StatusCode;
-import com.google.api.gax.rpc.StreamController;
 import com.google.api.gax.rpc.UnaryCallable;
 import com.google.bigtable.v2.MutateRowsRequest;
 import com.google.bigtable.v2.MutateRowsRequest.Builder;
@@ -39,10 +35,8 @@ import com.google.cloud.bigtable.gaxx.retrying.NonCancellableFuture;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.primitives.Ints;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.rpc.Code;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -218,58 +212,6 @@ class MutateRowsAttemptCallable implements Callable<Void> {
     return null;
   }
 
-  static class PartialResponseException extends RuntimeException {
-    private final List<MutateRowsResponse> partialResponses;
-
-    PartialResponseException(Throwable cause, List<MutateRowsResponse> partialResponses) {
-      super(cause);
-      this.partialResponses = partialResponses;
-    }
-
-    List<MutateRowsResponse> getPartialResponses() {
-      return partialResponses;
-    }
-  }
-
-  static UnaryCallable<MutateRowsRequest, List<MutateRowsResponse>> createStreamingCollector(
-      final ServerStreamingCallable<MutateRowsRequest, MutateRowsResponse> streamingCallable) {
-    return new UnaryCallable<MutateRowsRequest, List<MutateRowsResponse>>() {
-      @Override
-      public ApiFuture<List<MutateRowsResponse>> futureCall(
-          MutateRowsRequest request, ApiCallContext context) {
-        final SettableApiFuture<List<MutateRowsResponse>> future = SettableApiFuture.create();
-        final List<MutateRowsResponse> responses = Lists.newArrayList();
-        streamingCallable.call(
-            request,
-            new StateCheckingResponseObserver<MutateRowsResponse>() {
-              @Override
-              protected void onStartImpl(StreamController controller) {}
-
-              @Override
-              protected void onResponseImpl(MutateRowsResponse response) {
-                responses.add(response);
-              }
-
-              @Override
-              protected void onErrorImpl(Throwable t) {
-                if (!responses.isEmpty()) {
-                  future.setException(new PartialResponseException(t, responses));
-                } else {
-                  future.setException(t);
-                }
-              }
-
-              @Override
-              protected void onCompleteImpl() {
-                future.set(responses);
-              }
-            },
-            context);
-        return future;
-      }
-    };
-  }
-
   /**
    * Handle an RPC level failure by generating a {@link FailedMutation} for each expected entry. The
    * newly generated {@link FailedMutation}s will be combined with the permanentFailures to give the
@@ -277,12 +219,6 @@ class MutateRowsAttemptCallable implements Callable<Void> {
    * MutateRowsException}.
    */
   private void handleAttemptError(Throwable rpcError) {
-    List<MutateRowsResponse> partialResponses = Collections.emptyList();
-    if (rpcError instanceof PartialResponseException) {
-      PartialResponseException partialEx = (PartialResponseException) rpcError;
-      partialResponses = partialEx.getPartialResponses();
-      rpcError = partialEx.getCause();
-    }
     ApiException entryError = createSyntheticErrorForRpcFailure(rpcError);
     ImmutableList.Builder<FailedMutation> allFailures = ImmutableList.builder();
     MutateRowsRequest lastRequest = currentRequest;
@@ -291,31 +227,8 @@ class MutateRowsAttemptCallable implements Callable<Void> {
 
     Builder builder = lastRequest.toBuilder().clearEntries();
     List<Integer> newOriginalIndexes = Lists.newArrayList();
-    boolean[] seenIndices = new boolean[currentRequest.getEntriesCount()];
-
-    for (MutateRowsResponse response : partialResponses) {
-      for (Entry entry : response.getEntriesList()) {
-        seenIndices[Ints.checkedCast(entry.getIndex())] = true;
-        if (entry.getStatus().getCode() == Code.OK_VALUE) {
-          continue;
-        }
-        int origIndex = getOriginalIndex((int) entry.getIndex());
-        FailedMutation failedMutation =
-            FailedMutation.create(origIndex, createEntryError(entry.getStatus()));
-        allFailures.add(failedMutation);
-        if (!failedMutation.getError().isRetryable()) {
-          permanentFailures.add(failedMutation);
-        } else {
-          newOriginalIndexes.add(origIndex);
-          builder.addEntries(lastRequest.getEntries((int) entry.getIndex()));
-        }
-      }
-    }
 
     for (int i = 0; i < currentRequest.getEntriesCount(); i++) {
-      if (seenIndices[i]) {
-        continue;
-      }
       int origIndex = getOriginalIndex(i);
 
       FailedMutation failedMutation = FailedMutation.create(origIndex, entryError);
@@ -334,7 +247,7 @@ class MutateRowsAttemptCallable implements Callable<Void> {
     currentRequest = builder.build();
     originalIndexes = newOriginalIndexes;
 
-    throw new MutateRowsException(rpcError, allFailures.build(), builder.getEntriesCount() > 0);
+    throw new MutateRowsException(rpcError, allFailures.build(), entryError.isRetryable());
   }
 
   /**
@@ -350,11 +263,9 @@ class MutateRowsAttemptCallable implements Callable<Void> {
 
     Builder builder = lastRequest.toBuilder().clearEntries();
     List<Integer> newOriginalIndexes = Lists.newArrayList();
-    boolean[] seenIndices = new boolean[currentRequest.getEntriesCount()];
 
     for (MutateRowsResponse response : responses) {
       for (Entry entry : response.getEntriesList()) {
-        seenIndices[Ints.checkedCast(entry.getIndex())] = true;
         if (entry.getStatus().getCode() == Code.OK_VALUE) {
           continue;
         }
@@ -375,23 +286,6 @@ class MutateRowsAttemptCallable implements Callable<Void> {
           builder.addEntries(lastRequest.getEntries((int) entry.getIndex()));
         }
       }
-    }
-
-    for (int i = 0; i < seenIndices.length; i++) {
-      if (seenIndices[i]) {
-        continue;
-      }
-      int origIndex = getOriginalIndex(i);
-      FailedMutation failedMutation =
-          FailedMutation.create(
-              origIndex,
-              ApiExceptionFactory.createException(
-                  "Missing entry response for entry " + origIndex,
-                  null,
-                  GrpcStatusCode.of(io.grpc.Status.Code.INTERNAL),
-                  false));
-      allFailures.add(failedMutation);
-      permanentFailures.add(failedMutation);
     }
 
     currentRequest = builder.build();
